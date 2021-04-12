@@ -1,0 +1,61 @@
+Tokens del léxico a tener en cuenta
+
+------
+
+-- Keywords --
+
+WHILE
+IF
+WRITE
+READ
+DECVAR
+ENDDEC
+INLIST --> nombre de funcion
+
+-- Operadores --
+
+OP_ASIG --> =
+<
+>
+<=
+>=
+==
+!
+!=
+&&
+||
+
+-- Caracteres especiales --
+
+OP_COMA --> ,
+OP_DP ---> : (indicador de tipo de variable)
+( 
+)
+[
+]
+-- CONSTANTES --
+
+INTEGER (16 bits)
+FLOAT (32 bits) ---> "."
+
+e.g:
+a = 99999.99
+a = 99.
+a = .9999
+
+STRING (30 chars alfanum)
+e.g:
+b = “@sdADaSjfla%dfg”
+b = “asldk fh sjf”
+
+-- IDENTIFICADORES --
+
+(variables)
+
+-- COMENTARIOS --
+
+-/  /-
+
+Pueden estar anidados.
+e.g:
+-/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-

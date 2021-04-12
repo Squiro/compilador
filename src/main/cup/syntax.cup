@@ -1,0 +1,49 @@
+package Analizadores;
+import java_cup.runtime.*;
+import Tabla.*;
+
+//Codigo que se le agrega al parser
+parser code     
+{:
+    public void syntax_error(Symbol cur_token) {
+        String errMsg = "Syntax error " + cur_token.value.toString() + " " + cur_token.right + ":" + cur_token.left + "\n";
+        report_error(errMsg, null);
+    }
+
+    public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+        String errMsg = "Couldn't repair and continue parse " + cur_token.value.toString() + " " + cur_token.right + ":" + cur_token.left + "\n";
+        report_fatal_error(errMsg, null);
+    }
+:}
+
+//Declaracion de terminales de constantes
+terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, STRING;
+
+//Declaracion de terminales de palabras reservadas
+terminal String IF, WHILE, DECVAR, ENDDEC, INTEGER, FLOAT, WRITE, READ, INLIST;
+
+//Declaracion de terminales de operadores lógicos
+terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION, OP_MODULE, OP_INCREMENT, OP_DECREMENT,
+                OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TYPE;
+
+//Declaracion de terminales de caracteres especiales
+terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
+
+//Declaracion de no terminales
+non terminal Symbol inicio, programa, sentencia;
+
+start with inicio;
+
+//Reglas gramaticales
+inicio          ::= programa
+                    {:  tablaDeSimbolos.guardarTabla();
+                         System.out.println("COMPILACION EXITOSA!");
+                    :};  
+programa           ::= sentencia
+                    {: 
+                         System.out.println("programa -> sentencia");
+                    :}
+               | programa sentencia
+                    {: 
+                         System.out.println("programa -> programa sentencia");
+                    :};
