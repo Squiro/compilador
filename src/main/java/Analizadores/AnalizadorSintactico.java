@@ -41,8 +41,8 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\006\000\002\001\002\000\004\002\uffff\001\002\000" +
-    "\004\002\000\001\002\000\004\002\007\001\002\000\004" +
+    "\000\006\000\002\001\002\000\004\002\000\001\002\000" +
+    "\004\002\uffff\001\002\000\004\002\007\001\002\000\004" +
     "\002\001\001\002\000\004\002\ufffe\001\002" });
 
   /** Access to parse-action table. */
@@ -51,8 +51,8 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\006\000\010\002\005\003\004\004\003\001\001\000" +
-    "\002\001\001\000\004\004\007\001\001\000\002\001\001" +
+    "\000\006\000\010\002\005\003\003\004\004\001\001\000" +
+    "\004\004\007\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
@@ -142,7 +142,7 @@ class CUP$AnalizadorSintactico$actions {
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 1: // inicio ::= prog 
+          case 1: // inicio ::= programa 
             {
               Symbol RESULT =null;
 		  tablaDeSimbolos.guardarTabla();
@@ -153,24 +153,24 @@ class CUP$AnalizadorSintactico$actions {
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // prog ::= sent 
+          case 2: // programa ::= sentencia 
             {
               Symbol RESULT =null;
 		 
-                         System.out.println("prog -> sent");
+                         System.out.println("programa -> sentencia");
                     
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("prog",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // prog ::= prog sent 
+          case 3: // programa ::= programa sentencia 
             {
               Symbol RESULT =null;
 		 
-                         System.out.println("prog -> prog sent");
+                         System.out.println("programa -> programa sentencia");
                     
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("prog",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 

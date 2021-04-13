@@ -142,8 +142,7 @@ CORCHETE_CLOSE = "]"
                                           return symbol(Simbolos.CONSTANTE_ENTERA);
                                     }                                          
                                     else
-                                          return symbol(Simbolos.NUMBER);
-                                          //throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros."); 
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros."); 
                              }
 {CONSTANTE_FLOAT}            {
                                     Double constFloat = Double.parseDouble(yytext());
@@ -154,8 +153,6 @@ CORCHETE_CLOSE = "]"
                               }
 
 {STRING}                       { return symbol(Simbolos.STRING); }                              
-{WORD}                       { return symbol(Simbolos.WORD); }
-{TEXT}                       { return symbol(Simbolos.TEXT); }
 {WhiteSpace}                 { /* do nothing */ }
 
 }

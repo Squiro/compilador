@@ -9,9 +9,9 @@ import java.io.FileReader;
 public class Main {
     public static void main(String args[])
     {
-        String fileName = "PruebaPunto2.txt";
+        String fileName = "prueba.txt";
         try {
-        	AnalizadorLexicoPunto2 lexer = new AnalizadorLexicoPunto2(new FileReader(fileName));
+        	AnalizadorLexico lexer = new AnalizadorLexico(new FileReader(fileName));
         	Symbol token = null;        	
         	do {
         		token = lexer.next_token();
