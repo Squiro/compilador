@@ -16,6 +16,7 @@ import java_cup.runtime.*;
 %{
     int RANGO_ENTERO = Integer.MAX_VALUE;
     float RANGO_FLOAT = Float.MAX_VALUE;
+    int RANGO_STRING = 30;
     private Symbol symbol(int type) {
           System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
@@ -30,17 +31,13 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace = {LineTerminator} | [ \t\f]
 DIGITO 	    =	[0-9]
 LETRA 	    =	[a-zA-Z]
-DIGITO_BINARIO  = [0-1]
-DIGITO_HEXA     = [a-fA-F0-9]
 
-// ? remove
-WORD = {LETRA}+
-NUMBER = {DIGITO}+
-ALPHA_NUMERIC = [a-zA-Z0-9_*/]+
-TEXT = {ALPHA_NUMERIC} | {ALPHA_NUMERIC}(\ {ALPHA_NUMERIC})+
+//DIGITO_BINARIO  = [0-1]
+//DIGITO_HEXA     = [a-fA-F0-9]
 
-// Construcciones del lenaguaje
-COMMENT = "/*" ~"*/"
+// Construcciones del lenguaje
+// -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
+COMMENT = "-/" ~"/-" | "-/" ~ "-/" ~ "/-" ~ "/-"
 IDENTIFICADOR = {LETRA}[a-zA-Z0-9_]*({LETRA}|{DIGITO})+
 
 // Constantes
@@ -76,7 +73,7 @@ OP_DECREMENT = "--"
 OP_NOT = "!" 
 OP_AND = "&&"
 OP_OR = "||" 
-OP_ASIG = "="
+OP_ASIG = ":="
 OP_EQ = "=="
 OP_TYPE = ":"
 
@@ -149,17 +146,19 @@ CORCHETE_CLOSE = "]"
                                     if (Math.abs(constFloat) <= RANGO_FLOAT)
                                           return symbol(Simbolos.CONSTANTE_FLOAT);
                                     else
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes");
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes.");
                               }
 
-{STRING}                       { return symbol(Simbolos.STRING); }                              
-{WhiteSpace}                 { /* do nothing */ }
+{STRING}                      { 
+                                    String constString = new String(yytext());
+                                    if (constString.length <= RANGO_STRING)
+                                          return symbol(Simbolos.STRING); 
+                                    else 
+                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string.");
+                              }                              
+{WhiteSpace}                  { /* do nothing */ }
 
 }
-
-//--------> Simbolos Exp Reg
-//[\ \t\r\n\f]          {/*Espacios en blanco, se ignoran*/}
-
 
 //--------> Errores Lexicos
 [^]   {
