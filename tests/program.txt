@@ -1,0 +1,31 @@
+DECVAR
+contador, suma, i: INTEGER;
+promedio: FLOAT;
+textoError: STRING;
+ENDDEC
+
+-/ Prueba asignación simple /-
+contador := 1;
+i := 0
+-/ Prueba IF con condicion simple /-
+if (contador == 1)
+{
+    promedio := 1.23;
+    i := 0;
+    -/ IF con condicion múltiple y else /-
+    if (promedio == 1.23 && i == 0)
+        -/ Prueba WRITE /-
+        WRITE "Vamos bien";
+        READ promedio;
+        -/ Prueba asignación string /-
+        textoError := "No no no no no no no no";
+        -/ Prueba while /-
+        while (i == 0)
+        {
+            WRITE textoError;
+        }
+    else 
+    {
+        WRITE "Vamos mal";
+    }
+}

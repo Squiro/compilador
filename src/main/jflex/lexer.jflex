@@ -86,6 +86,8 @@ PAREN_OPEN = "("
 PAREN_CLOSE = ")"
 CORCHETE_OPEN = "["
 CORCHETE_CLOSE = "]"
+LLAVE_OPEN = "{"
+LLAVE_CLOSE = "}"
 
 %%
 <YYINITIAL> {
@@ -122,7 +124,7 @@ CORCHETE_CLOSE = "]"
 {OP_OR}                      { return symbol(Simbolos.OP_OR); }
 {OP_ASIG}                    { return symbol(Simbolos.OP_ASIG); }
 {OP_EQ}                      { return symbol(Simbolos.OP_EQ); }
-{OP_TYPE}                      { return symbol(Simbolos.OP_TYPE); }
+{OP_TYPE}                    { return symbol(Simbolos.OP_TYPE); }
 
 // Caracteres especiales
 {COMA}                         { return symbol(Simbolos.COMA); }
@@ -131,6 +133,8 @@ CORCHETE_CLOSE = "]"
 {PAREN_CLOSE}                  { return symbol(Simbolos.PAREN_CLOSE); }
 {CORCHETE_OPEN}                { return symbol(Simbolos.CORCHETE_OPEN); }
 {CORCHETE_CLOSE}               { return symbol(Simbolos.CORCHETE_CLOSE); }
+{LLAVE_OPEN}                   { return symbol(Simbolos.LLAVE_OPEN); }
+{LLAVE_CLOSE}                  { return symbol(Simbolos.LLAVE_CLOSE); }
 
 
 {COMMENT}	                 { return symbol(Simbolos.COMMENT); }

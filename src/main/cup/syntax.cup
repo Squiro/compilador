@@ -27,7 +27,7 @@ terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DI
                 OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TYPE;
 
 //Declaracion de terminales de caracteres especiales
-terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE;
+terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE, LLAVE_OPEN, LLAVE_CLOSE;
 
 //Declaracion de construcciones del lenguaje
 terminal String IDENTIFICADOR, COMMENT;

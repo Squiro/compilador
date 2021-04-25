@@ -8,46 +8,48 @@ package Analizadores;
 /** CUP generated class containing symbol constants. */
 public class Simbolos {
   /* terminals */
-  public static final int OP_NE = 25;
+  public static final int OP_NE = 27;
   public static final int ENDDEC = 8;
   public static final int INLIST = 13;
-  public static final int COMMENT = 39;
-  public static final int OP_GT = 14;
+  public static final int COMMENT = 41;
+  public static final int OP_GT = 16;
   public static final int INTEGER = 9;
-  public static final int OP_NOT = 26;
-  public static final int OP_AND = 27;
-  public static final int OP_MULTI = 20;
+  public static final int OP_NOT = 28;
+  public static final int OP_AND = 29;
+  public static final int OP_MULTI = 22;
   public static final int WRITE = 11;
-  public static final int IDENTIFICADOR = 38;
-  public static final int OP_INCREMENT = 23;
+  public static final int IDENTIFICADOR = 40;
+  public static final int OP_INCREMENT = 25;
   public static final int CONSTANTE_ENTERA = 2;
+  public static final int DIV = 15;
   public static final int IF = 5;
-  public static final int PUNTO_COMA = 33;
-  public static final int OP_DECREMENT = 24;
+  public static final int PUNTO_COMA = 35;
+  public static final int OP_DECREMENT = 26;
   public static final int EOF = 0;
-  public static final int OP_DIVISION = 21;
-  public static final int OP_GTE = 16;
+  public static final int OP_DIVISION = 23;
+  public static final int OP_GTE = 18;
   public static final int error = 1;
-  public static final int OP_LT = 15;
-  public static final int COMA = 32;
-  public static final int OP_OR = 28;
-  public static final int OP_MINUS = 19;
+  public static final int OP_LT = 17;
+  public static final int COMA = 34;
+  public static final int OP_OR = 30;
+  public static final int MOD = 14;
+  public static final int OP_MINUS = 21;
   public static final int DECVAR = 7;
-  public static final int CORCHETE_CLOSE = 37;
+  public static final int CORCHETE_CLOSE = 39;
   public static final int READ = 12;
   public static final int WHILE = 6;
   public static final int FLOAT = 10;
-  public static final int OP_MODULE = 22;
-  public static final int OP_TYPE = 31;
-  public static final int OP_EQ = 30;
+  public static final int OP_MODULE = 24;
+  public static final int OP_TYPE = 33;
+  public static final int OP_EQ = 32;
   public static final int STRING = 4;
-  public static final int PAREN_CLOSE = 35;
-  public static final int OP_PLUS = 18;
-  public static final int OP_LTE = 17;
-  public static final int CORCHETE_OPEN = 36;
+  public static final int PAREN_CLOSE = 37;
+  public static final int OP_PLUS = 20;
+  public static final int OP_LTE = 19;
+  public static final int CORCHETE_OPEN = 38;
   public static final int CONSTANTE_FLOAT = 3;
-  public static final int OP_ASIG = 29;
-  public static final int PAREN_OPEN = 34;
+  public static final int OP_ASIG = 31;
+  public static final int PAREN_OPEN = 36;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -63,6 +65,8 @@ public class Simbolos {
   "WRITE",
   "READ",
   "INLIST",
+  "MOD",
+  "DIV",
   "OP_GT",
   "OP_LT",
   "OP_GTE",

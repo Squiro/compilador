@@ -883,7 +883,7 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
           case 59: break;
           case 20:
             { String constString = new String(yytext());
-                                    if (constString.length <= RANGO_STRING)
+                                    if (constString.length() <= RANGO_STRING)
                                           return symbol(Simbolos.STRING); 
                                     else 
                                           throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string.");
