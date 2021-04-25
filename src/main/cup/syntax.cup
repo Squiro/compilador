@@ -20,7 +20,7 @@ parser code
 terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, STRING;
 
 //Declaracion de terminales de palabras reservadas
-terminal String IF, WHILE, DECVAR, ENDDEC, INTEGER, FLOAT, WRITE, READ, INLIST;
+terminal String IF, WHILE, DECVAR, ENDDEC, INTEGER, FLOAT, WRITE, READ, INLIST, MOD, DIV;
 
 //Declaracion de terminales de operadores lógicos
 terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION, OP_MODULE, OP_INCREMENT, OP_DECREMENT,

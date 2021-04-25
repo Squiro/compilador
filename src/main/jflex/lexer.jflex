@@ -56,6 +56,8 @@ FLOAT = "FLOAT"
 WRITE = "WRITE"
 READ = "READ"
 INLIST = "INLIST"
+MOD = "MOD"
+DIV = "DIV"
 
 // Operadores lógicos y ariméticos
 OP_GT = ">" 
@@ -98,6 +100,8 @@ CORCHETE_CLOSE = "]"
 {WRITE}	                 { return symbol(Simbolos.WRITE); }
 {READ}	                 { return symbol(Simbolos.READ); }
 {INLIST}	                 { return symbol(Simbolos.INLIST); }
+{MOD}                        { return symbol(Simbolos.MOD); }
+{DIV}                        { return symbol(Simbolos.DIV); }
 
 // Operadores
 
