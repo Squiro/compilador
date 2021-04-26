@@ -1,5 +1,4 @@
 import Analizadores.AnalizadorLexico;
-import Analizadores.AnalizadorLexicoPunto2;
 import Analizadores.AnalizadorSintactico;
 import java_cup.runtime.Symbol;
 
