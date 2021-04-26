@@ -18,7 +18,7 @@ import java_cup.runtime.*;
     float RANGO_FLOAT = Float.MAX_VALUE;
     int RANGO_STRING = 30;
     private Symbol symbol(int type) {
-          System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
+          // System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
     }
     private Symbol symbol(int type, Object value) {
@@ -173,4 +173,4 @@ LLAVE_CLOSE = "}"
             System.out.println("Error Léxico: --> " + yytext() + " <-- Linea " + (yyline+1) + " Columna " + yycolumn);
             throw new Error("Error léxico");
       }
-<<EOF>>                          { /*return symbol(Simbolos.EOF);*/ throw new Error("END OF FILE"); }
+<<EOF>>                          { return symbol(Simbolos.EOF); }
