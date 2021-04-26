@@ -11,17 +11,15 @@ public class Main {
     {
         String fileName = "prueba.txt";
         try {
-        	AnalizadorLexico lexer = new AnalizadorLexico(new FileReader(fileName));
-        	Symbol token = null;        	
-        	do {
-        		token = lexer.next_token();
-        	}
-        	while (token != null);       	
-        	
-        	
-            //@SuppressWarnings("deprecation") AnalizadorSintactico sintactico = new AnalizadorSintactico(new AnalizadorLexico(new FileReader(fileName)));
-            //sintactico.parse();
-            System.out.println("Corrió " + fileName);
+        	// AnalizadorLexico lexer = new AnalizadorLexico(new FileReader(fileName));
+        	// Symbol token = null;        	
+        	// do {
+        	// 	token = lexer.next_token();
+        	// }
+        	// while (token != null);       	
+            @SuppressWarnings("deprecation") AnalizadorSintactico sintactico = new AnalizadorSintactico(new AnalizadorLexico(new FileReader(fileName)));
+            sintactico.parse();
+            System.out.println("Corriï¿½ " + fileName);
         } catch (FileNotFoundException e) {
             System.err.	println("El archivo " + fileName + " no existe");
             e.printStackTrace();
