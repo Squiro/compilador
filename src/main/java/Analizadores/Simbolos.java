@@ -11,14 +11,14 @@ public class Simbolos {
   public static final int OP_NE = 27;
   public static final int ENDDEC = 8;
   public static final int INLIST = 13;
-  public static final int COMMENT = 41;
+  public static final int COMMENT = 43;
   public static final int OP_GT = 16;
   public static final int INTEGER = 9;
   public static final int OP_NOT = 28;
   public static final int OP_AND = 29;
   public static final int OP_MULTI = 22;
   public static final int WRITE = 11;
-  public static final int IDENTIFICADOR = 40;
+  public static final int IDENTIFICADOR = 42;
   public static final int OP_INCREMENT = 25;
   public static final int CONSTANTE_ENTERA = 2;
   public static final int DIV = 15;
@@ -26,6 +26,7 @@ public class Simbolos {
   public static final int PUNTO_COMA = 35;
   public static final int OP_DECREMENT = 26;
   public static final int EOF = 0;
+  public static final int LLAVE_CLOSE = 41;
   public static final int OP_DIVISION = 23;
   public static final int OP_GTE = 18;
   public static final int error = 1;
@@ -44,6 +45,7 @@ public class Simbolos {
   public static final int OP_EQ = 32;
   public static final int STRING = 4;
   public static final int PAREN_CLOSE = 37;
+  public static final int LLAVE_OPEN = 40;
   public static final int OP_PLUS = 20;
   public static final int OP_LTE = 19;
   public static final int CORCHETE_OPEN = 38;
@@ -91,6 +93,8 @@ public class Simbolos {
   "PAREN_CLOSE",
   "CORCHETE_OPEN",
   "CORCHETE_CLOSE",
+  "LLAVE_OPEN",
+  "LLAVE_CLOSE",
   "IDENTIFICADOR",
   "COMMENT"
   };

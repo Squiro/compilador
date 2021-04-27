@@ -18,7 +18,7 @@ public class Main {
         	// while (token != null);       	
             @SuppressWarnings("deprecation") AnalizadorSintactico sintactico = new AnalizadorSintactico(new AnalizadorLexico(new FileReader(fileName)));
             sintactico.parse();
-            System.out.println("Corri� " + fileName);
+            // System.out.println("Se ejecuto el archivo " + fileName);
         } catch (FileNotFoundException e) {
             System.err.	println("El archivo " + fileName + " no existe");
             e.printStackTrace();

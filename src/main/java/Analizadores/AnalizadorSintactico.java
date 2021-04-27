@@ -6,7 +6,9 @@
 package Analizadores;
 
 import java_cup.runtime.*;
-import Tabla.*;
+import SymbolTable.*;
+import java.util.LinkedList;
+import java.util.Queue;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -32,8 +34,9 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\004\000\002\002\004\000\002\002\003\000\002\003" +
-    "\003\000\002\003\004" });
+    "\000\006\000\002\002\004\000\002\002\003\000\002\003" +
+    "\003\000\002\003\004\000\002\004\003\000\002\005\005" +
+    "" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -41,9 +44,12 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\006\000\002\001\002\000\004\002\000\001\002\000" +
-    "\004\002\uffff\001\002\000\004\002\007\001\002\000\004" +
-    "\002\001\001\002\000\004\002\ufffe\001\002" });
+    "\000\012\000\004\054\005\001\002\000\006\002\000\054" +
+    "\005\001\002\000\004\041\012\001\002\000\006\002\uffff" +
+    "\054\uffff\001\002\000\004\002\011\001\002\000\006\002" +
+    "\ufffd\054\ufffd\001\002\000\004\002\001\001\002\000\004" +
+    "\004\013\001\002\000\006\002\ufffc\054\ufffc\001\002\000" +
+    "\006\002\ufffe\054\ufffe\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -51,9 +57,11 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\006\000\010\002\005\003\003\004\004\001\001\000" +
-    "\004\004\007\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001" });
+    "\000\012\000\012\002\006\003\003\004\005\005\007\001" +
+    "\001\000\006\004\013\005\007\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -106,6 +114,12 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
 /** Cup generated class to encapsulate user supplied action code.*/
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
 class CUP$AnalizadorSintactico$actions {
+
+
+     public SymbolTable tablaDeSimbolos = new SymbolTable();
+     public Queue<String> dataTypeQueue = new LinkedList(); 
+     public Queue<String> variableNameQueue = new LinkedList();
+
   private final AnalizadorSintactico parser;
 
   /** Constructor */
@@ -145,8 +159,12 @@ class CUP$AnalizadorSintactico$actions {
           case 1: // inicio ::= programa 
             {
               Symbol RESULT =null;
-		  tablaDeSimbolos.guardarTabla();
-                         System.out.println("COMPILACION EXITOSA!");
+		  
+                         //tablaDeSimbolos.addVariables();
+                         tablaDeSimbolos.save();
+                         System.out.println("R1: inicio -> programa");
+                         System.out.println("Compilacion exitosa.");
+                         System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("inicio",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -171,6 +189,32 @@ class CUP$AnalizadorSintactico$actions {
                          System.out.println("programa -> programa sentencia");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 4: // sentencia ::= asignacion 
+            {
+              Symbol RESULT =null;
+		
+                         System.out.println("sentencia -> asignacion");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("sentencia",2, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 5: // asignacion ::= IDENTIFICADOR OP_ASIG CONSTANTE_ENTERA 
+            {
+              Symbol RESULT =null;
+		int CONSTANTE_ENTERAleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).left;
+		int CONSTANTE_ENTERAright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
+		String CONSTANTE_ENTERA = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
+		 
+                         tablaDeSimbolos.add("_"+CONSTANTE_ENTERA, null, CONSTANTE_ENTERA, null);
+                         System.out.println("R10: asig -> ID OP_ASIG expresion");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("asignacion",3, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 

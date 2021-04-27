@@ -1,6 +1,8 @@
 package Analizadores;
 import java_cup.runtime.*;
-import Tabla.*;
+import SymbolTable.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 // Codigo que se le agrega a las acciones gramaticales
 action code
@@ -46,19 +48,28 @@ non terminal Symbol inicio, programa, sentencia, asignacion, expresion, termino,
 start with inicio;
 
 //Reglas gramaticales
-inicio          ::= programa
+inicio         ::= programa
                     {:  
-                         tablaDeSimbolos.addVariables();
+                         //tablaDeSimbolos.addVariables();
                          tablaDeSimbolos.save();
                          System.out.println("R1: inicio -> programa");
                          System.out.println("Compilacion exitosa.");
                          System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     :};  
-programa        ::= sentencia
+programa       ::= sentencia
                     {: 
                          System.out.println("programa -> sentencia");
                     :}
                     | programa sentencia
                     {: 
                          System.out.println("programa -> programa sentencia");
+                    :};
+sentencia      ::= asignacion
+                    {:
+                         System.out.println("sentencia -> asignacion");
+                    :};
+asignacion     ::=  IDENTIFICADOR OP_ASIG CONSTANTE_ENTERA:CONSTANTE_ENTERA
+                    {: 
+                         tablaDeSimbolos.add("_"+CONSTANTE_ENTERA, null, CONSTANTE_ENTERA, null);
+                         System.out.println("R10: asig -> ID OP_ASIG expresion");
                     :};

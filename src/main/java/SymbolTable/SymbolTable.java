@@ -1,9 +1,10 @@
-package Tabla;
+package SymbolTable;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.List;
 import java.util.logging.Logger;
 

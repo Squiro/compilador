@@ -1,4 +1,4 @@
-package Tabla;
+package SymbolTable;
 
 public class Simbolo {
     private String nombre;
