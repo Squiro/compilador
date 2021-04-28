@@ -56,13 +56,18 @@ inicio         	::= programa
                          System.out.println("Compilacion exitosa.");
                          System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     :};  
-programa      		::= declaracion sentencia
+
+programa      		::= programa sentencia
                     {: 
                          System.out.println("programa -> declaracion sentencia");
                     :}
                     | sentencia
                     {: 
                          System.out.println("programa -> sentencia");
+                    :};
+sentencia           ::= declaracion
+                    {:
+                         System.out.println("sentencia -> declaracion");
                     :};
 
 declaracion         ::= DECVAR declaraciones ENDDEC
