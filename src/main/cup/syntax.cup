@@ -43,12 +43,12 @@ terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHE
 terminal String IDENTIFICADOR, COMMENT;
 
 // Declaracion de no terminales
-non terminal Symbol inicio, programa, sentencia, asignacion, expresion, termino, factor, condicion, comparacion, if, while, inlist, lista;
+non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, condicion, comparacion, if, while, inlist, lista;
 
 start with inicio;
 
 //Reglas gramaticales
-inicio         ::= programa
+inicio         	::= programa
                     {:  
                          //tablaDeSimbolos.addVariables();
                          tablaDeSimbolos.save();
@@ -56,14 +56,56 @@ inicio         ::= programa
                          System.out.println("Compilacion exitosa.");
                          System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     :};  
-programa       ::= sentencia
+programa      		::= declaracion sentencia
+                    {: 
+                         System.out.println("programa -> declaracion sentencia");
+                    :}
+                    | sentencia
                     {: 
                          System.out.println("programa -> sentencia");
-                    :}
-                    | programa sentencia
-                    {: 
-                         System.out.println("programa -> programa sentencia");
                     :};
+
+declaracion         ::= DECVAR declaraciones ENDDEC
+                    {: 
+                         System.out.println("declaracion -> declaraciones");
+                    :};
+
+declaraciones      ::= declarar
+                    {:
+                         System.out.println("declaraciones -> declarar");
+                    :}
+                    | declaraciones declarar
+                    {:
+                         System.out.println("declaraciones declarar -> declarar");
+                    :};
+
+declarar            ::= identificadores OP_TYPE tipodedato
+                    {:
+                         System.out.println("declarar -> tipo de dato");
+                    :};
+
+tipodedato          ::= INTEGER
+                    {:
+                         System.out.println("Tipo de dato: INTEGER");
+                    :}
+                    | FLOAT
+                    {:
+                         System.out.println("Tipo de dato: FLOAT");
+                    :}
+                    | STRING
+                    {:
+                         System.out.println("Tipo de dato: STRING");
+                    :};
+
+identificadores     ::= IDENTIFICADOR
+                    {:
+                    System.out.println("identificadores -> IDENTIFICADOR");
+                    :}
+                    | identificadores COMA IDENTIFICADOR
+                    {:
+                    System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
+                    :};
+
 sentencia      ::= asignacion
                     {:
                          System.out.println("sentencia -> asignacion");
