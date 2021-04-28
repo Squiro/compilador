@@ -31,6 +31,13 @@ public class SymbolTable {
         }
     }
 
+    // cambiar algoritmo de asignacion de tipos a los identificadores (cada vez que encontras un tipo, añadiselo a los identificadores que hayas encontrado antes)
+    // Es decir, cada vez que vas encontrando identificadores, los guardás en una cola/lista. Cuando encontrás un tipo, vacías esa lista, y le agregás 
+    // a esos identificadores el tipo encontrado. 
+    // Esto es porque nuestro lenguaje permite declaraciones de este tipo:
+    // a, b, c : FLOAT;
+    // Si hay un identificador en la cola y nunca se le asignó su tipo, bueno, hay un problema. De todas formas no debería pasar, porque la regla sintáctica
+    // debería exigir que las declaraciones sean "ID: TIPO"
     public void addVariables(Queue<String> colaNombre, Queue<String> colaTipoDato) {
         String nombre;
         String tipoDato;
