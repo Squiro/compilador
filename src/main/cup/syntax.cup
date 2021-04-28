@@ -105,13 +105,3 @@ identificadores     ::= IDENTIFICADOR
                     {:
                     System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
                     :};
-
-sentencia      ::= asignacion
-                    {:
-                         System.out.println("sentencia -> asignacion");
-                    :};
-asignacion     ::=  IDENTIFICADOR OP_ASIG CONSTANTE_ENTERA:CONSTANTE_ENTERA
-                    {: 
-                         tablaDeSimbolos.add("_"+CONSTANTE_ENTERA, null, CONSTANTE_ENTERA, null);
-                         System.out.println("R10: asig -> ID OP_ASIG expresion");
-                    :};
