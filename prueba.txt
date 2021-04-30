@@ -2,5 +2,6 @@ DECVAR
 a,b,c : INTEGER
 d, e : FLOAT
 f : STRING
+a : INTEGER
 
 ENDDEC

@@ -33,7 +33,6 @@ public class SymbolTable {
         }
     }
 
-    // cambiar algoritmo de asignacion de tipos a los identificadores (cada vez que encontras un tipo, añadiselo a los identificadores que hayas encontrado antes)
     // Es decir, cada vez que vas encontrando identificadores, los guardás en una cola/lista. Cuando encontrás un tipo, vacías esa lista, y le agregás 
     // a esos identificadores el tipo encontrado. 
     // Esto es porque nuestro lenguaje permite declaraciones de este tipo:
@@ -45,7 +44,13 @@ public class SymbolTable {
     	while (i.hasNext()) {
            // must be called before you can call i.remove()
     	   String id = i.next(); 
-    	   this.add(id, dataType, "-", null);
+           if (!(isInTable(id)))
+           {
+    	        this.add(id, dataType, "-", null);
+           }
+           else {
+               throw new Error("Error de sintaxis: la variable '"+id+"' ya habia sido declarada."); 
+           }
            // Remove identifier from list
     	   i.remove();
     	}    	
