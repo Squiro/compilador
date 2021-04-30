@@ -2,6 +2,7 @@ DECVAR
 a,b,c : INTEGER
 d, e : FLOAT
 f : STRING
-a : INTEGER
-
 ENDDEC
+
+a := 10 + (20)*30
+b := 2394 * (123 MOD 243)

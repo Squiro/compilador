@@ -43,14 +43,14 @@ terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHE
 terminal String IDENTIFICADOR, COMMENT;
 
 // Declaracion de no terminales
-non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, condicion, comparacion, if, while, inlist, lista;
+non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
+                    condicion, comparacion, if, while, inlist, lista, mod, div;
 
 start with inicio;
 
 //Reglas gramaticales
 inicio         	::= programa
-                    {:  
-                         //tablaDeSimbolos.addVariables();
+                    {:
                          tablaDeSimbolos.save();
                          System.out.println("R1: inicio -> programa");
                          System.out.println("Compilacion exitosa.");
@@ -68,7 +68,16 @@ programa      		::= programa sentencia
 sentencia           ::= declaracion
                     {:
                          System.out.println("sentencia -> declaracion");
+                    :}
+                    | asignacion 
+                    {:
+                         System.out.println("sentencia -> asignacion");
                     :};
+
+
+/*
+            DECLARACIONES
+*/
 
 declaracion         ::= DECVAR declaraciones ENDDEC
                     {: 
@@ -114,4 +123,79 @@ identificadores     ::= IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
                          System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
+                    :};
+/*
+            ASIGNACION
+*/
+asignacion          ::= IDENTIFICADOR OP_ASIG expresion
+                    {:
+                         System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
+                    :};
+
+expresion           ::= expresion OP_PLUS termino 
+                    {:
+                         System.out.println("expresion -> expresion OP_PLUS termino");
+                    :}
+                    | expresion OP_MINUS termino 
+                    {:
+                         System.out.println("expresion -> expresion OP_MINUS termino");
+                    :}
+                    | termino 
+                    {:
+                         System.out.println("expresion -> termino");
+                    :};
+
+termino             ::= termino OP_MULTI factor
+                    {:
+                         System.out.println("termino -> termino OP_MULTI factor");
+                    :}
+                    | termino OP_DIVISION factor
+                    {:
+                         System.out.println("termino -> termino OP_DIVISION factor");
+                    :}
+                    | factor 
+                    {:
+                         System.out.println("termino -> factor");
+                    :};
+
+factor              ::= CONSTANTE_ENTERA:CTE_ENT
+                    {:
+                         tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
+                         System.out.println("factor -> CONSTANTE_ENTERA");
+                    :}
+                    | CONSTANTE_FLOAT:CTE_FLOAT
+                    {:
+                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);
+                         System.out.println("factor -> CONSTANTE_FLOAT");
+                    :} 
+                    | CONSTANTE_STRING:CTE_STRING
+                    {:
+                         tablaDeSimbolos.add("_"+CTE_STRING, null, CTE_STRING, CTE_STRING.length());
+                         System.out.println("factor -> CONSTANTE_STRING");
+                    :}
+                    | PAREN_OPEN expresion PAREN_CLOSE 
+                    {:
+                         System.out.println("factor -> PAREN_OPEN expresion PAREN_CLOSE");
+                    :}
+                    | IDENTIFICADOR
+                    {:
+                         System.out.println("factor -> ID");
+                    :}
+                    | PAREN_OPEN mod PAREN_CLOSE
+                    {:
+                         System.out.println("factor -> PAREN_OPEN mod PAREN_CLOSE");
+                    :}
+                    | PAREN_OPEN div PAREN_CLOSE
+                    {:
+                         System.out.println("factor -> PAREN_OPEN div PAREN_CLOSE");
+                    :};
+
+mod                 ::= expresion MOD expresion 
+                    {:
+                         System.out.println("mod -> expresion MOD expresion");
+                    :};
+
+div                 ::=  expresion DIV expresion
+                    {:
+                         System.out.println("div -> expresion DIV expresion");
                     :};
