@@ -47,8 +47,9 @@ CONSTANTE_FLOAT =  {DIGITO}+"."{DIGITO}+
 CONSTANTE_STRING =  \".*\"
 
 // Palabras reservadas
-IF = "IF"
-WHILE = "WHILE"
+IF = "if"
+ELSE = "else"
+WHILE = "while"
 DECVAR = "DECVAR"
 ENDDEC = "ENDDEC"
 WRITE = "WRITE"
@@ -95,6 +96,7 @@ LLAVE_CLOSE = "}"
 
 // Keywords
 {IF}	                       { return symbol(Simbolos.IF); }
+{ELSE}	                 { return symbol(Simbolos.ELSE); }
 {WHILE}	                 { return symbol(Simbolos.WHILE); }
 {DECVAR}	                 { return symbol(Simbolos.DECVAR); }
 {ENDDEC}	                 { return symbol(Simbolos.ENDDEC); }

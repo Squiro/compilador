@@ -30,7 +30,7 @@ parser code
 terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, CONSTANTE_STRING;
 
 // Declaracion de terminales de palabras reservadas
-terminal String IF, WHILE, DECVAR, ENDDEC, WRITE, READ, INLIST, MOD, DIV, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE;
+terminal String IF, ELSE, WHILE, DECVAR, ENDDEC, WRITE, READ, INLIST, MOD, DIV, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE;
 
 // Declaracion de terminales de operadores lógicos
 terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION, OP_MODULE, OP_INCREMENT, OP_DECREMENT,
@@ -72,8 +72,15 @@ sentencia           ::= declaracion
                     | asignacion 
                     {:
                          System.out.println("sentencia -> asignacion");
+                    :}
+                    | if 
+                    {:
+                         System.out.println("sentencia -> if");
+                    :}
+                    | while 
+                    {:
+                         System.out.println("sentencia -> while");
                     :};
-
 
 /*
             DECLARACIONES
@@ -199,3 +206,37 @@ div                 ::=  expresion DIV expresion
                     {:
                          System.out.println("div -> expresion DIV expresion");
                     :};
+
+/*
+            IF/ELSE/CONDITION
+*/
+if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
+                    {:
+                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+                    :}
+                    | IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE 
+                    {:
+                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE");
+                    :};
+
+condicion           ::= comparacion OP_AND comparacion 
+                    | comparacion OP_OR comparacion
+                    | OP_NOT comparacion
+                    | comparacion;
+
+comparacion         ::= expresion OP_GT expresion 
+                    | expresion OP_LT expresion
+                    | expresion OP_GTE expresion 
+                    | expresion OP_LTE expresion
+                    | expresion OP_EQ expresion
+                    | expresion OP_NE expresion;
+
+/*
+            WHILE
+*/
+
+while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE  
+                    {:
+                         System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+                    :};
+
