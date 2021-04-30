@@ -18,7 +18,7 @@ import java_cup.runtime.*;
     float RANGO_FLOAT = Float.MAX_VALUE;
     int RANGO_STRING = 30;
     private Symbol symbol(int type) {
-          // System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
+          //System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
     }
     private Symbol symbol(int type, Object value) {
@@ -38,26 +38,27 @@ LETRA 	    =	[a-zA-Z]
 // Construcciones del lenguaje
 // -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
 COMMENT = "-/" ~"/-" | "-/" ~ "-/" ~ "/-" ~ "/-"
-IDENTIFICADOR = {LETRA}[a-zA-Z0-9_]*({LETRA}|{DIGITO})+
+IDENTIFICADOR = {LETRA}[a-zA-Z0-9_]*({LETRA}|{DIGITO})*
 
 // Constantes
 
 CONSTANTE_ENTERA =  {DIGITO}+
 CONSTANTE_FLOAT =  {DIGITO}+"."{DIGITO}+
-STRING =  \".*\"
+CONSTANTE_STRING =  \".*\"
 
 // Palabras reservadas
 IF = "IF"
 WHILE = "WHILE"
 DECVAR = "DECVAR"
 ENDDEC = "ENDDEC"
-INTEGER = "INT"
-FLOAT = "FLOAT"
 WRITE = "WRITE"
 READ = "READ"
 INLIST = "INLIST"
 MOD = "MOD"
 DIV = "DIV"
+INTEGER_TYPE = "INTEGER"
+FLOAT_TYPE = "FLOAT"
+STRING_TYPE = "STRING"
 
 // Operadores lógicos y ariméticos
 OP_GT = ">" 
@@ -97,13 +98,14 @@ LLAVE_CLOSE = "}"
 {WHILE}	                 { return symbol(Simbolos.WHILE); }
 {DECVAR}	                 { return symbol(Simbolos.DECVAR); }
 {ENDDEC}	                 { return symbol(Simbolos.ENDDEC); }
-{INTEGER}	                 { return symbol(Simbolos.INTEGER); }
-{FLOAT}	                 { return symbol(Simbolos.FLOAT); }
 {WRITE}	                 { return symbol(Simbolos.WRITE); }
 {READ}	                 { return symbol(Simbolos.READ); }
 {INLIST}	                 { return symbol(Simbolos.INLIST); }
 {MOD}                        { return symbol(Simbolos.MOD); }
 {DIV}                        { return symbol(Simbolos.DIV); }
+{INTEGER_TYPE}	           { return symbol(Simbolos.INTEGER_TYPE); }
+{FLOAT_TYPE}	           { return symbol(Simbolos.FLOAT_TYPE); }
+{STRING_TYPE}	           { return symbol(Simbolos.STRING_TYPE); }
 
 // Operadores
 
@@ -157,10 +159,10 @@ LLAVE_CLOSE = "}"
                                           throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes.");
                               }
 
-{STRING}                      { 
+{CONSTANTE_STRING}            { 
                                     String constString = new String(yytext());
                                     if (constString.length() <= RANGO_STRING)
-                                          return symbol(Simbolos.STRING); 
+                                          return symbol(Simbolos.CONSTANTE_STRING); 
                                     else 
                                           throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string.");
                               }                              

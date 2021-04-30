@@ -8,6 +8,7 @@ package Analizadores;
 import java_cup.runtime.*;
 import SymbolTable.*;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Queue;
 import java_cup.runtime.XMLElement;
 
@@ -34,9 +35,11 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\006\000\002\002\004\000\002\002\003\000\002\003" +
-    "\003\000\002\003\004\000\002\004\003\000\002\005\005" +
-    "" });
+    "\000\016\000\002\002\004\000\002\002\003\000\002\003" +
+    "\004\000\002\003\003\000\002\011\003\000\002\004\005" +
+    "\000\002\005\003\000\002\005\004\000\002\006\005\000" +
+    "\002\007\003\000\002\007\003\000\002\007\003\000\002" +
+    "\010\003\000\002\010\005" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -44,12 +47,19 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\012\000\004\054\005\001\002\000\006\002\000\054" +
-    "\005\001\002\000\004\041\012\001\002\000\006\002\uffff" +
-    "\054\uffff\001\002\000\004\002\011\001\002\000\006\002" +
-    "\ufffd\054\ufffd\001\002\000\004\002\001\001\002\000\004" +
-    "\004\013\001\002\000\006\002\ufffc\054\ufffc\001\002\000" +
-    "\006\002\ufffe\054\ufffe\001\002" });
+    "\000\025\000\004\011\004\001\002\000\004\055\014\001" +
+    "\002\000\006\002\000\011\004\001\002\000\006\002\ufffd" +
+    "\011\ufffd\001\002\000\006\002\ufffe\011\ufffe\001\002\000" +
+    "\004\002\011\001\002\000\004\002\001\001\002\000\006" +
+    "\002\uffff\011\uffff\001\002\000\006\012\026\055\014\001" +
+    "\002\000\006\044\ufff5\045\ufff5\001\002\000\006\044\020" +
+    "\045\017\001\002\000\006\012\ufffb\055\ufffb\001\002\000" +
+    "\004\055\025\001\002\000\010\020\023\021\024\022\021" +
+    "\001\002\000\006\012\ufff6\055\ufff6\001\002\000\006\012" +
+    "\ufff9\055\ufff9\001\002\000\006\012\ufff8\055\ufff8\001\002" +
+    "\000\006\012\ufff7\055\ufff7\001\002\000\006\044\ufff4\045" +
+    "\ufff4\001\002\000\006\002\ufffc\011\ufffc\001\002\000\006" +
+    "\012\ufffa\055\ufffa\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -57,11 +67,15 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\012\000\012\002\006\003\003\004\005\005\007\001" +
-    "\001\000\006\004\013\005\007\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\000\025\000\012\002\007\003\004\004\005\011\006\001" +
+    "\001\000\010\005\012\006\015\010\014\001\001\000\006" +
+    "\004\005\011\011\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\006\006\026\010\014\001\001\000\002\001\001\000" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\007\021\001\001\000\002\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001" });
+    "\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -117,8 +131,7 @@ class CUP$AnalizadorSintactico$actions {
 
 
      public SymbolTable tablaDeSimbolos = new SymbolTable();
-     public Queue<String> dataTypeQueue = new LinkedList(); 
-     public Queue<String> variableNameQueue = new LinkedList();
+     public ArrayList<String> identifierList = new ArrayList();
 
   private final AnalizadorSintactico parser;
 
@@ -171,7 +184,18 @@ class CUP$AnalizadorSintactico$actions {
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // programa ::= sentencia 
+          case 2: // programa ::= programa sentencia 
+            {
+              Symbol RESULT =null;
+		 
+                         System.out.println("programa -> declaracion sentencia");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 3: // programa ::= sentencia 
             {
               Symbol RESULT =null;
 		 
@@ -182,39 +206,123 @@ class CUP$AnalizadorSintactico$actions {
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // programa ::= programa sentencia 
-            {
-              Symbol RESULT =null;
-		 
-                         System.out.println("programa -> programa sentencia");
-                    
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("programa",1, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
-            }
-          return CUP$AnalizadorSintactico$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // sentencia ::= asignacion 
+          case 4: // sentencia ::= declaracion 
             {
               Symbol RESULT =null;
 		
-                         System.out.println("sentencia -> asignacion");
+                         System.out.println("sentencia -> declaracion");
                     
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("sentencia",2, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("sentencia",7, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // asignacion ::= IDENTIFICADOR OP_ASIG CONSTANTE_ENTERA 
+          case 5: // declaracion ::= DECVAR declaraciones ENDDEC 
             {
               Symbol RESULT =null;
-		int CONSTANTE_ENTERAleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).left;
-		int CONSTANTE_ENTERAright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
-		String CONSTANTE_ENTERA = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		 
-                         tablaDeSimbolos.add("_"+CONSTANTE_ENTERA, null, CONSTANTE_ENTERA, null);
-                         System.out.println("R10: asig -> ID OP_ASIG expresion");
+                         System.out.println("declaracion -> declaraciones");
                     
-              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("asignacion",3, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("declaracion",2, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 6: // declaraciones ::= declarar 
+            {
+              Symbol RESULT =null;
+		
+                         System.out.println("declaraciones -> declarar");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("declaraciones",3, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 7: // declaraciones ::= declaraciones declarar 
+            {
+              Symbol RESULT =null;
+		
+                         System.out.println("declaraciones declarar -> declarar");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("declaraciones",3, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // declarar ::= identificadores OP_TYPE tipodedato 
+            {
+              Symbol RESULT =null;
+		
+                         System.out.println("declarar -> tipo de dato");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("declarar",4, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 9: // tipodedato ::= INTEGER_TYPE 
+            {
+              Symbol RESULT =null;
+		
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                         System.out.println("Tipo de dato: INTEGER");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 10: // tipodedato ::= FLOAT_TYPE 
+            {
+              Symbol RESULT =null;
+		
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");
+                         System.out.println("Tipo de dato: FLOAT");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 11: // tipodedato ::= STRING_TYPE 
+            {
+              Symbol RESULT =null;
+		
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");
+                         System.out.println("Tipo de dato: STRING");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 12: // identificadores ::= IDENTIFICADOR 
+            {
+              Symbol RESULT =null;
+		int IDleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).left;
+		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
+		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
+		
+                         this.identifierList.add(ID);
+                         System.out.println("identificadores -> IDENTIFICADOR");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("identificadores",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
+            }
+          return CUP$AnalizadorSintactico$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 13: // identificadores ::= identificadores COMA IDENTIFICADOR 
+            {
+              Symbol RESULT =null;
+		int IDleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).left;
+		int IDright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
+		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
+		
+                         this.identifierList.add(ID);
+                         System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
+                    
+              CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("identificadores",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 

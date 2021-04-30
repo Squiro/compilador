@@ -1,1 +1,6 @@
-var1 := 10
+DECVAR
+a,b,c : INTEGER
+d, e : FLOAT
+f : STRING
+
+ENDDEC

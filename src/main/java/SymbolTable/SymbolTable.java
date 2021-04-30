@@ -3,6 +3,8 @@ package SymbolTable;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
@@ -38,24 +40,15 @@ public class SymbolTable {
     // a, b, c : FLOAT;
     // Si hay un identificador en la cola y nunca se le asignó su tipo, bueno, hay un problema. De todas formas no debería pasar, porque la regla sintáctica
     // debería exigir que las declaraciones sean "ID: TIPO"
-    public void addVariables(Queue<String> colaNombre, Queue<String> colaTipoDato) {
-        String nombre;
-        String tipoDato;
-
-        if(colaNombre.size() != colaTipoDato.size()) {
-            throw new Error("Error sintáctico: La cantidad de variables declaradas no coincide con la cantidad de tipos de datos declarados."); 
-        }
-        while(colaNombre.peek() != null ) {
-            nombre = colaNombre.poll();
-            tipoDato = colaTipoDato.poll();
-
-            if(!isInTable(nombre)) {
-                add(nombre, tipoDato, null, null);
-            } 
-            else {
-                throw new Error("Error sintáctico: '"+nombre+"' ya esta declarada."); 
-            }
-        }
+    public void addIdentifiers(ArrayList<String> identifiers, String dataType) {
+    	Iterator<String> i = identifiers.iterator();
+    	while (i.hasNext()) {
+           // must be called before you can call i.remove()
+    	   String id = i.next(); 
+    	   this.add(id, dataType, "-", null);
+           // Remove identifier from list
+    	   i.remove();
+    	}    	
     }
 
     public Boolean isInTable(String nombre) {

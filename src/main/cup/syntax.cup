@@ -2,14 +2,14 @@ package Analizadores;
 import java_cup.runtime.*;
 import SymbolTable.*;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Queue;
 
 // Codigo que se le agrega a las acciones gramaticales
 action code
 {:
      public SymbolTable tablaDeSimbolos = new SymbolTable();
-     public Queue<String> dataTypeQueue = new LinkedList(); 
-     public Queue<String> variableNameQueue = new LinkedList();
+     public ArrayList<String> identifierList = new ArrayList();
 :}
 
 // Codigo que se le agrega al parser
@@ -27,10 +27,10 @@ parser code
 :}
 
 // Declaracion de terminales de constantes
-terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, STRING;
+terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, CONSTANTE_STRING;
 
 // Declaracion de terminales de palabras reservadas
-terminal String IF, WHILE, DECVAR, ENDDEC, INTEGER, FLOAT, WRITE, READ, INLIST, MOD, DIV;
+terminal String IF, WHILE, DECVAR, ENDDEC, WRITE, READ, INLIST, MOD, DIV, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE;
 
 // Declaracion de terminales de operadores lógicos
 terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION, OP_MODULE, OP_INCREMENT, OP_DECREMENT,
@@ -89,24 +89,29 @@ declarar            ::= identificadores OP_TYPE tipodedato
                          System.out.println("declarar -> tipo de dato");
                     :};
 
-tipodedato          ::= INTEGER
+tipodedato          ::= INTEGER_TYPE
                     {:
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
                          System.out.println("Tipo de dato: INTEGER");
                     :}
-                    | FLOAT
+                    | FLOAT_TYPE
                     {:
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");
                          System.out.println("Tipo de dato: FLOAT");
                     :}
-                    | STRING
+                    | STRING_TYPE
                     {:
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");
                          System.out.println("Tipo de dato: STRING");
                     :};
 
-identificadores     ::= IDENTIFICADOR
+identificadores     ::= IDENTIFICADOR:ID
                     {:
-                    System.out.println("identificadores -> IDENTIFICADOR");
+                         this.identifierList.add(ID);
+                         System.out.println("identificadores -> IDENTIFICADOR");
                     :}
-                    | identificadores COMA IDENTIFICADOR
+                    | identificadores COMA IDENTIFICADOR:ID
                     {:
-                    System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
+                         this.identifierList.add(ID);
+                         System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
                     :};
