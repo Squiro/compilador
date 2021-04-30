@@ -1,2 +1,0 @@
-compilador.exe
-pause
