@@ -40,11 +40,11 @@ terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DI
 terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE, LLAVE_OPEN, LLAVE_CLOSE;
 
 // Declaracion de construcciones del lenguaje
-terminal String IDENTIFICADOR, COMMENT;
+terminal String IDENTIFICADOR;
 
 // Declaracion de no terminales
 non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
-                    condicion, comparacion, if, while, inlist, lista, mod, div;
+                    condicion, comparacion, if, while, inlist, lista, mod, div, write, read;
 
 start with inicio;
 
@@ -80,6 +80,18 @@ sentencia           ::= declaracion
                     | while 
                     {:
                          System.out.println("sentencia -> while");
+                    :}
+                    | inlist 
+                    {:
+                         System.out.println("sentencia -> inlist");
+                    :}
+                    | write 
+                    {:
+                         System.out.println("sentencia -> write");
+                    :}
+                    | read 
+                    {:
+                         System.out.println("sentencia -> read");
                     :};
 
 /*
@@ -240,3 +252,48 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN progra
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
                     :};
 
+/*
+            INLIST
+*/
+
+inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
+                    {:
+                         System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
+                    :};
+
+lista               ::= lista PUNTO_COMA expresion  
+                    {: 
+                         System.out.println("lista -> lista PUNTO_COMA expresion");
+                    :}
+                    |
+                    {:
+                         System.out.println("lista -> expresion");
+                    :};
+
+/*
+            WRITE
+*/
+write               ::= WRITE IDENTIFICADOR
+                    {:
+                         System.out.println("write -> WRITE IDENTIFICADOR");
+                    :}
+                    | WRITE CONSTANTE_STRING
+                    {:
+                         System.out.println("write -> WRITE CONSTANTE_STRING");
+                    :}
+                    | WRITE CONSTANTE_FLOAT
+                    {:
+                         System.out.println("write -> WRITE CONSTANTE_FLOAT");
+                    :}
+                    | WRITE CONSTANTE_ENTERA
+                    {:
+                         System.out.println("write -> WRITE CONSTANTE_ENTERA");
+                    :};
+
+/*
+            READ
+*/
+read                ::= READ IDENTIFICADOR
+                    {:
+                         System.out.println("read -> READ IDENTIFICADOR");
+                    :};
