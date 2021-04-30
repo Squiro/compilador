@@ -11,6 +11,7 @@ public class Simbolos {
   public static final int OP_NE = 29;
   public static final int ENDDEC = 9;
   public static final int INLIST = 12;
+  public static final int COMMENT = 45;
   public static final int OP_GT = 18;
   public static final int OP_NOT = 30;
   public static final int OP_AND = 31;
@@ -98,7 +99,8 @@ public class Simbolos {
   "CORCHETE_CLOSE",
   "LLAVE_OPEN",
   "LLAVE_CLOSE",
-  "IDENTIFICADOR"
+  "IDENTIFICADOR",
+  "COMMENT"
   };
 }
 

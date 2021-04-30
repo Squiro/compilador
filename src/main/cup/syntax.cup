@@ -40,7 +40,7 @@ terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DI
 terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE, LLAVE_OPEN, LLAVE_CLOSE;
 
 // Declaracion de construcciones del lenguaje
-terminal String IDENTIFICADOR;
+terminal String IDENTIFICADOR, COMMENT;
 
 // Declaracion de no terminales
 non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
