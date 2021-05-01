@@ -16,12 +16,12 @@ action code
 parser code     
 {:
     public void syntax_error(Symbol cur_token) {
-        String errMsg = "Syntax error " + cur_token.value.toString() + " " + cur_token.right + ":" + cur_token.left + "\n";
+        String errMsg = "Syntax error -> " + cur_token.value.toString() + " <- " + cur_token.right + ":" + cur_token.left + "\n";
         report_error(errMsg, null);
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
-        String errMsg = "Couldn't repair and continue parse " + cur_token.value.toString() + " " + cur_token.right + ":" + cur_token.left + "\n";
+        String errMsg = "Couldn't repair and continue parse ->" + cur_token.value.toString() + "<- " + cur_token.right + ":" + cur_token.left + "\n";
         report_fatal_error(errMsg, null);
     }
 :}
@@ -172,6 +172,8 @@ termino             ::= termino OP_MULTI factor
                     {:
                          System.out.println("termino -> termino OP_DIVISION factor");
                     :}
+                    | termino MOD factor 
+                    | termino DIV factor
                     | factor 
                     {:
                          System.out.println("termino -> factor");
@@ -207,16 +209,6 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     | PAREN_OPEN div PAREN_CLOSE
                     {:
                          System.out.println("factor -> PAREN_OPEN div PAREN_CLOSE");
-                    :};
-
-mod                 ::= expresion MOD expresion 
-                    {:
-                         System.out.println("mod -> expresion MOD expresion");
-                    :};
-
-div                 ::=  expresion DIV expresion
-                    {:
-                         System.out.println("div -> expresion DIV expresion");
                     :};
 
 /*
@@ -265,7 +257,7 @@ lista               ::= lista PUNTO_COMA expresion
                     {: 
                          System.out.println("lista -> lista PUNTO_COMA expresion");
                     :}
-                    |
+                    | expresion
                     {:
                          System.out.println("lista -> expresion");
                     :};

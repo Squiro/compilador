@@ -34,13 +34,16 @@ LETRA 	    =	[a-zA-Z]
 
 // Construcciones del lenguaje
 // -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
-COMMENT = "-/" ~"/-" | "-/" ~ "-/" ~ "/-" ~ "/-"
+COMMENT = "-/" ~"/-" 
+// | "-/" ~ ("-/" ~ "/-")? ~ "/-"
+// | "-/" .* "-/" .* "/-" .* "/-"
+// COMMENT = "-/" .* (("-/") .* ("/-"))? .* "/-"
 IDENTIFICADOR = {LETRA}[a-zA-Z0-9_]*({LETRA}|{DIGITO})*
 
 // Constantes
 
 CONSTANTE_ENTERA =  {DIGITO}+
-CONSTANTE_FLOAT =  {DIGITO}+"."{DIGITO}+
+CONSTANTE_FLOAT =  {DIGITO}+"."{DIGITO}* | {DIGITO}*"."{DIGITO}+
 CONSTANTE_STRING =  \".*\"
 
 // Palabras reservadas
@@ -138,7 +141,7 @@ LLAVE_CLOSE = "}"
 {LLAVE_CLOSE}                  { return symbol(Simbolos.LLAVE_CLOSE); }
 
 
-{COMMENT}	                 { return symbol(Simbolos.COMMENT); }
+{COMMENT}	                 { /* do nothing */ }
 {IDENTIFICADOR}	           { return symbol(Simbolos.IDENTIFICADOR); }
 
 {CONSTANTE_ENTERA}	     {                             
