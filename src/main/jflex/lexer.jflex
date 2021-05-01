@@ -35,6 +35,7 @@ LETRA 	    =	[a-zA-Z]
 // Construcciones del lenguaje
 // -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
 COMMENT = "-/" ~"/-" 
+NESTED_COMMENT = "-/" ~{COMMENT} ~"/-"
 // | "-/" ~ ("-/" ~ "/-")? ~ "/-"
 // | "-/" .* "-/" .* "/-" .* "/-"
 // COMMENT = "-/" .* (("-/") .* ("/-"))? .* "/-"
@@ -142,6 +143,7 @@ LLAVE_CLOSE = "}"
 
 
 {COMMENT}	                 { /* do nothing */ }
+{NESTED_COMMENT}	           { /* do nothing */ }
 {IDENTIFICADOR}	           { return symbol(Simbolos.IDENTIFICADOR); }
 
 {CONSTANTE_ENTERA}	     {                             

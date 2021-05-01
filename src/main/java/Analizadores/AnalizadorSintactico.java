@@ -329,12 +329,12 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
 
 
     public void syntax_error(Symbol cur_token) {
-        String errMsg = "Syntax error -> " + cur_token.value.toString() + " <- " + cur_token.right + ":" + cur_token.left + "\n";
+        String errMsg = "Syntax error -> " + cur_token.value.toString() + " <- " + cur_token.left + ":" +  cur_token.right + "\n";
         report_error(errMsg, null);
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
-        String errMsg = "Couldn't repair and continue parse ->" + cur_token.value.toString() + "<- " + cur_token.right + ":" + cur_token.left + "\n";
+        String errMsg = "Couldn't repair and continue parse ->" + cur_token.value.toString() + "<- " + cur_token.left + ":" +  cur_token.right + "\n";
         report_fatal_error(errMsg, null);
     }
 

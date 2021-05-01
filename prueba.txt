@@ -1,9 +1,23 @@
 -/ Declaracion variables /- 
+-/ Declaracion variables -/ AAAAAAAAAAA /- /- 
 DECVAR
 a,b,c : INTEGER
 d, e : FLOAT
 f : STRING
 ENDDEC
+
+-/ Declaracion variables -/ ASDSDFSDFSDFSGSFDGSDF TE ODIO LYC 2021 1C!!!!! /- /- 
+
+var1 : FLOAT
+
+
+-/ Declaracion variables -/ ASDSDFSDFSDFSGSFDGSDF 
+
+
+era mentira <3
+
+
+/- /- 
 
 -/ Asignacion de expresiones /-
 a := 10 + (20)*30
@@ -14,7 +28,7 @@ if (a == b)
 {
     a := b
 
-    while ( a == b) 
+    while (a == b && b != 0) 
     {
         a := b
     }
@@ -35,6 +49,7 @@ while (!(a > 2))
     b := 0
 }
 
+-/ While con condicion not /-
 while (!(a == b))
 {
     b := 0
