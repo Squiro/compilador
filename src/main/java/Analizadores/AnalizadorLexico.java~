@@ -386,8 +386,8 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
-    int RANGO_ENTERO = Integer.MAX_VALUE;
-    float RANGO_FLOAT = Float.MAX_VALUE;
+    int RANGO_ENTERO = (int) (Math.pow(2, 8)-1);
+    float RANGO_FLOAT = (float) (Math.pow(2, 32)-1);
     int RANGO_STRING = 30;
     private Symbol symbol(int type) {
           //System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());

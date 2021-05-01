@@ -14,8 +14,8 @@ import java_cup.runtime.*;
 %unicode
 
 %{
-    int RANGO_ENTERO = Integer.MAX_VALUE;
-    float RANGO_FLOAT = Float.MAX_VALUE;
+    int RANGO_ENTERO = (int) (Math.pow(2, 16)-1);
+    float RANGO_FLOAT = (float) (Math.pow(2, 32)-1);
     int RANGO_STRING = 30;
     private Symbol symbol(int type) {
           //System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
@@ -31,9 +31,6 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace = {LineTerminator} | [ \t\f]
 DIGITO 	    =	[0-9]
 LETRA 	    =	[a-zA-Z]
-
-//DIGITO_BINARIO  = [0-1]
-//DIGITO_HEXA     = [a-fA-F0-9]
 
 // Construcciones del lenguaje
 // -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
