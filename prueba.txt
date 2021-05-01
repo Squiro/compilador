@@ -1,23 +1,10 @@
 -/ Declaracion variables /- 
--/ Declaracion variables -/ AAAAAAAAAAA /- /- 
+-/ Declaracion variables -/ COMENTARIO ANIDADO DIOS MIOOOOOOOOOOOOO /- /- 
 DECVAR
 a,b,c : INTEGER
 d, e : FLOAT
 f : STRING
 ENDDEC
-
--/ Declaracion variables -/ ASDSDFSDFSDFSGSFDGSDF TE ODIO LYC 2021 1C!!!!! /- /- 
-
-var1 : FLOAT
-
-
--/ Declaracion variables -/ ASDSDFSDFSDFSGSFDGSDF 
-
-
-era mentira <3
-
-
-/- /- 
 
 -/ Asignacion de expresiones /-
 a := 10 + (20)*30

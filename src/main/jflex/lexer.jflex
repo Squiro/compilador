@@ -18,7 +18,7 @@ import java_cup.runtime.*;
     float RANGO_FLOAT = (float) (Math.pow(2, 32)-1);
     int RANGO_STRING = 30;
     private Symbol symbol(int type) {
-          //System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
+          // System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
     }
     private Symbol symbol(int type, Object value) {
@@ -34,15 +34,11 @@ LETRA 	    =	[a-zA-Z]
 
 // Construcciones del lenguaje
 // -/ Así son los comentarios en el 2°Cuat de LyC -/ Comentario /- /-
-COMMENT = "-/" ~"/-" 
-NESTED_COMMENT = "-/" ~{COMMENT} ~"/-"
-// | "-/" ~ ("-/" ~ "/-")? ~ "/-"
-// | "-/" .* "-/" .* "/-" .* "/-"
-// COMMENT = "-/" .* (("-/") .* ("/-"))? .* "/-"
+COMMENT = "-/" ~"/-"
+NESTED_COMMENT = "-/" .* {COMMENT} ~ "/-"
 IDENTIFICADOR = {LETRA}[a-zA-Z0-9_]*({LETRA}|{DIGITO})*
 
 // Constantes
-
 CONSTANTE_ENTERA =  {DIGITO}+
 CONSTANTE_FLOAT =  {DIGITO}+"."{DIGITO}* | {DIGITO}*"."{DIGITO}+
 CONSTANTE_STRING =  \".*\"
@@ -142,8 +138,8 @@ LLAVE_CLOSE = "}"
 {LLAVE_CLOSE}                  { return symbol(Simbolos.LLAVE_CLOSE); }
 
 
-{COMMENT}	                 { /* do nothing */ }
-{NESTED_COMMENT}	           { /* do nothing */ }
+{NESTED_COMMENT}	           { System.out.println("[LEX] TOKEN < NESTED > : " + yytext()); }
+{COMMENT}	                 { System.out.println("[LEX] TOKEN < COMMENT > : " + yytext()); }
 {IDENTIFICADOR}	           { return symbol(Simbolos.IDENTIFICADOR); }
 
 {CONSTANTE_ENTERA}	     {                             
