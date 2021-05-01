@@ -225,7 +225,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
 
 condicion           ::= comparacion OP_AND comparacion 
                     | comparacion OP_OR comparacion
-                    | OP_NOT comparacion
+                    | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     | comparacion;
 
 comparacion         ::= expresion OP_GT expresion 
