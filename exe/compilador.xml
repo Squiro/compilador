@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
-  <headerType>console</headerType>
-  <jar>D:\Mis documentos\Alesio\Facultad\2021\Lenguajes y Compiladores\Trabajo Práctico\compilador\exe\bin\compilador.jar</jar>
-  <outfile>D:\Mis documentos\Alesio\Facultad\2021\Lenguajes y Compiladores\Trabajo Práctico\compilador\exe\bin\compilador.exe</outfile>
+  <headerType>gui</headerType>
+  <jar>D:\Mis documentos\Alesio\Facultad\2021\Lenguajes y Compiladores\Trabajo Práctico\compilador\exe\compilador.jar</jar>
+  <outfile>D:\Mis documentos\Alesio\Facultad\2021\Lenguajes y Compiladores\Trabajo Práctico\compilador\exe\compilador.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -11,7 +11,7 @@
   <downloadUrl>http://java.com/download</downloadUrl>
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
-  <restartOnCrash>true</restartOnCrash>
+  <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
   <icon></icon>
   <jre>

@@ -68,9 +68,6 @@ OP_PLUS = "+"
 OP_MINUS = "-" 
 OP_MULTI = "*" 
 OP_DIVISION = "/"
-OP_MODULE = "%" 
-OP_INCREMENT = "++" 
-OP_DECREMENT = "--"
 OP_NOT = "!" 
 OP_AND = "&&"
 OP_OR = "||" 
@@ -117,9 +114,6 @@ LLAVE_CLOSE = "}"
 {OP_MINUS}                   { return symbol(Simbolos.OP_MINUS); }
 {OP_MULTI}                   { return symbol(Simbolos.OP_MULTI); }
 {OP_DIVISION}                { return symbol(Simbolos.OP_DIVISION); }
-{OP_MODULE}                  { return symbol(Simbolos.OP_MODULE); }
-{OP_INCREMENT}               { return symbol(Simbolos.OP_INCREMENT); }
-{OP_DECREMENT}               { return symbol(Simbolos.OP_DECREMENT); }
 {OP_NOT}                     { return symbol(Simbolos.OP_NOT); }
 {OP_AND}                     { return symbol(Simbolos.OP_AND); }
 {OP_OR}                      { return symbol(Simbolos.OP_OR); }
@@ -138,8 +132,8 @@ LLAVE_CLOSE = "}"
 {LLAVE_CLOSE}                  { return symbol(Simbolos.LLAVE_CLOSE); }
 
 
-{NESTED_COMMENT}	           { System.out.println("[LEX] TOKEN < NESTED > : " + yytext()); }
-{COMMENT}	                 { System.out.println("[LEX] TOKEN < COMMENT > : " + yytext()); }
+{NESTED_COMMENT}	           { /* do nothing */ }
+{COMMENT}	                 { /* do nothing */ }
 {IDENTIFICADOR}	           { return symbol(Simbolos.IDENTIFICADOR); }
 
 {CONSTANTE_ENTERA}	     {                             

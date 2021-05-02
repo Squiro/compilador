@@ -15,16 +15,16 @@ public class Main {
         try {     	
             @SuppressWarnings("deprecation") AnalizadorSintactico sintactico = new AnalizadorSintactico(new AnalizadorLexico(new FileReader(fileName)));
             sintactico.parse();
-            //System.in.read();
+            System.in.read();
         } catch (FileNotFoundException e) {
             System.err.	println("El archivo " + fileName + " no existe");
             e.printStackTrace();
-            //System.in.read();
+            System.in.read();
         } catch (Exception e) {
             System.err.println("Hubo un error al ejecutar el programa: ");
             System.err.println(e);
             e.printStackTrace();
-            //System.in.read();
+            System.in.read();
         }
     }
 }

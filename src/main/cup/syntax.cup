@@ -33,14 +33,14 @@ terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, CONSTANTE_STRING;
 terminal String IF, ELSE, WHILE, DECVAR, ENDDEC, WRITE, READ, INLIST, MOD, DIV, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE;
 
 // Declaracion de terminales de operadores lógicos
-terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION, OP_MODULE, OP_INCREMENT, OP_DECREMENT,
+terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION,
                 OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TYPE;
 
 // Declaracion de terminales de caracteres especiales
 terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE, LLAVE_OPEN, LLAVE_CLOSE;
 
 // Declaracion de construcciones del lenguaje
-terminal String IDENTIFICADOR, COMMENT;
+terminal String IDENTIFICADOR;
 
 // Declaracion de no terminales
 non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
@@ -52,19 +52,13 @@ start with inicio;
 inicio         	::= programa
                     {:
                          tablaDeSimbolos.save();
-                         System.out.println("R1: inicio -> programa");
                          System.out.println("Compilacion exitosa.");
                          System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     :};  
 
 programa      		::= programa sentencia
-                    {: 
-                         System.out.println("programa -> declaracion sentencia");
-                    :}
-                    | sentencia
-                    {: 
-                         System.out.println("programa -> sentencia");
-                    :};
+                    | sentencia;
+
 sentencia           ::= declaracion
                     {:
                          System.out.println("sentencia -> declaracion");
@@ -100,48 +94,34 @@ sentencia           ::= declaracion
 
 declaracion         ::= DECVAR declaraciones ENDDEC
                     {: 
-                         System.out.println("declaracion -> declaraciones");
+                         System.out.println("declaracion -> DECVAR declaraciones ENDDEC");
                     :};
 
 declaraciones      ::= declarar
-                    {:
-                         System.out.println("declaraciones -> declarar");
-                    :}
-                    | declaraciones declarar
-                    {:
-                         System.out.println("declaraciones declarar -> declarar");
-                    :};
+                    | declaraciones declarar;
 
-declarar            ::= identificadores OP_TYPE tipodedato
-                    {:
-                         System.out.println("declarar -> tipo de dato");
-                    :};
+declarar            ::= identificadores OP_TYPE tipodedato;
 
 tipodedato          ::= INTEGER_TYPE
                     {:
                          tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
-                         System.out.println("Tipo de dato: INTEGER");
                     :}
                     | FLOAT_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");
-                         System.out.println("Tipo de dato: FLOAT");
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");                       
                     :}
                     | STRING_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");
-                         System.out.println("Tipo de dato: STRING");
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
                     :};
 
 identificadores     ::= IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
-                         System.out.println("identificadores -> IDENTIFICADOR");
                     :}
                     | identificadores COMA IDENTIFICADOR:ID
                     {:
                          this.identifierList.add(ID);
-                         System.out.println("identificadores -> identificadores COMA IDENTIFICADOR");
                     :};
 /*
             ASIGNACION
@@ -152,64 +132,31 @@ asignacion          ::= IDENTIFICADOR OP_ASIG expresion
                     :};
 
 expresion           ::= expresion OP_PLUS termino 
-                    {:
-                         System.out.println("expresion -> expresion OP_PLUS termino");
-                    :}
                     | expresion OP_MINUS termino 
-                    {:
-                         System.out.println("expresion -> expresion OP_MINUS termino");
-                    :}
-                    | termino 
-                    {:
-                         System.out.println("expresion -> termino");
-                    :};
+                    | termino;
 
 termino             ::= termino OP_MULTI factor
-                    {:
-                         System.out.println("termino -> termino OP_MULTI factor");
-                    :}
                     | termino OP_DIVISION factor
-                    {:
-                         System.out.println("termino -> termino OP_DIVISION factor");
-                    :}
                     | termino MOD factor 
                     | termino DIV factor
-                    | factor 
-                    {:
-                         System.out.println("termino -> factor");
-                    :};
+                    | factor;
 
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
                          tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
-                         System.out.println("factor -> CONSTANTE_ENTERA");
                     :}
                     | CONSTANTE_FLOAT:CTE_FLOAT
                     {:
-                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);
-                         System.out.println("factor -> CONSTANTE_FLOAT");
+                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
                          tablaDeSimbolos.add("_"+CTE_STRING, null, CTE_STRING, CTE_STRING.length());
-                         System.out.println("factor -> CONSTANTE_STRING");
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
-                    {:
-                         System.out.println("factor -> PAREN_OPEN expresion PAREN_CLOSE");
-                    :}
                     | IDENTIFICADOR
-                    {:
-                         System.out.println("factor -> ID");
-                    :}
                     | PAREN_OPEN mod PAREN_CLOSE
-                    {:
-                         System.out.println("factor -> PAREN_OPEN mod PAREN_CLOSE");
-                    :}
-                    | PAREN_OPEN div PAREN_CLOSE
-                    {:
-                         System.out.println("factor -> PAREN_OPEN div PAREN_CLOSE");
-                    :};
+                    | PAREN_OPEN div PAREN_CLOSE;
 
 /*
             IF/ELSE/CONDITION
@@ -254,13 +201,7 @@ inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN
                     :};
 
 lista               ::= lista PUNTO_COMA expresion  
-                    {: 
-                         System.out.println("lista -> lista PUNTO_COMA expresion");
-                    :}
-                    | expresion
-                    {:
-                         System.out.println("lista -> expresion");
-                    :};
+                    | expresion;
 
 /*
             WRITE
