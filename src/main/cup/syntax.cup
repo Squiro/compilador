@@ -151,7 +151,8 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
-                         tablaDeSimbolos.add("_"+CTE_STRING, null, CTE_STRING, CTE_STRING.length());
+                         String str = CTE_STRING.replace("\"", "");
+                         tablaDeSimbolos.add("_"+str, null, str, str.length());
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     | IDENTIFICADOR
@@ -210,17 +211,11 @@ write               ::= WRITE IDENTIFICADOR
                     {:
                          System.out.println("write -> WRITE IDENTIFICADOR");
                     :}
-                    | WRITE CONSTANTE_STRING
+                    | WRITE CONSTANTE_STRING:CTE_STRING
                     {:
+                         String str = CTE_STRING.replace("\"", "");
                          System.out.println("write -> WRITE CONSTANTE_STRING");
-                    :}
-                    | WRITE CONSTANTE_FLOAT
-                    {:
-                         System.out.println("write -> WRITE CONSTANTE_FLOAT");
-                    :}
-                    | WRITE CONSTANTE_ENTERA
-                    {:
-                         System.out.println("write -> WRITE CONSTANTE_ENTERA");
+                         tablaDeSimbolos.add("_"+str, null, str, str.length());
                     :};
 
 /*

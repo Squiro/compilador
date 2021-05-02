@@ -875,8 +875,9 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
                                     }                                          
                                     else
                                     {
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")"); 
+                                          System.err.println("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")");
                                           System.in.read();
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")"); 
                                     }
             }
             // fall through
@@ -910,8 +911,9 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
                                     }                                          
                                     else
                                     {
-                                          throw new Error("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
+                                          System.err.println("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
                                           System.in.read();
+                                          throw new Error("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
                                     }
             }
             // fall through
@@ -948,8 +950,9 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
                                           return symbol(Simbolos.CONSTANTE_STRING); 
                                     else
                                     {
-                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
+                                          System.err.println("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
                                           System.in.read();
+                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
                                     }
             }
             // fall through
@@ -965,8 +968,9 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
                                           return symbol(Simbolos.CONSTANTE_FLOAT);
                                     else
                                     {
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
+                                          System.err.println("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
                                           System.in.read();
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
                                     }
             }
             // fall through

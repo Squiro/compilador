@@ -20,5 +20,4 @@ _23                           |-                             |23                
 _23434                        |-                             |23434                         |-                             
 _345                          |-                             |345                           |-                             
 _234                          |-                             |234                           |-                             
-variablequetienemasde256caracteresnosequemasponerenestaoracionhastallegaraeselimitevoyaadmitirqueelmejorlenguajedeprogramacionqueexisteesjavascriptaguantenotiparnadayquetodotuproyectoseaunquilomboafuturomefaltancaracterestodaviaestaeslavariablemaslargadelmundo|FLOAT                         |-                             |-                             
-wow                           |INTEGER                       |-                             |-                             
+_Hola profe!!! :) :)          |-                             |Hola profe!!! :) :)           |19                            
