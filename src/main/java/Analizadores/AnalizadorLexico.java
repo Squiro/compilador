@@ -399,6 +399,7 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
     int RANGO_ENTERO = (int) (Math.pow(2, 16)-1);
     float RANGO_FLOAT = (float) (Math.pow(2, 32)-1);
     int RANGO_STRING = 30;
+    int RANGO_IDENTIFICADOR = 256;
     private Symbol symbol(int type) {
           // System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
@@ -873,7 +874,11 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
                                           return symbol(Simbolos.CONSTANTE_ENTERA);
                                     }                                          
                                     else
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros.");
+                                    {
+                                          System.err.println("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")");
+                                          System.in.read();
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")"); 
+                                    }
             }
             // fall through
           case 53: break;
@@ -898,7 +903,18 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
             // fall through
           case 57: break;
           case 16:
-            { return symbol(Simbolos.IDENTIFICADOR);
+            { String id = new String(yytext());
+                                    int length = id.length();
+
+                                    if(length <= RANGO_IDENTIFICADOR ){
+                                          return symbol(Simbolos.IDENTIFICADOR); 
+                                    }                                          
+                                    else
+                                    {
+                                          System.err.println("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
+                                          System.in.read();
+                                          throw new Error("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
+                                    }
             }
             // fall through
           case 58: break;
@@ -929,10 +945,15 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
           case 63: break;
           case 22:
             { String constString = new String(yytext());
-                                    if (constString.length() <= RANGO_STRING)
+                                    // Restamos 2 por las comillas
+                                    if (constString.length()-2 <= RANGO_STRING)
                                           return symbol(Simbolos.CONSTANTE_STRING); 
-                                    else 
-                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string.");
+                                    else
+                                    {
+                                          System.err.println("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
+                                          System.in.read();
+                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
+                                    }
             }
             // fall through
           case 64: break;
@@ -946,7 +967,11 @@ public class AnalizadorLexico implements java_cup.runtime.Scanner {
                                     if (Math.abs(constFloat) <= RANGO_FLOAT)
                                           return symbol(Simbolos.CONSTANTE_FLOAT);
                                     else
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes.");
+                                    {
+                                          System.err.println("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
+                                          System.in.read();
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
+                                    }
             }
             // fall through
           case 66: break;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
-  <headerType>gui</headerType>
+  <headerType>console</headerType>
   <jar>D:\Mis documentos\Alesio\Facultad\2021\Lenguajes y Compiladores\Trabajo Práctico\compilador\exe\compilador.jar</jar>
   <outfile>D:\Mis documentos\Alesio\Facultad\2021\Lenguajes y Compiladores\Trabajo Práctico\compilador\exe\compilador.exe</outfile>
   <errTitle></errTitle>

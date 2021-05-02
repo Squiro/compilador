@@ -17,7 +17,6 @@ import java_cup.runtime.*;
     int RANGO_ENTERO = (int) (Math.pow(2, 16)-1);
     float RANGO_FLOAT = (float) (Math.pow(2, 32)-1);
     int RANGO_STRING = 30;
-    int RANGO_IDENTIFICADOR = 256;
     private Symbol symbol(int type) {
           // System.out.println("[LEX] TOKEN < " + Simbolos.terminalNames[type] + " > : " + yytext());
           return new Symbol(type, yyline, yycolumn, yytext());
@@ -135,20 +134,7 @@ LLAVE_CLOSE = "}"
 
 {NESTED_COMMENT}	           { /* do nothing */ }
 {COMMENT}	                 { /* do nothing */ }
-{IDENTIFICADOR}	           { 
-                                    String id = new String(yytext());
-                                    int length = id.length();
-
-                                    if(length <= RANGO_IDENTIFICADOR ){
-                                          return symbol(Simbolos.IDENTIFICADOR); 
-                                    }                                          
-                                    else
-                                    {
-                                          System.err.println("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
-                                          System.in.read();
-                                          throw new Error("El identificador [" + yytext() + "] esta fuera del limite de los los identificadores. (Se obtuvo " + length + ", maximo " + RANGO_IDENTIFICADOR + ")");                                    
-                                    }
-                             }
+{IDENTIFICADOR}	           { return symbol(Simbolos.IDENTIFICADOR); }
 
 {CONSTANTE_ENTERA}	     {                             
                                     Integer constInt = Integer.parseInt(yytext());
@@ -157,35 +143,22 @@ LLAVE_CLOSE = "}"
                                           return symbol(Simbolos.CONSTANTE_ENTERA);
                                     }                                          
                                     else
-                                    {
-                                          System.err.println("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")");
-                                          System.in.read();
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros. (Se obtuvo " + constInt + ", maximo " + RANGO_ENTERO + ")"); 
-                                    }
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los enteros."); 
                              }
 {CONSTANTE_FLOAT}            {
                                     Double constFloat = Double.parseDouble(yytext());
                                     if (Math.abs(constFloat) <= RANGO_FLOAT)
                                           return symbol(Simbolos.CONSTANTE_FLOAT);
                                     else
-                                    {
-                                          System.err.println("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
-                                          System.in.read();
-                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes. (Se obtuvo " + constFloat + ", maximo " + RANGO_FLOAT + ")");
-                                    }
+                                          throw new Error("La constante [" + yytext() + "] esta fuera del limite de los flotantes.");
                               }
 
 {CONSTANTE_STRING}            { 
                                     String constString = new String(yytext());
-                                    // Restamos 2 por las comillas
-                                    if (constString.length()-2 <= RANGO_STRING)
+                                    if (constString.length() <= RANGO_STRING)
                                           return symbol(Simbolos.CONSTANTE_STRING); 
-                                    else
-                                    {
-                                          System.err.println("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
-                                          System.in.read();
-                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string. (Se obtuvo " + constString.length() + ", maximo " + RANGO_STRING + ")");
-                                    } 
+                                    else 
+                                          throw new Error("La constante [" + yytext() + "] excede el largo permitido para un string.");
                               }                              
 {WhiteSpace}                  { /* do nothing */ }
 
