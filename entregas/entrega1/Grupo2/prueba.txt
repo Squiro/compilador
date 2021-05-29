@@ -1,4 +1,4 @@
--/ Declaracion variables /- 
+-/ Declaracion variables /-
 -/ Declaracion variables -/ COMENTARIO ANIDADO DIOS MIOOOOOOOOOOOOO /- /- 
 DECVAR
 a,b,c : INTEGER
