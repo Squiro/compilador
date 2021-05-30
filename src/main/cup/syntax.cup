@@ -4,13 +4,15 @@ import SymbolTable.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Queue;
+import com.unlam.compilador.TercetoManager;
 
 // Codigo que se le agrega a las acciones gramaticales
 action code
 {:
      public SymbolTable tablaDeSimbolos = new SymbolTable();
      public ArrayList<String> identifierList = new ArrayList();
-     public ArrayList<Tercetos> tercetosList = new ArrayList();
+     public TercetoManager tercetoManager = new TercetoManager();
+
 :}
 
 // Codigo que se le agrega al parser

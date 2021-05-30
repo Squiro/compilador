@@ -1,20 +1,17 @@
 package com.unlam.compilador;
 
-public class Terceto<T> {
+public abstract class Terceto {
 	
-	private T operand1;
-	public T operand2;
-	public String operator;
-	
-	public Terceto(T operand1, T operand2, String operator)
-	{
-		this.operand1 = operand1;
-		this.operand2 = operand2;
-		this.operator = operator;
+	protected int id;
+	protected String firstValue;
+
+	public int getId() {
+		return id;
 	}
 
-	@Override
-	public String toString() {
-		return operand1.toString() + " " + operand2.toString() + " " + operator.toString();
-	}
+	public void setId(int id) {
+		this.id = id;
+	}	
+	
+	public abstract String toString();
 }
