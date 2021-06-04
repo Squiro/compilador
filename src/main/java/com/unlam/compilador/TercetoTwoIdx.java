@@ -4,6 +4,11 @@ public class TercetoTwoIdx extends Terceto {
 
 	private Integer firstIndex;
 	private Integer secondIndex;
+
+	public void setFirstIndex(int idx) 
+	{
+		this.firstIndex = idx;
+	}
 	
 	public TercetoTwoIdx(int id, String value, Integer firstIndex, Integer secondIndex)
 	{

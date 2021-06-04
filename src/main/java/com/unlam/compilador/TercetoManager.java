@@ -1,15 +1,23 @@
 package com.unlam.compilador;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class TercetoManager {
 	
 	private int lastIdx;
 	private ArrayList<Terceto> tercetoList;
+	private Stack<Terceto> tercetoBranchStack;
 	
+	public int getLastIdx() 
+	{
+		return lastIdx;
+	}
+
 	public TercetoManager() {
 		this.lastIdx = 0;
 		this.tercetoList = new ArrayList<Terceto>();
+		this.tercetoBranchStack = new Stack<Terceto>();
 	}
 	
 	public Terceto findTerceto(int index) {
@@ -26,6 +34,14 @@ public class TercetoManager {
 			System.out.println(terceto.toString());
 		}
 	}
+
+	public void apilarTercetoBranch(int idx) {
+		this.tercetoBranchStack.push(findTerceto(idx));
+	}
+	
+	public Terceto desapilarTercetoBranch() {
+		return this.tercetoBranchStack.pop();
+	}
 	
 	public int createTerceto(String value)
 	{
@@ -40,7 +56,6 @@ public class TercetoManager {
 		this.tercetoList.add(new TercetoNoIdx(lastIdx, firstValue, secondValue, thirdValue));
 		return lastIdx;
 	}	
-	
 	
 	public int createTerceto(String firstValue, String secondValue, Integer idx)
 	{
