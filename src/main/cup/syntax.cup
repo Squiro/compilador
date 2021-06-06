@@ -226,6 +226,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
                          // En el caso del else, en vez de setear el terceto para que salte "fuera" del programa del IF, hacemos que salte al primer
                          // terceto del else
                           ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                          // FALTA AGREGAR LA INSTRUCCION BI
                     :}                    
                      LLAVE_OPEN programa LLAVE_CLOSE 
                     {:
