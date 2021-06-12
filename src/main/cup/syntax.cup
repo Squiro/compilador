@@ -214,7 +214,7 @@ div                 ::= expresion {: expresionStack.push(tercetoManager.getLastI
                     {:
                          int expr1 = expresionStack.pop();
                          int expr2 = tercetoManager.getLastIdx();
-                         divIdx = tercetoManager.createTerceto("MOD", expr1, expr2);
+                         divIdx = tercetoManager.createTerceto("DIV", expr1, expr2);
                     :};
 
 /*
