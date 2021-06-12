@@ -164,14 +164,6 @@ termino             ::= termino OP_MULTI factor
                     {:
                          terminoIdx = tercetoManager.createTerceto("/", terminoIdx, factorIdx);
                     :}
-                    | termino MOD factor 
-                    {:
-                         terminoIdx = tercetoManager.createTerceto("MOD", terminoIdx, factorIdx);
-                    :}
-                    | termino DIV factor
-                    {:
-                         terminoIdx = tercetoManager.createTerceto("DIV", terminoIdx, factorIdx);
-                    :}
                     | factor
                     {: 
                          terminoIdx = factorIdx;
@@ -209,6 +201,20 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     | PAREN_OPEN div PAREN_CLOSE
                     {:
                          factorIdx = divIdx;
+                    :};
+
+mod                 ::= expresion {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1); :} MOD expresion 
+                    {:
+                         int expr1 = expresionStack.pop();
+                         int expr2 = tercetoManager.getLastIdx();
+                         modIdx = tercetoManager.createTerceto("MOD", expr1, expr2);
+                    :};
+
+div                 ::= expresion {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1); :} DIV expresion 
+                    {:
+                         int expr1 = expresionStack.pop();
+                         int expr2 = tercetoManager.getLastIdx();
+                         divIdx = tercetoManager.createTerceto("MOD", expr1, expr2);
                     :};
 
 /*
