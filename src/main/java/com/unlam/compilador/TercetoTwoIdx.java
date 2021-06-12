@@ -5,6 +5,14 @@ public class TercetoTwoIdx extends Terceto {
 	private Integer firstIndex;
 	private Integer secondIndex;
 
+	public String getFirstValue(){
+		return firstValue;
+	}
+
+	public void setFirstValue(String firstValue){
+		this.firstValue = firstValue;
+	}
+
 	public void setFirstIndex(int idx) 
 	{
 		this.firstIndex = idx;

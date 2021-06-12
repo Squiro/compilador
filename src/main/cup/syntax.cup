@@ -221,15 +221,18 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
                          // que apilamos en la acción semántica de condicion), seteamos su index como el siguiente 
                          ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
                     :}
-                    | IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE
+                    | IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE {: RESULT = new Symbol(-1); :}
                     {:
                          // En el caso del else, en vez de setear el terceto para que salte "fuera" del programa del IF, hacemos que salte al primer
                          // terceto del else
-                          ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
-                          // FALTA AGREGAR LA INSTRUCCION BI
-                    :}                    
-                     LLAVE_OPEN programa LLAVE_CLOSE 
+                         int idx = tercetoManager.createTerceto("BA", -1, null);
+                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                         // FALTA AGREGAR LA INSTRUCCION BI
+                         tercetoManager.apilarTercetoBranch(idx);
+                    :}             
+                    ELSE LLAVE_OPEN programa LLAVE_CLOSE 
                     {:
+                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE");
                     :};
 
@@ -257,8 +260,12 @@ condicion           ::= comparacion OP_AND comparacion
 
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
-                    {: 
-                         // Una forma que se me ocurre de implementar esto, es simplemente modificando el terceto de comparacion anterior, e invertir la condicion de su branch.
+                    {:
+                         TercetoTwoIdx ter = (TercetoTwoIdx) tercetoManager.desapilarTercetoBranch();
+                         String newCondition = tercetoManager.getConditionInverse(ter.getFirstValue());
+                         ter.setFirstValue(newCondition);
+                         tercetoManager.apilarTercetoBranch(ter.getId());
+                         System.out.println("NOT");// Una forma que se me ocurre de implementar esto, es simplemente modificando el terceto de comparacion anterior, e invertir la condicion de su branch.
                     :}
                     | comparacion;
 

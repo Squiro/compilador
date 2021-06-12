@@ -71,4 +71,21 @@ public class TercetoManager {
 		return lastIdx;
 	}
 
+	public String getConditionInverse(String condition){
+		String inverseCondition = "";
+		if(condition == "BLE"){
+			inverseCondition = "BGT";
+		}else if(condition == "BGE"){
+			inverseCondition = "BLT";
+		}else if(condition == "BLT"){
+			inverseCondition = "BGE";
+		}else if(condition == "BGT"){
+			inverseCondition = "BLE";
+		}else if(condition == "BNE"){
+			inverseCondition = "BEQ";
+		}else if(condition == "BEQ"){
+			inverseCondition = "BNE";
+		}
+		return inverseCondition;
+	}
 }
