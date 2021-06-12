@@ -304,9 +304,13 @@ comparador          ::= OP_GT
             WHILE
 */
 
-while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE  
+while               ::= WHILE PAREN_OPEN {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1);  :} condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
                     {:
+                         
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+                         int expr1 = expresionStack.pop();
+                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                         int branchAlways = tercetoManager.createTerceto("BA", expr1+1, null);
                     :};
 
 /*
