@@ -18,6 +18,7 @@ action code
 
      // indices de no terminales para los tercetos
      public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx;
+     public string inlistID;
 
 :}
 
@@ -269,6 +270,10 @@ comparacion         ::= expresion {: expresionStack.push(tercetoManager.getLastI
                          tercetoManager.createTerceto("CMP", expr1, expr2);
                          comparacionIdx = tercetoManager.createTerceto(comparadorString, -1, null);
                          tercetoManager.apilarTercetoBranch(comparacionIdx);
+                    :}
+comparacion         ::= inlist
+                    {:
+                         tercetoManager.createTerceto("CMP", tercetoManager.getLastIdx(), 1);
                     :};
                    
 comparador          ::= OP_GT
@@ -308,13 +313,31 @@ while               ::= WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN progra
             INLIST
 */
 
-inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
+inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID 
+                    {: 
+                         inlistID = ID;
+                         tercetoManager.createTerceto(":=", "@inListFoundFlag", 0);
+                    :} 
+                    PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
                     {:
                          System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
+                         tercetoManager.createTerceto("@inListFoundFlag");
+                         tercetoManager.desapilarTercetoBranch().setFirstIndex()
                     :};
 
-lista               ::= lista PUNTO_COMA expresion  
-                    | expresion;
+lista               ::= lista PUNTO_COMA expresion 
+                    {:
+                         tercetoManager.createTerceto("CMP", inlistID, tercetoManager.getLastIdx());
+                         tercetoManager.createTerceto("BEQ", "");
+                         tercetoManager.createTerceto(":=", "@inListFoundFlag", 1);
+                    :} 
+                    | expresion 
+                    {:
+                         tercetoManager.createTerceto("CMP", inlistID, tercetoManager.getLastIdx());
+                         tercetoManager.createTerceto("BEQ", "");
+                         tercetoManager.createTerceto(":=", "@inListFoundFlag", 1);
+
+                    :};
 
 /*
             WRITE
