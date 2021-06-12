@@ -345,21 +345,24 @@ lista               ::= lista PUNTO_COMA expresion
 /*
             WRITE
 */
-write               ::= WRITE IDENTIFICADOR
+write               ::= WRITE IDENTIFICADOR:ID
                     {:
                          System.out.println("write -> WRITE IDENTIFICADOR");
+                         tercetoManager.createTerceto("WRITE", ID);
                     :}
                     | WRITE CONSTANTE_STRING:CTE_STRING
                     {:
                          String str = CTE_STRING.replace("\"", "");
                          System.out.println("write -> WRITE CONSTANTE_STRING");
                          tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tercetoManager.createTerceto("WRITE", "_"+str);
                     :};
 
 /*
             READ
 */
-read                ::= READ IDENTIFICADOR
+read                ::= READ IDENTIFICADOR:ID
                     {:
                          System.out.println("read -> READ IDENTIFICADOR");
+                         tercetoManager.createTerceto("READ", ID);
                     :};
