@@ -17,7 +17,7 @@ action code
      public Stack<Integer> expresionStack = new Stack<Integer>();
 
      // indices de no terminales para los tercetos
-     public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx;
+     public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
      public string inlistID;
 
 :}
@@ -280,7 +280,7 @@ comparacion         ::= expresion {: expresionStack.push(tercetoManager.getLastI
                     :}
 comparacion         ::= inlist
                     {:
-                         tercetoManager.createTerceto("CMP", tercetoManager.getLastIdx(), 1);
+                         tercetoManager.createTerceto("CMP", inlistIdx, 1);
                     :};
                    
 comparador          ::= OP_GT
@@ -333,6 +333,7 @@ inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID
                          System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
                          int idx = tercetoManager.createTerceto("@inListFoundFlag");
                          tercetoManager.desapilarTercetoBranch().setFirstIndex(idx);
+                         inlistIdx = idx;
                     :};
 
 lista               ::= lista PUNTO_COMA expresion 
