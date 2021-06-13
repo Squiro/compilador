@@ -247,6 +247,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
 condicion           ::= comparacion OP_AND comparacion 
                     {: 
                          // BRANCH ALWAYS (deberiamos apilar este branch y poner su idx en la semantica del if)
+                         tercetoManager.createTerceto("BI", tercetoManager.getLastIdx()+2, null);
                          int idx = tercetoManager.createTerceto("BI", -1, null);
                          // Desapilamos dos tercetos branch que hayamos guardado previamente y seteamos su index al del terceto anterior
                          // ¿Por qué? Porque hacemos que salten al terceto anterior en caso de falle cualquiera de las dos comparaciones del AND
@@ -258,14 +259,18 @@ condicion           ::= comparacion OP_AND comparacion
                          // al IDX del final del if/comienzo del else. Pero eso involucraría agregar un condicional que chequee
                          // si estamos desapilando branchs de un AND o de un OR... Por ahora no.
                     :}                    
-                    | comparacion OP_OR comparacion 
+                    | comparacion 
+                    {: 
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BI", -1, null));                   
+                         RESULT = new Symbol(-1); 
+                    :} 
+                    OP_OR comparacion 
                     {:
-                         int branchAlways = tercetoManager.createTerceto("BI", -1, null);
-                         int idx = tercetoManager.createTerceto("ETIQUETA_OR");
-                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
-                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
-                         tercetoManager.apilarTercetoBranch(branchAlways);
-
+                         int etiquetaOr = tercetoManager.createTerceto("ETIQUETA_OR");
+                         Terceto branchElse = tercetoManager.desapilarTercetoBranch();
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(etiquetaOr));
+                         tercetoManager.apilarTercetoBranch(branchElse.getId());
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     {:
@@ -322,8 +327,8 @@ while               ::= WHILE PAREN_OPEN {: expresionStack.push(tercetoManager.g
                     {:
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
                          int expr1 = expresionStack.pop();
-                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
-                         int branchAlways = tercetoManager.createTerceto("BI", expr1+1, null);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
+                         tercetoManager.createTerceto("BI", new Index(expr1+1), null);
                     :};
 
 /*
