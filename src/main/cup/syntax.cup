@@ -142,6 +142,14 @@ asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
                     {:
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
                          asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionIdx));
+                    :}
+                    | IDENTIFICADOR:ID OP_ASIG mod 
+                    {: 
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(modIdx));
+                    :}
+                    | IDENTIFICADOR:ID OP_ASIG div 
+                    {:
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(divIdx));
                     :};
 
 expresion           ::= expresion OP_PLUS termino 
@@ -159,11 +167,11 @@ expresion           ::= expresion OP_PLUS termino
 
 termino             ::= termino OP_MULTI factor
                     {:
-                         terminoIdx = tercetoManager.createTerceto("*", terminoIdx, factorIdx);
+                         terminoIdx = tercetoManager.createTerceto("*", new Index(terminoIdx), new Index(factorIdx));
                     :}
                     | termino OP_DIVISION factor
                     {:
-                         terminoIdx = tercetoManager.createTerceto("/", terminoIdx, factorIdx);
+                         terminoIdx = tercetoManager.createTerceto("/", new Index(terminoIdx), new Index(factorIdx));
                     :}
                     | factor
                     {: 
@@ -208,14 +216,14 @@ mod                 ::= expresion {: expresionStack.push(tercetoManager.getLastI
                     {:
                          int expr1 = expresionStack.pop();
                          int expr2 = tercetoManager.getLastIdx();
-                         modIdx = tercetoManager.createTerceto("MOD", expr1, expr2);
+                         modIdx = tercetoManager.createTerceto("MOD", new Index(expr1), new Index(expr2));
                     :};
 
 div                 ::= expresion {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1); :} DIV expresion 
                     {:
                          int expr1 = expresionStack.pop();
                          int expr2 = tercetoManager.getLastIdx();
-                         divIdx = tercetoManager.createTerceto("DIV", expr1, expr2);
+                         divIdx = tercetoManager.createTerceto("DIV", new Index(expr1), new Index(expr2));
                     :};
 
 /*
