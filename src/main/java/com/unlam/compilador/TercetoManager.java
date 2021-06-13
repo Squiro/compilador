@@ -2,9 +2,14 @@ package com.unlam.compilador;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.logging.Logger;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class TercetoManager {
 
+    public static Logger LOGGER = Logger.getLogger(TercetoManager.class.getName());
 	private int lastIdx;
 	private ArrayList<Terceto> tercetoList;
 	private Stack<Terceto> tercetoBranchStack;
@@ -28,9 +33,20 @@ public class TercetoManager {
 	}
 
 	public void processList() {
-		for (Terceto terceto : tercetoList) {
-			System.out.println(terceto.toString());
-		}
+		try (BufferedWriter br = new BufferedWriter(new FileWriter("intermedia.txt"))) {            
+            tercetoList.forEach(terceto -> {
+                try {
+                    br.write(terceto.toString() + "\n");
+                } catch (IOException e) {
+                    LOGGER.severe("Ocurrio un error al guardar el archivo de intermedia.txt");
+                    e.printStackTrace();
+                }
+            });
+
+        } catch (Exception e) {
+            LOGGER.severe("Ocurrio un error al guardar el archivo intermedia.txt");
+            e.printStackTrace();
+        }
 	}
 
 	public void apilarTercetoBranch(int idx) {

@@ -233,7 +233,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
                     {:
                          // En el caso del else, en vez de setear el terceto para que salte "fuera" del programa del IF, hacemos que salte al primer
                          // terceto del else
-                         int idx = tercetoManager.createTerceto("BA", -1, null);
+                         int idx = tercetoManager.createTerceto("BI", -1, null);
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
                          // FALTA AGREGAR LA INSTRUCCION BI
                          tercetoManager.apilarTercetoBranch(idx);
@@ -247,7 +247,7 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
 condicion           ::= comparacion OP_AND comparacion 
                     {: 
                          // BRANCH ALWAYS (deberiamos apilar este branch y poner su idx en la semantica del if)
-                         int idx = tercetoManager.createTerceto("BA", -1, null);
+                         int idx = tercetoManager.createTerceto("BI", -1, null);
                          // Desapilamos dos tercetos branch que hayamos guardado previamente y seteamos su index al del terceto anterior
                          // ¿Por qué? Porque hacemos que salten al terceto anterior en caso de falle cualquiera de las dos comparaciones del AND
                          // Y después aplicamos un branch always... de esta forma, mantenemos la lógica de "lazy operator" que tiene el AND
@@ -260,7 +260,7 @@ condicion           ::= comparacion OP_AND comparacion
                     :}                    
                     | comparacion OP_OR comparacion 
                     {:
-                         int branchAlways = tercetoManager.createTerceto("BA", -1, null);
+                         int branchAlways = tercetoManager.createTerceto("BI", -1, null);
                          int idx = tercetoManager.createTerceto("ETIQUETA_OR");
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
@@ -323,7 +323,7 @@ while               ::= WHILE PAREN_OPEN {: expresionStack.push(tercetoManager.g
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
                          int expr1 = expresionStack.pop();
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
-                         int branchAlways = tercetoManager.createTerceto("BA", expr1+1, null);
+                         int branchAlways = tercetoManager.createTerceto("BI", expr1+1, null);
                     :};
 
 /*
