@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class TercetoManager {
-	
+
 	private int lastIdx;
 	private ArrayList<Terceto> tercetoList;
 	private Stack<Terceto> tercetoBranchStack;
-	
-	public int getLastIdx() 
-	{
+
+	public int getLastIdx() {
 		return lastIdx;
 	}
 
@@ -19,7 +18,7 @@ public class TercetoManager {
 		this.tercetoList = new ArrayList<Terceto>();
 		this.tercetoBranchStack = new Stack<Terceto>();
 	}
-	
+
 	public Terceto findTerceto(int index) {
 		for (Terceto terceto : tercetoList) {
 			if (terceto.getId() == index)
@@ -27,9 +26,8 @@ public class TercetoManager {
 		}
 		return null;
 	}
-	
-	public void processList()
-	{
+
+	public void processList() {
 		for (Terceto terceto : tercetoList) {
 			System.out.println(terceto.toString());
 		}
@@ -38,52 +36,31 @@ public class TercetoManager {
 	public void apilarTercetoBranch(int idx) {
 		this.tercetoBranchStack.push(findTerceto(idx));
 	}
-	
+
 	public Terceto desapilarTercetoBranch() {
 		return this.tercetoBranchStack.pop();
 	}
-	
-	public int createTerceto(String value)
-	{
+
+	public int createTerceto(Object... val) {
 		this.lastIdx++;
-		this.tercetoList.add(new TercetoNoIdx(lastIdx, value));
-		return lastIdx;
-	}
-	
-	public int createTerceto(String firstValue, String secondValue, String thirdValue)
-	{
-		this.lastIdx++;
-		this.tercetoList.add(new TercetoNoIdx(lastIdx, firstValue, secondValue, thirdValue));
-		return lastIdx;
-	}	
-	
-	public int createTerceto(String firstValue, String secondValue, Integer idx)
-	{
-		this.lastIdx++;
-		this.tercetoList.add(new TercetoOneIdx(lastIdx, firstValue, secondValue, idx));
-		return lastIdx;
-	}
-	
-	public int createTerceto(String value, Integer firstIdx, Integer secondIdx)
-	{
-		this.lastIdx++;
-		this.tercetoList.add(new TercetoTwoIdx(lastIdx, value, firstIdx, secondIdx));
+		this.tercetoList.add(TercetoFactory.getTerceto(this.lastIdx, val));
 		return lastIdx;
 	}
 
-	public String getConditionInverse(String condition){
+	public String getConditionInverse(Object objectCondition) {
 		String inverseCondition = "";
-		if(condition == "BLE"){
+		String condition = objectCondition.toString();
+		if (condition.equals("BLE")) {
 			inverseCondition = "BGT";
-		}else if(condition == "BGE"){
+		} else if (condition.equals("BGE")) {
 			inverseCondition = "BLT";
-		}else if(condition == "BLT"){
+		} else if (condition.equals("BLT")) {
 			inverseCondition = "BGE";
-		}else if(condition == "BGT"){
+		} else if (condition.equals("BGT")) {
 			inverseCondition = "BLE";
-		}else if(condition == "BNE"){
+		} else if (condition.equals("BNE")) {
 			inverseCondition = "BEQ";
-		}else if(condition == "BEQ"){
+		} else if (condition.equals("BEQ")) {
 			inverseCondition = "BNE";
 		}
 		return inverseCondition;

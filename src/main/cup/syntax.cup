@@ -4,7 +4,8 @@ import SymbolTable.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import com.unlam.compilador.TercetoManager;
-import com.unlam.compilador.TercetoTwoIdx;
+import com.unlam.compilador.Terceto;
+import com.unlam.compilador.Index;
 import java.util.Stack;
 
 // Codigo que se le agrega a las acciones gramaticales
@@ -18,7 +19,7 @@ action code
 
      // indices de no terminales para los tercetos
      public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
-     public string inlistID;
+     public String inlistID;
 
 :}
 
@@ -140,16 +141,16 @@ identificadores     ::= IDENTIFICADOR:ID
 asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
                     {:
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
-                         asignacionIdx = tercetoManager.createTerceto(":=", ID, expresionIdx);
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionIdx));
                     :};
 
 expresion           ::= expresion OP_PLUS termino 
                     {:
-                         expresionIdx = tercetoManager.createTerceto("+", expresionIdx, terminoIdx);
+                         expresionIdx = tercetoManager.createTerceto("+", new Index(expresionIdx), new Index(terminoIdx));
                     :}
                     | expresion OP_MINUS termino 
                     {:
-                         expresionIdx = tercetoManager.createTerceto("-", expresionIdx, terminoIdx);
+                         expresionIdx = tercetoManager.createTerceto("-", new Index(expresionIdx), new Index(terminoIdx));
                     :}
                     | termino 
                     {:
@@ -226,20 +227,20 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
 
                          // Desapilamos el último terceto branch que apilamos (que debería ser el ultimo
                          // que apilamos en la acción semántica de condicion), seteamos su index como el siguiente 
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
                     :}
                     | IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE {: RESULT = new Symbol(-1); :}
                     {:
                          // En el caso del else, en vez de setear el terceto para que salte "fuera" del programa del IF, hacemos que salte al primer
                          // terceto del else
                          int idx = tercetoManager.createTerceto("BA", -1, null);
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
                          // FALTA AGREGAR LA INSTRUCCION BI
                          tercetoManager.apilarTercetoBranch(idx);
                     :}             
                     ELSE LLAVE_OPEN programa LLAVE_CLOSE 
                     {:
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
                          System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE");
                     :};
 
@@ -250,8 +251,8 @@ condicion           ::= comparacion OP_AND comparacion
                          // Desapilamos dos tercetos branch que hayamos guardado previamente y seteamos su index al del terceto anterior
                          // ¿Por qué? Porque hacemos que salten al terceto anterior en caso de falle cualquiera de las dos comparaciones del AND
                          // Y después aplicamos un branch always... de esta forma, mantenemos la lógica de "lazy operator" que tiene el AND
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(idx);
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(idx);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
                          tercetoManager.apilarTercetoBranch(idx);
                          // Acá en realidad nos podríamos ahorrar el branch always, y setear el IDX de estos dos tercetos que desapilamos
                          // al IDX del final del if/comienzo del else. Pero eso involucraría agregar un condicional que chequee
@@ -261,14 +262,14 @@ condicion           ::= comparacion OP_AND comparacion
                     {:
                          int branchAlways = tercetoManager.createTerceto("BA", -1, null);
                          int idx = tercetoManager.createTerceto("ETIQUETA_OR");
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(idx);
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(idx);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
                          tercetoManager.apilarTercetoBranch(branchAlways);
 
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     {:
-                         TercetoTwoIdx ter = (TercetoTwoIdx) tercetoManager.desapilarTercetoBranch();
+                         Terceto ter =  tercetoManager.desapilarTercetoBranch();
                          String newCondition = tercetoManager.getConditionInverse(ter.getFirstValue());
                          ter.setFirstValue(newCondition);
                          tercetoManager.apilarTercetoBranch(ter.getId());
@@ -280,11 +281,11 @@ comparacion         ::= expresion {: expresionStack.push(tercetoManager.getLastI
                     {:
                          int expr1 = expresionStack.pop();
                          int expr2 = tercetoManager.getLastIdx();
-                         tercetoManager.createTerceto("CMP", expr1, expr2);
+                         tercetoManager.createTerceto("CMP", new Index(expr1), new Index(expr2));
                          comparacionIdx = tercetoManager.createTerceto(comparadorString, -1, null);
                          tercetoManager.apilarTercetoBranch(comparacionIdx);
                     :}
-comparacion         ::= inlist
+                    | inlist
                     {:
                          tercetoManager.createTerceto("CMP", inlistIdx, 1);
                     :};
@@ -321,7 +322,7 @@ while               ::= WHILE PAREN_OPEN {: expresionStack.push(tercetoManager.g
                     {:
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
                          int expr1 = expresionStack.pop();
-                         ((TercetoTwoIdx) tercetoManager.desapilarTercetoBranch()).setFirstIndex(tercetoManager.getLastIdx()+1);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
                          int branchAlways = tercetoManager.createTerceto("BA", expr1+1, null);
                     :};
 
@@ -338,14 +339,14 @@ inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID
                     {:
                          System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
                          int idx = tercetoManager.createTerceto("@inListFoundFlag");
-                         tercetoManager.desapilarTercetoBranch().setFirstIndex(idx);
+                         tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          inlistIdx = idx;
                     :};
 
 lista               ::= lista PUNTO_COMA expresion 
                     {:
                          int idx = tercetoManager.createTerceto("CMP", inlistID, tercetoManager.getLastIdx());
-                         tercetoManager.desapilarTercetoBranch().setFirstIndex(idx);
+                         tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BEQ", null));
                          tercetoManager.createTerceto(":=", "@inListFoundFlag", 1);
                     :} 
