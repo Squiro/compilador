@@ -235,7 +235,6 @@ if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa 
                          // terceto del else
                          int idx = tercetoManager.createTerceto("BI", -1, null);
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
-                         // FALTA AGREGAR LA INSTRUCCION BI
                          tercetoManager.apilarTercetoBranch(idx);
                     :}             
                     ELSE LLAVE_OPEN programa LLAVE_CLOSE 
@@ -261,24 +260,33 @@ condicion           ::= comparacion OP_AND comparacion
                     :}                    
                     | comparacion 
                     {: 
+                         // Desapilamos el terceto branch anterior. Como estamos en un OR, no podemos saltar directamente al ELSE, tenemos que saltar a la siguiente comparación.
+                         // La siguiente comparación SERÍA el siguiente terceto, si no fuera porque implementamos "lazy operators". El siguiente terceto en realidad va a ser un
+                         // salto a la parte TRUE. 
+                         // Entonces, teniendo en cuenta esto, sabemos que el salto debido a la primera comparación del OR tiene que tener como indice el ult. ID+2
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
+                         // Acá creamos y apilamos el salto a la parte true. Este salto se va a leer si no se ejecuta el salto anterior.
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BI", -1, null));                   
                          RESULT = new Symbol(-1); 
                     :} 
                     OP_OR comparacion 
                     {:
+                         // Esta etiqueta es necesaria para realizar el salto a la parte true del lazy operator.
                          int etiquetaOr = tercetoManager.createTerceto("ETIQUETA_OR");
+                         // Desapilamos el terceto branch correspondiente a la segunda comparacion y lo guardamos momentaneamete
                          Terceto branchElse = tercetoManager.desapilarTercetoBranch();
+                         // Desapilamos el BI correspondiente al salto a la parte true y le ponemos como indice la etiqueta OR que creamos arriba
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(etiquetaOr));
+                         // Volvemos a apilar el terceto branch de la segunda comparación. El índice será seteado en la acción semántica del IF.
                          tercetoManager.apilarTercetoBranch(branchElse.getId());
                     :}
                     | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
                     {:
+                         // Una forma que se me ocurre de implementar esto, es simplemente modificando el terceto de comparacion anterior, e invertir la condicion de su branch.
                          Terceto ter =  tercetoManager.desapilarTercetoBranch();
                          String newCondition = tercetoManager.getConditionInverse(ter.getFirstValue());
                          ter.setFirstValue(newCondition);
                          tercetoManager.apilarTercetoBranch(ter.getId());
-                         System.out.println("NOT");// Una forma que se me ocurre de implementar esto, es simplemente modificando el terceto de comparacion anterior, e invertir la condicion de su branch.
                     :}
                     | comparacion;
 
