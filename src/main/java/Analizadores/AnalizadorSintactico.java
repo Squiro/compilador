@@ -904,7 +904,7 @@ class CUP$AnalizadorSintactico$actions {
               Symbol RESULT =null;
 		 
                          // BRANCH ALWAYS (deberiamos apilar este branch y poner su idx en la semantica del if)
-                         tercetoManager.createTerceto("BI", tercetoManager.getLastIdx()+2, null);
+                         tercetoManager.createTerceto("BI", new Index(tercetoManager.getLastIdx()+3), null);
                          int idx = tercetoManager.createTerceto("BI", -1, null);
                          // Desapilamos dos tercetos branch que hayamos guardado previamente y seteamos su index al del terceto anterior
                          // ¿Por qué? Porque hacemos que salten al terceto anterior en caso de falle cualquiera de las dos comparaciones del AND
