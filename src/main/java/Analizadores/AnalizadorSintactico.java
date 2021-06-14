@@ -903,7 +903,8 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		 
-                         // BRANCH ALWAYS (deberiamos apilar este branch y poner su idx en la semantica del if)
+                         // Este BI corresponde al salto a la parte true
+                         // Le sumamos 3 (uno por este mismo que estamos creando, otro por BI de abajo, y otro para llegar al terceto de la parte true)
                          tercetoManager.createTerceto("BI", new Index(tercetoManager.getLastIdx()+3), null);
                          int idx = tercetoManager.createTerceto("BI", -1, null);
                          // Desapilamos dos tercetos branch que hayamos guardado previamente y seteamos su index al del terceto anterior

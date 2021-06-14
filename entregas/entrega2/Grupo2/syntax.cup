@@ -1,0 +1,406 @@
+package Analizadores;
+import java_cup.runtime.*;
+import SymbolTable.*;
+import java.util.LinkedList;
+import java.util.ArrayList;
+import com.unlam.compilador.TercetoManager;
+import com.unlam.compilador.Terceto;
+import com.unlam.compilador.Index;
+import java.util.Stack;
+
+// Codigo que se le agrega a las acciones gramaticales
+action code
+{:
+     public SymbolTable tablaDeSimbolos = new SymbolTable();
+     public ArrayList<String> identifierList = new ArrayList();
+     public TercetoManager tercetoManager = new TercetoManager();
+     public String comparadorString;
+     public Stack<Integer> expresionStack = new Stack<Integer>();
+
+     // indices de no terminales para los tercetos
+     public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
+     public String inlistID;
+
+:}
+
+// Codigo que se le agrega al parser
+parser code     
+{:
+    public void syntax_error(Symbol cur_token) {
+        String errMsg = "Syntax error -> " + cur_token.value.toString() + " <- " + cur_token.left + ":" +  cur_token.right + "\n";
+        report_error(errMsg, null);
+    }
+
+    public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+        String errMsg = "Couldn't repair and continue parse ->" + cur_token.value.toString() + "<- " + cur_token.left + ":" +  cur_token.right + "\n";
+        report_fatal_error(errMsg, null);
+    }
+:}
+
+// Declaracion de terminales de constantes
+terminal String CONSTANTE_ENTERA, CONSTANTE_FLOAT, CONSTANTE_STRING;
+
+// Declaracion de terminales de palabras reservadas
+terminal String IF, ELSE, WHILE, DECVAR, ENDDEC, WRITE, READ, INLIST, MOD, DIV, INTEGER_TYPE, FLOAT_TYPE, STRING_TYPE;
+
+// Declaracion de terminales de operadores lógicos
+terminal String OP_GT, OP_LT, OP_GTE, OP_LTE, OP_PLUS, OP_MINUS, OP_MULTI, OP_DIVISION,
+                OP_NE, OP_NOT, OP_AND, OP_OR, OP_ASIG, OP_EQ, OP_TYPE;
+
+// Declaracion de terminales de caracteres especiales
+terminal String COMA, PUNTO_COMA, PAREN_OPEN, PAREN_CLOSE, CORCHETE_OPEN, CORCHETE_CLOSE, LLAVE_OPEN, LLAVE_CLOSE;
+
+// Declaracion de construcciones del lenguaje
+terminal String IDENTIFICADOR;
+
+// Declaracion de no terminales
+non terminal Symbol inicio, programa, declaracion, declaraciones, declarar, tipodedato, identificadores, sentencia, asignacion, expresion, termino, factor, 
+                    condicion, comparacion, comparador, if, while, inlist, lista, mod, div, write, read;
+
+start with inicio;
+
+//Reglas gramaticales
+inicio         	::= programa
+                    {:
+                         tablaDeSimbolos.save();
+                         tercetoManager.processList();
+                         System.out.println("Compilacion exitosa.");
+                         System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
+                    :};  
+
+programa      		::= programa sentencia
+                    | sentencia;
+
+sentencia           ::= declaracion
+                    {:
+                         System.out.println("sentencia -> declaracion");
+                    :}
+                    | asignacion 
+                    {:
+                         System.out.println("sentencia -> asignacion");
+                    :}
+                    | if 
+                    {:
+                         System.out.println("sentencia -> if");
+                    :}
+                    | while 
+                    {:
+                         System.out.println("sentencia -> while");
+                    :}
+                    | inlist 
+                    {:
+                         System.out.println("sentencia -> inlist");
+                    :}
+                    | write 
+                    {:
+                         System.out.println("sentencia -> write");
+                    :}
+                    | read 
+                    {:
+                         System.out.println("sentencia -> read");
+                    :};
+
+/*
+            DECLARACIONES
+*/
+
+declaracion         ::= DECVAR declaraciones ENDDEC
+                    {: 
+                         System.out.println("declaracion -> DECVAR declaraciones ENDDEC");
+                    :};
+
+declaraciones      ::= declarar
+                    | declaraciones declarar;
+
+declarar            ::= identificadores OP_TYPE tipodedato;
+
+tipodedato          ::= INTEGER_TYPE
+                    {:
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                    :}
+                    | FLOAT_TYPE
+                    {:
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");                       
+                    :}
+                    | STRING_TYPE
+                    {:
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
+                    :};
+
+identificadores     ::= IDENTIFICADOR:ID
+                    {:
+                         this.identifierList.add(ID);
+                    :}
+                    | identificadores COMA IDENTIFICADOR:ID
+                    {:
+                         this.identifierList.add(ID);
+                    :};
+/*
+            ASIGNACION
+*/
+asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
+                    {:
+                         System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionIdx));
+                    :}
+                    | IDENTIFICADOR:ID OP_ASIG mod 
+                    {: 
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(modIdx));
+                    :}
+                    | IDENTIFICADOR:ID OP_ASIG div 
+                    {:
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(divIdx));
+                    :};
+
+expresion           ::= expresion OP_PLUS termino 
+                    {:
+                         expresionIdx = tercetoManager.createTerceto("+", new Index(expresionIdx), new Index(terminoIdx));
+                    :}
+                    | expresion OP_MINUS termino 
+                    {:
+                         expresionIdx = tercetoManager.createTerceto("-", new Index(expresionIdx), new Index(terminoIdx));
+                    :}
+                    | termino 
+                    {:
+                         expresionIdx = terminoIdx;
+                    :};
+
+termino             ::= termino OP_MULTI factor
+                    {:
+                         terminoIdx = tercetoManager.createTerceto("*", new Index(terminoIdx), new Index(factorIdx));
+                    :}
+                    | termino OP_DIVISION factor
+                    {:
+                         terminoIdx = tercetoManager.createTerceto("/", new Index(terminoIdx), new Index(factorIdx));
+                    :}
+                    | factor
+                    {: 
+                         terminoIdx = factorIdx;
+                    :};
+
+factor              ::= CONSTANTE_ENTERA:CTE_ENT
+                    {:
+                         tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
+                         factorIdx = tercetoManager.createTerceto(CTE_ENT);
+                    :}
+                    | CONSTANTE_FLOAT:CTE_FLOAT
+                    {:
+                         tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
+                         factorIdx = tercetoManager.createTerceto(CTE_FLOAT);
+                    :} 
+                    | CONSTANTE_STRING:CTE_STRING
+                    {:
+                         String str = CTE_STRING.replace("\"", "");
+                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         factorIdx = tercetoManager.createTerceto(CTE_STRING);
+                    :}
+                    | PAREN_OPEN expresion PAREN_CLOSE 
+                    {:
+                         factorIdx = expresionIdx;
+                    :}
+                    | IDENTIFICADOR:ID
+                    {:
+                         factorIdx = tercetoManager.createTerceto(ID);
+                    :}
+                    |
+                    PAREN_OPEN mod PAREN_CLOSE 
+                    {:
+                         factorIdx = modIdx;
+                    :}
+                    | PAREN_OPEN div PAREN_CLOSE
+                    {:
+                         factorIdx = divIdx;
+                    :};
+
+mod                 ::= expresion {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1); :} MOD expresion 
+                    {:
+                         int expr1 = expresionStack.pop();
+                         int expr2 = tercetoManager.getLastIdx();
+                         modIdx = tercetoManager.createTerceto("MOD", new Index(expr1), new Index(expr2));
+                    :};
+
+div                 ::= expresion {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1); :} DIV expresion 
+                    {:
+                         int expr1 = expresionStack.pop();
+                         int expr2 = tercetoManager.getLastIdx();
+                         divIdx = tercetoManager.createTerceto("DIV", new Index(expr1), new Index(expr2));
+                    :};
+
+/*
+            IF/ELSE/CONDITION
+*/
+if                  ::= IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
+                    {:                  
+                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+
+                         // Desapilamos el último terceto branch que apilamos (que debería ser el ultimo
+                         // que apilamos en la acción semántica de condicion), seteamos su index como el siguiente 
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
+                    :}
+                    | IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE {: RESULT = new Symbol(-1); :}
+                    {:
+                         // En el caso del else, en vez de setear el terceto para que salte "fuera" del programa del IF, hacemos que salte al primer
+                         // terceto del else
+                         int idx = tercetoManager.createTerceto("BI", -1, null);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
+                         tercetoManager.apilarTercetoBranch(idx);
+                    :}             
+                    ELSE LLAVE_OPEN programa LLAVE_CLOSE 
+                    {:
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
+                         System.out.println("if -> IF PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE ELSE LLAVE_OPEN programa LLAVE_CLOSE");
+                    :};
+
+condicion           ::= comparacion OP_AND comparacion 
+                    {: 
+                         // Este BI corresponde al salto a la parte true
+                         // Le sumamos 3 (uno por este mismo que estamos creando, otro por BI de abajo, y otro para llegar al terceto de la parte true)
+                         tercetoManager.createTerceto("BI", new Index(tercetoManager.getLastIdx()+3), null);
+                         int idx = tercetoManager.createTerceto("BI", -1, null);
+                         // Desapilamos dos tercetos branch que hayamos guardado previamente y seteamos su index al del terceto anterior
+                         // ¿Por qué? Porque hacemos que salten al terceto anterior en caso de falle cualquiera de las dos comparaciones del AND
+                         // Y después aplicamos un branch always... de esta forma, mantenemos la lógica de "lazy operator" que tiene el AND
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(idx));
+                         tercetoManager.apilarTercetoBranch(idx);
+                         // Acá en realidad nos podríamos ahorrar el branch always, y setear el IDX de estos dos tercetos que desapilamos
+                         // al IDX del final del if/comienzo del else. Pero eso involucraría agregar un condicional que chequee
+                         // si estamos desapilando branchs de un AND o de un OR... Por ahora no.
+                    :}                    
+                    | comparacion 
+                    {: 
+                         // Desapilamos el terceto branch anterior. Como estamos en un OR, no podemos saltar directamente al ELSE, tenemos que saltar a la siguiente comparación.
+                         // La siguiente comparación SERÍA el siguiente terceto, si no fuera porque implementamos "lazy operators". El siguiente terceto en realidad va a ser un
+                         // salto a la parte TRUE. 
+                         // Entonces, teniendo en cuenta esto, sabemos que el salto debido a la primera comparación del OR tiene que tener como indice el ult. ID+2
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
+                         // Acá creamos y apilamos el salto a la parte true. Este salto se va a leer si no se ejecuta el salto anterior.
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BI", -1, null));                   
+                         RESULT = new Symbol(-1); 
+                    :} 
+                    OP_OR comparacion 
+                    {:
+                         // Esta etiqueta es necesaria para realizar el salto a la parte true del lazy operator.
+                         int etiquetaOr = tercetoManager.createTerceto("ETIQUETA_OR");
+                         // Desapilamos el terceto branch correspondiente a la segunda comparacion y lo guardamos momentaneamete
+                         Terceto branchElse = tercetoManager.desapilarTercetoBranch();
+                         // Desapilamos el BI correspondiente al salto a la parte true y le ponemos como indice la etiqueta OR que creamos arriba
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(etiquetaOr));
+                         // Volvemos a apilar el terceto branch de la segunda comparación. El índice será seteado en la acción semántica del IF.
+                         tercetoManager.apilarTercetoBranch(branchElse.getId());
+                    :}
+                    | OP_NOT PAREN_OPEN comparacion PAREN_CLOSE
+                    {:
+                         // Una forma que se me ocurre de implementar esto, es simplemente modificando el terceto de comparacion anterior, e invertir la condicion de su branch.
+                         Terceto ter =  tercetoManager.desapilarTercetoBranch();
+                         String newCondition = tercetoManager.getConditionInverse(ter.getFirstValue());
+                         ter.setFirstValue(newCondition);
+                         tercetoManager.apilarTercetoBranch(ter.getId());
+                    :}
+                    | comparacion;
+
+comparacion         ::= expresion {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1);  :} comparador expresion
+                    {:
+                         int expr1 = expresionStack.pop();
+                         int expr2 = tercetoManager.getLastIdx();
+                         tercetoManager.createTerceto("CMP", new Index(expr1), new Index(expr2));
+                         comparacionIdx = tercetoManager.createTerceto(comparadorString, -1, null);
+                         tercetoManager.apilarTercetoBranch(comparacionIdx);
+                    :}
+                    | inlist
+                    {:
+                         tercetoManager.createTerceto("CMP", inlistIdx, 1);
+                    :};
+                   
+comparador          ::= OP_GT
+                    {:
+                         comparadorString = "BLE";
+                    :}
+                    | OP_LT 
+                    {:
+                         comparadorString = "BGE";
+                    :}
+                    | OP_GTE 
+                    {:
+                         comparadorString = "BLT";
+                    :}
+                    | OP_LTE
+                    {:
+                         comparadorString = "BGT";
+                    :}
+                    | OP_EQ
+                    {:
+                         comparadorString = "BNE";
+                    :}
+                    | OP_NE
+                    {:
+                         comparadorString = "BEQ";
+                    :};
+/*
+            WHILE
+*/
+
+while               ::= WHILE PAREN_OPEN {: expresionStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1);  :} condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
+                    {:
+                         System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
+                         int expr1 = expresionStack.pop();
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
+                         tercetoManager.createTerceto("BI", new Index(expr1+1), null);
+                    :};
+
+/*
+            INLIST
+*/
+
+inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID 
+                    {: 
+                         inlistID = ID;
+                         tercetoManager.createTerceto(":=", "@inListFoundFlag", 0);
+                         RESULT = new Symbol(-1);
+                    :} 
+                    PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
+                    {:
+                         System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
+                         int idx = tercetoManager.createTerceto("@inListFoundFlag");
+                         tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
+                         inlistIdx = idx;
+                    :};
+
+lista               ::= lista PUNTO_COMA expresion 
+                    {:
+                         int idx = tercetoManager.createTerceto("CMP", inlistID, tercetoManager.getLastIdx());
+                         tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BEQ", null));
+                         tercetoManager.createTerceto(":=", "@inListFoundFlag", 1);
+                    :} 
+                    | expresion 
+                    {:
+                         tercetoManager.createTerceto("CMP", inlistID, tercetoManager.getLastIdx());                         
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BEQ", null));
+                         tercetoManager.createTerceto(":=", "@inListFoundFlag", 1);
+                    :};
+
+/*
+            WRITE
+*/
+write               ::= WRITE IDENTIFICADOR:ID
+                    {:
+                         System.out.println("write -> WRITE IDENTIFICADOR");
+                         tercetoManager.createTerceto("WRITE", ID);
+                    :}
+                    | WRITE CONSTANTE_STRING:CTE_STRING
+                    {:
+                         String str = CTE_STRING.replace("\"", "");
+                         System.out.println("write -> WRITE CONSTANTE_STRING");
+                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tercetoManager.createTerceto("WRITE", "_"+str);
+                    :};
+
+/*
+            READ
+*/
+read                ::= READ IDENTIFICADOR:ID
+                    {:
+                         System.out.println("read -> READ IDENTIFICADOR");
+                         tercetoManager.createTerceto("READ", ID);
+                    :};
