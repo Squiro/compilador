@@ -752,7 +752,7 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tablaDeSimbolos.addStringConstant(null, str, str.length());
                          factorIdx = tercetoManager.createTerceto(CTE_STRING);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1198,7 +1198,7 @@ class CUP$AnalizadorSintactico$actions {
 		
                          String str = CTE_STRING.replace("\"", "");
                          System.out.println("write -> WRITE CONSTANTE_STRING");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tablaDeSimbolos.addStringConstant(null, str, str.length());
                          tercetoManager.createTerceto("WRITE", "_"+str);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("write",21, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);

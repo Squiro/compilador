@@ -15,9 +15,11 @@ public class SymbolTable {
     public static Logger LOGGER = Logger.getLogger(SymbolTable.class.getName());
 
     private List<Simbolo> symbolList;
+    private int constStringNumber;
 
     public SymbolTable() {
         this.symbolList = new LinkedList<Simbolo>();
+        this.constStringNumber = 0;
     }
 
     // Getters & Setters
@@ -28,6 +30,14 @@ public class SymbolTable {
     // Public methods
 
     public void add(String nombre, String tipo, String valor, Integer longitud) {
+        if(!isInTable(nombre)){
+            symbolList.add(new Simbolo(nombre, tipo, valor, longitud));
+        }
+    }
+
+    public void addStringConstant(String tipo, String valor, Integer longitud) {
+        String nombre = "_constString"+constStringNumber;
+        constStringNumber++;
         if(!isInTable(nombre)){
             symbolList.add(new Simbolo(nombre, tipo, valor, longitud));
         }
