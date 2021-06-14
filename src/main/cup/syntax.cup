@@ -355,6 +355,7 @@ inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID
                     {: 
                          inlistID = ID;
                          tercetoManager.createTerceto(":=", "@inListFoundFlag", 0);
+                         RESULT = new Symbol(-1);
                     :} 
                     PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
                     {:

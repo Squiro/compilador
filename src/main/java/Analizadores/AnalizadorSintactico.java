@@ -1120,6 +1120,7 @@ class CUP$AnalizadorSintactico$actions {
  
                          inlistID = ID;
                          tercetoManager.createTerceto(":=", "@inListFoundFlag", 0);
+                         RESULT = new Symbol(-1);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$6",29, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
