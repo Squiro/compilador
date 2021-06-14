@@ -191,7 +191,7 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     | CONSTANTE_STRING:CTE_STRING
                     {:
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tablaDeSimbolos.addStringConstant(null, str, str.length());
                          factorIdx = tercetoManager.createTerceto(CTE_STRING);
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
@@ -392,7 +392,7 @@ write               ::= WRITE IDENTIFICADOR:ID
                     {:
                          String str = CTE_STRING.replace("\"", "");
                          System.out.println("write -> WRITE CONSTANTE_STRING");
-                         tablaDeSimbolos.add("_"+str, null, str, str.length());
+                         tablaDeSimbolos.addStringConstant(null, str, str.length());
                          tercetoManager.createTerceto("WRITE", "_"+str);
                     :};
 
