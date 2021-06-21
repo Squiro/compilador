@@ -3,10 +3,10 @@ package SymbolTable;
 public class Simbolo {
     private String nombre;
     private String valor;
-    private String tipo;
+    private DataTypes tipo;
     private Integer longitud;
 
-    public Simbolo(String nombre, String tipo, String valor, Integer longitud) {
+    public Simbolo(String nombre, DataTypes tipo, String valor, Integer longitud) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.valor = valor;
@@ -21,11 +21,11 @@ public class Simbolo {
         this.nombre = nombre;
     }
 
-    public String getTipo() {
+    public DataTypes getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(DataTypes tipo) {
         this.tipo = tipo;
     }
 

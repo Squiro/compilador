@@ -29,13 +29,13 @@ public class SymbolTable {
 
     // Public methods
 
-    public void add(String nombre, String tipo, String valor, Integer longitud) {
+    public void add(String nombre, DataTypes tipo, String valor, Integer longitud) {
         if(!isInTable(nombre)){
             symbolList.add(new Simbolo(nombre, tipo, valor, longitud));
         }
     }
 
-    public void addStringConstant(String tipo, String valor, Integer longitud) {
+    public void addStringConstant(DataTypes tipo, String valor, Integer longitud) {
         String nombre = "_constString"+constStringNumber;
         constStringNumber++;
         if(!isInTable(nombre)){
@@ -49,7 +49,7 @@ public class SymbolTable {
     // a, b, c : FLOAT;
     // Si hay un identificador en la cola y nunca se le asignó su tipo, bueno, hay un problema. De todas formas no debería pasar, porque la regla sintáctica
     // debería exigir que las declaraciones sean "ID: TIPO"
-    public void addIdentifiers(ArrayList<String> identifiers, String dataType) {
+    public void addIdentifiers(ArrayList<String> identifiers, DataTypes dataType) {
     	Iterator<String> i = identifiers.iterator();
     	while (i.hasNext()) {
            // must be called before you can call i.remove()

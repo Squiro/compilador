@@ -355,6 +355,7 @@ class CUP$AnalizadorSintactico$actions {
      public TercetoManager tercetoManager = new TercetoManager();
      public String comparadorString;
      public Stack<Integer> expresionStack = new Stack<Integer>();
+     public Stack<Integer> terminoStack = new Stack<Integer>();
 
      // indices de no terminales para los tercetos
      public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
@@ -548,7 +549,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.INTEGER);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -559,7 +560,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");                       
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.FLOAT);                       
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -570,7 +571,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.STRING);                         
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("tipodedato",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -613,7 +614,7 @@ class CUP$AnalizadorSintactico$actions {
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
-                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionIdx));
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionStack.pop()));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("asignacion",8, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -652,7 +653,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         expresionIdx = tercetoManager.createTerceto("+", new Index(expresionIdx), new Index(terminoIdx));
+                         expresionStack.push(tercetoManager.createTerceto("+", new Index(expresionStack.pop()), new Index(terminoStack.pop())));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("expresion",9, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -663,7 +664,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         expresionIdx = tercetoManager.createTerceto("-", new Index(expresionIdx), new Index(terminoIdx));
+                         expresionStack.push(tercetoManager.createTerceto("-", new Index(expresionStack.pop()), new Index(terminoStack.pop())));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("expresion",9, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -674,7 +675,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         expresionIdx = terminoIdx;
+                         expresionStack.push(terminoStack.pop());
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("expresion",9, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -685,7 +686,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         terminoIdx = tercetoManager.createTerceto("*", new Index(terminoIdx), new Index(factorIdx));
+                         terminoStack.push(tercetoManager.createTerceto("*", new Index(terminoStack.pop()), new Index(factorIdx)));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("termino",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -696,7 +697,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         terminoIdx = tercetoManager.createTerceto("/", new Index(terminoIdx), new Index(factorIdx));
+                         terminoStack.push(tercetoManager.createTerceto("/", new Index(terminoStack.pop()), new Index(factorIdx)));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("termino",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -707,7 +708,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		 
-                         terminoIdx = factorIdx;
+                         terminoStack.push(factorIdx);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("termino",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -764,7 +765,8 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         factorIdx = expresionIdx;
+                         // ARREGLAR ESTO: Las expresiones entre parantesis pisan el expresionIdx anterior
+                         factorIdx = expresionStack.pop();
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }

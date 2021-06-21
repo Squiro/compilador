@@ -16,9 +16,10 @@ action code
      public TercetoManager tercetoManager = new TercetoManager();
      public String comparadorString;
      public Stack<Integer> expresionStack = new Stack<Integer>();
+     public Stack<Integer> terminoStack = new Stack<Integer>();
 
      // indices de no terminales para los tercetos
-     public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
+     public int factorIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
      public String inlistID;
 
 :}
@@ -116,15 +117,15 @@ declarar            ::= identificadores OP_TYPE tipodedato;
 
 tipodedato          ::= INTEGER_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "INTEGER");
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.INTEGER);
                     :}
                     | FLOAT_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "FLOAT");                       
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.FLOAT);                       
                     :}
                     | STRING_TYPE
                     {:
-                         tablaDeSimbolos.addIdentifiers(this.identifierList, "STRING");                         
+                         tablaDeSimbolos.addIdentifiers(this.identifierList, DataTypes.STRING);                         
                     :};
 
 identificadores     ::= IDENTIFICADOR:ID
@@ -141,7 +142,7 @@ identificadores     ::= IDENTIFICADOR:ID
 asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
                     {:
                          System.out.println("asignacion -> IDENTIFICADOR OP_ASIG expresion");
-                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionIdx));
+                         asignacionIdx = tercetoManager.createTerceto(":=", ID, new Index(expresionStack.pop()));
                     :}
                     | IDENTIFICADOR:ID OP_ASIG mod 
                     {: 
@@ -154,28 +155,28 @@ asignacion          ::= IDENTIFICADOR:ID OP_ASIG expresion
 
 expresion           ::= expresion OP_PLUS termino 
                     {:
-                         expresionIdx = tercetoManager.createTerceto("+", new Index(expresionIdx), new Index(terminoIdx));
+                         expresionStack.push(tercetoManager.createTerceto("+", new Index(expresionStack.pop()), new Index(terminoStack.pop())));
                     :}
                     | expresion OP_MINUS termino 
                     {:
-                         expresionIdx = tercetoManager.createTerceto("-", new Index(expresionIdx), new Index(terminoIdx));
+                         expresionStack.push(tercetoManager.createTerceto("-", new Index(expresionStack.pop()), new Index(terminoStack.pop())));
                     :}
                     | termino 
                     {:
-                         expresionIdx = terminoIdx;
+                         expresionStack.push(terminoStack.pop());
                     :};
 
 termino             ::= termino OP_MULTI factor
                     {:
-                         terminoIdx = tercetoManager.createTerceto("*", new Index(terminoIdx), new Index(factorIdx));
+                         terminoStack.push(tercetoManager.createTerceto("*", new Index(terminoStack.pop()), new Index(factorIdx)));
                     :}
                     | termino OP_DIVISION factor
                     {:
-                         terminoIdx = tercetoManager.createTerceto("/", new Index(terminoIdx), new Index(factorIdx));
+                         terminoStack.push(tercetoManager.createTerceto("/", new Index(terminoStack.pop()), new Index(factorIdx)));
                     :}
                     | factor
                     {: 
-                         terminoIdx = factorIdx;
+                         terminoStack.push(factorIdx);
                     :};
 
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
@@ -196,7 +197,7 @@ factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     {:
-                         factorIdx = expresionIdx;
+                         factorIdx = expresionStack.pop();
                     :}
                     | IDENTIFICADOR:ID
                     {:
