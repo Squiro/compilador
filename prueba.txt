@@ -1,1 +1,11 @@
-a := 10+10
+-/ Declaracion variables /-
+-/ Declaracion variables -/ COMENTARIO ANIDADO DIOS MIOOOOOOOOOOOOO /- /- 
+DECVAR
+a,b,c : INTEGER
+d, e : FLOAT
+f : STRING
+ENDDEC
+
+-/ Asignacion de expresiones /-
+a := 10 + (20)*30
+b := 2394 * (123 * 243) - 10

@@ -51,10 +51,10 @@ public class AsmGenerator {
 			String value = "?";
 			String simbolValue = sim.getValor();
 			
-			if (simbolValue != null)
+			if (simbolValue != "-")
 			{
 				Integer length = sim.getLongitud();
-				if (length != null)
+				if (sim.getLongitud() != null)
 				{
 					value = "\"" + simbolValue +"\"";
 					data += String.format("\t%s\tdb\t%s,'$',%d dup(?)\n", sim.getNombre(), value, length);
@@ -94,7 +94,19 @@ public class AsmGenerator {
 		
 		switch (operation) {
 		case "+":
-			code += handlePlus(terceto);
+			code += handleArithmeticOperation(terceto, "FADD");
+			break;
+		case "-":
+			code += handleArithmeticOperation(terceto, "FSUB");
+			break;
+		case "*":
+			code += handleArithmeticOperation(terceto, "FMUL");
+			break;
+		case "/":
+			code += handleArithmeticOperation(terceto, "FDIV");
+			break;
+		case ":=":
+			code += handleAssing(terceto);
 			break;
 
 		default:
@@ -104,15 +116,23 @@ public class AsmGenerator {
 		return code;
 	}
 	
-	private String handlePlus(Terceto terceto)
+	private String handleArithmeticOperation(Terceto terceto, String operation)
 	{
 		String code = "";
 		String nombre = "@terceto" + terceto.getId();
 		code += this.loadOperators(terceto);
-		code += "\tFADD \n";
+		code += "\t" + operation  + "\n";
 		code += "\tFSTP " + nombre + "\n";
-		// ACA DEBERIAS AGREGAR LA VARIABLE AUX EN EL .DATA DEL ASSEMBLER
+		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
 		this.addVariableToData(nombre);
+		return code;
+	}
+	
+	private String handleAssing(Terceto terceto)
+	{
+		String code = "";
+		code += "\tFLD " + this.getVariable(terceto.getThirdValue())  + "\n";
+		code += "\tFSTP " + terceto.getSecondValue().toString() + "\n";
 		return code;
 	}
 	
