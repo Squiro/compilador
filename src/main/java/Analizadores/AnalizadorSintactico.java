@@ -217,16 +217,17 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
     "\000\004\046\153\001\002\000\032\002\uffc8\007\uffc8\011" +
     "\uffc8\012\uffc8\014\uffc8\015\uffc8\016\uffc8\036\uffc8\037\uffc8" +
     "\046\uffc8\052\uffc8\053\uffc8\001\002\000\012\030\045\031" +
-    "\047\044\uffc7\050\uffc7\001\002\000\020\004\032\005\035" +
-    "\006\027\016\011\035\103\045\036\053\037\001\002\000" +
-    "\004\046\uffcb\001\002\000\004\046\160\001\002\000\004" +
-    "\051\161\001\002\000\020\007\017\011\007\012\022\014" +
-    "\021\015\006\016\011\053\023\001\002\000\022\007\017" +
-    "\011\007\012\022\014\021\015\006\016\011\052\163\053" +
-    "\023\001\002\000\024\002\uffca\007\uffca\011\uffca\012\uffca" +
-    "\014\uffca\015\uffca\016\uffca\052\uffca\053\uffca\001\002\000" +
-    "\024\002\uffc3\007\uffc3\011\uffc3\012\uffc3\014\uffc3\015\uffc3" +
-    "\016\uffc3\052\uffc3\053\uffc3\001\002" });
+    "\047\044\uffc7\050\uffc7\001\002\000\020\004\uffcb\005\uffcb" +
+    "\006\uffcb\016\uffcb\035\uffcb\045\uffcb\053\uffcb\001\002\000" +
+    "\020\004\032\005\035\006\027\016\011\035\103\045\036" +
+    "\053\037\001\002\000\004\046\160\001\002\000\004\051" +
+    "\161\001\002\000\020\007\017\011\007\012\022\014\021" +
+    "\015\006\016\011\053\023\001\002\000\022\007\017\011" +
+    "\007\012\022\014\021\015\006\016\011\052\163\053\023" +
+    "\001\002\000\024\002\uffca\007\uffca\011\uffca\012\uffca\014" +
+    "\uffca\015\uffca\016\uffca\052\uffca\053\uffca\001\002\000\024" +
+    "\002\uffc3\007\uffc3\011\uffc3\012\uffc3\014\uffc3\015\uffc3\016" +
+    "\uffc3\052\uffc3\053\uffc3\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -284,8 +285,8 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
     "\002\001\001\000\012\013\146\014\027\015\032\024\147" +
     "\001\001\000\002\001\001\000\002\001\001\000\010\013" +
     "\153\014\027\015\032\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\016\013\104\014\027\015" +
-    "\032\016\155\017\103\023\101\001\001\000\004\033\156" +
+    "\001\001\000\002\001\001\000\004\033\155\001\001\000" +
+    "\016\013\104\014\027\015\032\016\156\017\103\023\101" +
     "\001\001\000\002\001\001\000\002\001\001\000\024\003" +
     "\161\004\017\011\012\012\015\021\003\022\013\023\011" +
     "\027\023\030\007\001\001\000\022\004\017\011\111\012" +
@@ -1075,17 +1076,17 @@ class CUP$AnalizadorSintactico$actions {
           case 54: // NT$2 ::= 
             {
               Symbol RESULT =null;
- whileStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1);  
+ whileStack.push(tercetoManager.createTerceto("ET", "CMP_WHILE", null)); RESULT = new Symbol(-1);  
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$2",25, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSintactico$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 55: // while ::= WHILE PAREN_OPEN condicion NT$2 PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE 
+          case 55: // while ::= WHILE PAREN_OPEN NT$2 condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE 
             {
               Symbol RESULT =null;
               // propagate RESULT from NT$2
-                RESULT = (Symbol) ((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-4)).value;
+                RESULT = (Symbol) ((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)).value;
 		
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));

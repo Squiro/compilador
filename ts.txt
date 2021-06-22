@@ -9,7 +9,9 @@ _constString0                 |-                             |LA REPUTA MADRE   
 _10                           |-                             |10                            |-                             
 _20                           |-                             |20                            |-                             
 _30                           |-                             |30                            |-                             
-_2394                         |-                             |2394                          |-                             
-_123                          |-                             |123                           |-                             
-_243                          |-                             |243                           |-                             
+_2                            |-                             |2                             |-                             
+_353                          |-                             |353                           |-                             
 _constString1                 |-                             |A ES MENOR QUE B              |16                            
+_constString2                 |-                             |A SIGUE SIENDO MENOR QUE B    |26                            
+_constString3                 |-                             |WHILE SUM 1000 A < B          |20                            
+_1000                         |-                             |1000                          |-                             

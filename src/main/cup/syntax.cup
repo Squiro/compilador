@@ -365,7 +365,7 @@ comparador          ::= OP_GT
             WHILE
 */
 
-while               ::= WHILE PAREN_OPEN condicion {: whileStack.push(tercetoManager.getLastIdx()); RESULT = new Symbol(-1);  :} PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
+while               ::= WHILE PAREN_OPEN {: whileStack.push(tercetoManager.createTerceto("ET", "CMP_WHILE", null)); RESULT = new Symbol(-1);  :} condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE
                     {:
                          System.out.println("while -> WHILE PAREN_OPEN condicion PAREN_CLOSE LLAVE_OPEN programa LLAVE_CLOSE");
                          (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
