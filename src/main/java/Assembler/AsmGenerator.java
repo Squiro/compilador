@@ -131,6 +131,7 @@ public class AsmGenerator {
 		case "BEQ":
 		case "BI":
 			code += handleJMP(terceto);
+			break;
 		case "WRITE":
 			code += handleWrite(terceto);
 			break;
@@ -141,9 +142,11 @@ public class AsmGenerator {
 			code += handleInlist();
 			break;
 		case "LOAD": 
-			code += handleLoad(terceto); 
+			code += handleLoad(terceto);
+			break;
 		case "ET": 
 			code += handleET(terceto); 
+			break;
 		default:
 			break;
 		}

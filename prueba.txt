@@ -9,4 +9,7 @@ WRITE "LA REPUTA MADRE"
 a := 10 + (20)*30
 b := 2394 * (123 * 243) - 10
 
-WRITE a
+if (a < b)
+{
+	WRITE "A ES MENOR QUE B"
+}
