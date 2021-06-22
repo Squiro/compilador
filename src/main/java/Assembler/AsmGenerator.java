@@ -15,6 +15,7 @@ public class AsmGenerator {
 	private ArrayList<Terceto> tercetoList;
 	private String header;
 	private String code;
+	private boolean inlist;
 	
 	public AsmGenerator(SymbolTable tablaSimbolos, ArrayList<Terceto> tercetoList) {
 		this.tablaSimbolos = tablaSimbolos;
@@ -63,8 +64,11 @@ public class AsmGenerator {
 					value = Double.valueOf(simbolValue).toString();
 				}
 			}
+			else
+			{
+				data += String.format("\t%s\tdd\t%s\n", sim.getNombre(), value);
+			}		
 			
-			data += String.format("\t%s\tdd\t%s\n", sim.getNombre(), value);
 		}
 		
 		return data;   
@@ -94,21 +98,51 @@ public class AsmGenerator {
 		
 		switch (operation) {
 		case "+":
-			code += handleArithmeticOperation(terceto, "FADD");
+			code += handleArithmeticOperation(terceto, "FADD", false);
 			break;
 		case "-":
-			code += handleArithmeticOperation(terceto, "FSUB");
+			code += handleArithmeticOperation(terceto, "FSUB", false);
 			break;
 		case "*":
-			code += handleArithmeticOperation(terceto, "FMUL");
+			code += handleArithmeticOperation(terceto, "FMUL", false);
 			break;
 		case "/":
-			code += handleArithmeticOperation(terceto, "FDIV");
+			code += handleArithmeticOperation(terceto, "FDIV", false);
+			break;
+		case "DIV":
+			code += handleArithmeticOperation(terceto, "FDIV", true);
+			break;
+		case "MOD":
+			// Verificar que el orden de los operadores esté bien cargado
+			code += handleArithmeticOperation(terceto, "FPREM", false);
 			break;
 		case ":=":
 			code += handleAssing(terceto);
 			break;
-
+		case "CMP":
+			code += handleCMP(terceto);
+			break;
+		case "BGE":
+		case "BLE":
+		case "BGT":
+		case "BLT":
+		case "BNE":
+		case "BEQ":
+		case "BI":
+			code += handleJMP(terceto);
+		case "WRITE":
+			code += handleWrite(terceto);
+			break;
+		case "READ":
+			code += handleRead(terceto);
+			break;
+		case "INLIST":
+			code += handleInlist();
+			break;
+		case "LOAD": 
+			code += handleLoad(terceto); 
+		case "ET": 
+			code += handleET(terceto); 
 		default:
 			break;
 		}
@@ -116,18 +150,18 @@ public class AsmGenerator {
 		return code;
 	}
 	
-	private String handleArithmeticOperation(Terceto terceto, String operation)
+	private String handleArithmeticOperation(Terceto terceto, String operation, boolean convertToInt)
 	{
 		String code = "";
 		String nombre = "@terceto" + terceto.getId();
 		code += this.loadOperators(terceto);
 		code += "\t" + operation  + "\n";
-		code += "\tFSTP " + nombre + "\n";
+		code += convertToInt ? "\tFISTP " + nombre + "\n" :  "\tFSTP " + nombre + "\n";
 		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
 		this.addVariableToData(nombre);
 		return code;
 	}
-	
+		
 	private String handleAssing(Terceto terceto)
 	{
 		String code = "";
@@ -136,9 +170,114 @@ public class AsmGenerator {
 		return code;
 	}
 	
+	private String handleCMP(Terceto terceto)
+	{
+		String code = "";
+		code += this.loadOperators(terceto);
+        code += "\tFXCH\n\tFCOMP\n\tFSTSW AX\n\tSAHF\n";
+		return code;
+	}
+	
+	private String handleJMP(Terceto terceto)
+	{
+		String code = "";
+		Index idx = (Index) terceto.getSecondValue();
+		Terceto tercetoET =  this.tercetoList.get(idx.getVal()-1);
+		String et = tercetoET.getSecondValue().toString() + tercetoET.getId() + "\n";
+		code += this.getJMP(terceto.getFirstValue().toString()) + et;
+		return code;
+	}
+	
+	private String getJMP(String branch)
+	{
+		String code = "";
+		switch (branch) {
+		case "BGE":
+			code = "\tJAE ";
+			break;
+		case "BLE":
+			code = "\tJBE ";
+			break;
+		case "BGT":
+			code = "\tJA ";
+			break;
+		case "BLT":
+			code = "\tJB ";
+			break;
+		case "BNE":
+			code = "\tJNE ";
+			break;
+		case "BEQ":
+			code = "\tJE ";
+			break;
+		case "BI":
+			code = "\tJMP ";
+			break;
+		}
+		
+		return code;
+	}
+	
+	private String handleWrite(Terceto terceto) {
+		String code = "";
+		String variable = this.getVariable(terceto.getSecondValue());
+		
+		if(tablaSimbolos.isString(variable)){
+			code = "\tDisplayString " + variable + "\n";
+        } else {
+        	code = "\tDisplayFloat " + variable + " , 2 \n";
+        }
+		code += "\tnewline 1\n";
+        return code;
+	}
+	
+	private String handleRead(Terceto terceto) {
+		 return "\tGetFloat " + this.getVariable(terceto.getSecondValue().toString()) + "\n";
+	}
+	
+	private String handleInlist()
+	{
+		String code = "";
+		// Load "@inlist0" and "@inlist1" constants and @inlistFoundFlag only once
+		if (!this.inlist)
+		{
+			this.addVariableToData("@inlistFoundFlag", "0");
+			this.addVariableToData("@inlist0", "0");
+			this.addVariableToData("@inlist1", "1");
+			this.inlist = true;
+		}
+		
+		code += "\tFLD @inlist0 \n";
+		code += "\tFSTP @inlistFoundFlag \n";
+		
+		return code;		
+	}
+	
+	// Esta función solo carga una variale. Actualmente la usamos por el Inlist nada más (porque no queríamos cambiar mucho la lógica). 
+	// No deberíamos usarla por otra razón.
+	private String handleLoad(Terceto terceto)
+	{
+		String code = "";		
+		code += "\tFLD " + this.getVariable(terceto.getSecondValue()) + "\n";		
+		return code;		
+	}
+	
+	private String handleET(Terceto terceto) {
+		String code = "";
+		String et = terceto.getSecondValue().toString() + terceto.getId();
+		code +=  et +": \n";
+		return code;
+	}
+	
+	
 	private void addVariableToData(String nombre)
 	{
 		this.header += String.format("\t%s\tdd\t%s\n", nombre, "?");
+	}
+	
+	private void addVariableToData(String nombre, String value)
+	{
+		this.header += String.format("\t%s\tdd\t%s\n", nombre, value);
 	}
 	
 	private String loadOperators(Terceto terceto) {
@@ -169,8 +308,10 @@ public class AsmGenerator {
 		return value.toString();
 	}
 	
-	private void generateFooters() {
-		
+	private String generateFooters() {
+        return "\tMOV EAX, 4C00h\n" +
+        "\tINT 21h\n\n" +
+        "\tEND ";
 	}
 
 }

@@ -70,6 +70,19 @@ public class SymbolTable {
     public Boolean isInTable(String nombre) {
         return symbolList.stream().anyMatch(simbolo -> simbolo.getNombre().equals(nombre));
     }
+    
+    public boolean isString(String variable)
+    {
+    	if (variable.startsWith("_constString"))
+    		return true;
+    	
+    	for (Simbolo simbolo : symbolList) {
+			if (simbolo.getNombre().equals(variable) && simbolo.getTipo() != null && simbolo.getTipo().equals(DataTypes.STRING))
+				return true;
+		}
+    	
+    	return false;
+    }
 
     public void save() {
         try (BufferedWriter br = new BufferedWriter(new FileWriter("ts.txt"))) {
