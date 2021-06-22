@@ -14,6 +14,10 @@ public class TercetoManager {
 	private ArrayList<Terceto> tercetoList;
 	private Stack<Terceto> tercetoBranchStack;
 
+	public ArrayList<Terceto> getTercetoList() {
+		return this.tercetoList;
+	}
+
 	public int getLastIdx() {
 		return lastIdx;
 	}

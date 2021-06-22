@@ -7,6 +7,7 @@ import com.unlam.compilador.TercetoManager;
 import com.unlam.compilador.Terceto;
 import com.unlam.compilador.Index;
 import java.util.Stack;
+import Assembler.*;
 
 // Codigo que se le agrega a las acciones gramaticales
 action code
@@ -65,6 +66,8 @@ inicio         	::= programa
                     {:
                          tablaDeSimbolos.save();
                          tercetoManager.processList();
+                         AsmGenerator asm = new AsmGenerator(tablaDeSimbolos, this.tercetoManager.getTercetoList()); 
+                         asm.generateAsm();
                          System.out.println("Compilacion exitosa.");
                          System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     :};  
@@ -182,18 +185,18 @@ termino             ::= termino OP_MULTI factor
 factor              ::= CONSTANTE_ENTERA:CTE_ENT
                     {:
                          tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
-                         factorIdx = tercetoManager.createTerceto(CTE_ENT);
+                         factorIdx = tercetoManager.createTerceto("_"+CTE_ENT);
                     :}
                     | CONSTANTE_FLOAT:CTE_FLOAT
                     {:
                          tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
-                         factorIdx = tercetoManager.createTerceto(CTE_FLOAT);
+                         factorIdx = tercetoManager.createTerceto("_"+CTE_FLOAT);
                     :} 
                     | CONSTANTE_STRING:CTE_STRING
                     {:
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.addStringConstant(null, str, str.length());
-                         factorIdx = tercetoManager.createTerceto(CTE_STRING);
+                         String nombre = tablaDeSimbolos.addStringConstant(null, str, str.length());
+                         factorIdx = tercetoManager.createTerceto(nombre);
                     :}
                     | PAREN_OPEN expresion PAREN_CLOSE 
                     {:

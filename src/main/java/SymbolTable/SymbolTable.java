@@ -35,12 +35,13 @@ public class SymbolTable {
         }
     }
 
-    public void addStringConstant(DataTypes tipo, String valor, Integer longitud) {
+    public String addStringConstant(DataTypes tipo, String valor, Integer longitud) {
         String nombre = "_constString"+constStringNumber;
         constStringNumber++;
         if(!isInTable(nombre)){
             symbolList.add(new Simbolo(nombre, tipo, valor, longitud));
         }
+        return nombre;
     }
 
     // Es decir, cada vez que vas encontrando identificadores, los guardás en una cola/lista. Cuando encontrás un tipo, vacías esa lista, y le agregás 

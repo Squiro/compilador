@@ -13,6 +13,7 @@ import com.unlam.compilador.TercetoManager;
 import com.unlam.compilador.Terceto;
 import com.unlam.compilador.Index;
 import java.util.Stack;
+import Assembler.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -358,7 +359,7 @@ class CUP$AnalizadorSintactico$actions {
      public Stack<Integer> terminoStack = new Stack<Integer>();
 
      // indices de no terminales para los tercetos
-     public int factorIdx, terminoIdx, expresionIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
+     public int factorIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
      public String inlistID;
 
 
@@ -404,6 +405,8 @@ class CUP$AnalizadorSintactico$actions {
 		
                          tablaDeSimbolos.save();
                          tercetoManager.processList();
+                         AsmGenerator asm = new AsmGenerator(tablaDeSimbolos, this.tercetoManager.getTercetoList()); 
+                         asm.generateAsm();
                          System.out.println("Compilacion exitosa.");
                          System.out.println("<3 Gracias por utilizar el compilador desarrollado por el Grupo 2. <3");
                     
@@ -723,7 +726,7 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_ENT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                          tablaDeSimbolos.add("_"+CTE_ENT, null, CTE_ENT, null);
-                         factorIdx = tercetoManager.createTerceto(CTE_ENT);
+                         factorIdx = tercetoManager.createTerceto("_"+CTE_ENT);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -738,7 +741,7 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_FLOAT = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                          tablaDeSimbolos.add("_"+CTE_FLOAT, null, CTE_FLOAT, null);                         
-                         factorIdx = tercetoManager.createTerceto(CTE_FLOAT);
+                         factorIdx = tercetoManager.createTerceto("_"+CTE_FLOAT);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -753,8 +756,8 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                          String str = CTE_STRING.replace("\"", "");
-                         tablaDeSimbolos.addStringConstant(null, str, str.length());
-                         factorIdx = tercetoManager.createTerceto(CTE_STRING);
+                         String nombre = tablaDeSimbolos.addStringConstant(null, str, str.length());
+                         factorIdx = tercetoManager.createTerceto(nombre);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -765,7 +768,6 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         // ARREGLAR ESTO: Las expresiones entre parantesis pisan el expresionIdx anterior
                          factorIdx = expresionStack.pop();
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
