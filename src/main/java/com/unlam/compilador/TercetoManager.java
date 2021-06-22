@@ -45,7 +45,8 @@ public class TercetoManager {
                     LOGGER.severe("Ocurrio un error al guardar el archivo de intermedia.txt");
                     e.printStackTrace();
                 }
-            });
+            });        
+            
 
         } catch (Exception e) {
             LOGGER.severe("Ocurrio un error al guardar el archivo intermedia.txt");

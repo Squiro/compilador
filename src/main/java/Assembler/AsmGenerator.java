@@ -30,10 +30,10 @@ public class AsmGenerator {
         	 this.code = generateCode();
         	 br.write(this.header);
         	 br.write(this.code);
-        	 //br.write(generateFooters());
+        	 br.write(generateFooters());
 
          } catch (Exception e) {
-             System.out.println("Ocurrio un error al guardar el archivo");
+             System.out.println("Ocurrio un error al guardar el archivo codigo.asm");
              e.printStackTrace();
          }
 	}
@@ -62,6 +62,7 @@ public class AsmGenerator {
 				}				
 				else {
 					value = Double.valueOf(simbolValue).toString();
+					data += String.format("\t%s\tdd\t%s\n", sim.getNombre(), value);
 				}
 			}
 			else
@@ -311,7 +312,7 @@ public class AsmGenerator {
 	private String generateFooters() {
         return "\tMOV EAX, 4C00h\n" +
         "\tINT 21h\n\n" +
-        "\tEND ";
+        "\tEND start";
 	}
 
 }

@@ -419,9 +419,9 @@ write               ::= WRITE IDENTIFICADOR:ID
                     | WRITE CONSTANTE_STRING:CTE_STRING
                     {:
                          String str = CTE_STRING.replace("\"", "");
-                         System.out.println("write -> WRITE CONSTANTE_STRING");
-                         tablaDeSimbolos.addStringConstant(null, str, str.length());
-                         tercetoManager.createTerceto("WRITE", "_"+str);
+                         System.out.println("write -> WRITE CONSTANTE_STRING");                        
+                         String nombre = tablaDeSimbolos.addStringConstant(null, str, str.length());
+                         tercetoManager.createTerceto("WRITE", nombre);
                     :};
 
 /*

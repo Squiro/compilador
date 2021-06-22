@@ -1185,9 +1185,9 @@ class CUP$AnalizadorSintactico$actions {
 		String CTE_STRING = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
                          String str = CTE_STRING.replace("\"", "");
-                         System.out.println("write -> WRITE CONSTANTE_STRING");
-                         tablaDeSimbolos.addStringConstant(null, str, str.length());
-                         tercetoManager.createTerceto("WRITE", "_"+str);
+                         System.out.println("write -> WRITE CONSTANTE_STRING");                        
+                         String nombre = tablaDeSimbolos.addStringConstant(null, str, str.length());
+                         tercetoManager.createTerceto("WRITE", nombre);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("write",21, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
