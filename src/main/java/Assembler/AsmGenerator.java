@@ -24,7 +24,7 @@ public class AsmGenerator {
 	
 	public void generateAsm()
 	{
-        try (BufferedWriter br = new BufferedWriter(new FileWriter("./codigo.asm"))) {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter("./Final.asm"))) {
 
         	 this.header = generateHeaders();
         	 this.code = generateCode();
@@ -33,7 +33,7 @@ public class AsmGenerator {
         	 br.write(generateFooters());
 
          } catch (Exception e) {
-             System.out.println("Ocurrio un error al guardar el archivo codigo.asm");
+             System.out.println("Ocurrio un error al guardar el archivo Final.asm");
              e.printStackTrace();
          }
 	}

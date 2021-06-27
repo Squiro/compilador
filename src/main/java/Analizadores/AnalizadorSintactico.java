@@ -856,9 +856,9 @@ class CUP$AnalizadorSintactico$actions {
 
                          // En el caso del else, en vez de setear el terceto para que salte "fuera" del programa del IF, hacemos que salte al primer
                          // terceto del else
-                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+1));
-                         tercetoManager.createTerceto("ET", "IF_ELSE", null);
+                         (tercetoManager.desapilarTercetoBranch()).setSecondValue(new Index(tercetoManager.getLastIdx()+2));
                          int idx = tercetoManager.createTerceto("BI", -1, null);                         
+                         tercetoManager.createTerceto("ET", "IF_ELSE", null);
                          tercetoManager.apilarTercetoBranch(idx);
                          RESULT = new Symbol(-1);
                     

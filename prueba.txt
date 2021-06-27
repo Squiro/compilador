@@ -1,26 +1,126 @@
+
+-/ Declaracion de variables /-
 DECVAR
 a,b,c : INTEGER
 d, e : FLOAT
 f : STRING
 ENDDEC
 
-WRITE "LA REPUTA MADRE"
+-/ Write amistoso /-
+WRITE "Holaa :)"
+
 -/ Asignacion de expresiones /-
 a := 10 + (20)*30
 b := 2 * (353 * 20) - 10
 
+WRITE "VALORES INICIALES: "
+WRITE a
+WRITE b
+
+-/ If sin else /-
+
+WRITE "if sin else"
+WRITE "a == a"
+if (a == a) {
+	WRITE "TRUE"
+}
+
+-/ Menor /-
+WRITE "if a < b"
 if (a < b)
 {
-	WRITE "A ES MENOR QUE B"
+	WRITE "TRUE"
+}
+else {
+	WRITE "FALSE"
 }
 
-if (!(a > b))
+-/ Mayor /-
+WRITE "if a > b"
+if (a > b)
 {
-	WRITE "A SIGUE SIENDO MENOR QUE B"
+	WRITE "TRUE"
+} 
+else {
+	WRITE "FALSE"
 }
 
-while (a < b)
+-/ Mayor EQ /-
+WRITE "if a >= b"
+if (a >= b)
 {
-	WRITE "WHILE SUM 1000 A < B"
-	a := a + 1000
+	WRITE "TRUE"
+} 
+else {
+	WRITE "FALSE"
 }
+
+-/ Menor EQ /-
+WRITE "if a <= b"
+if (a >= b)
+{
+	WRITE "TRUE"
+} 
+else {
+	WRITE "FALSE"
+}
+
+-/ Diff /-
+WRITE "if a != b"
+if (a != b)
+{
+	WRITE "TRUE"
+} 
+else {
+	WRITE "FALSE"
+}
+
+-/ Negado /-
+WRITE "if !(a <= b)"
+if (!(a <= b))
+{
+	WRITE "TRUE"
+} 
+else {
+	WRITE "FALSE"
+}
+
+-/ AND /-
+WRITE "if (a == a && b == b)"
+if (a == a && b == b)
+{
+	WRITE "Me parece que es true."
+}
+
+-/ OR /-
+WRITE "if (a > b || b > a)"
+if (a == a && b == b)
+{
+	WRITE "TRUE"
+}
+
+-/ If anidado /-
+WRITE "if anidado"
+if (b > a)
+{
+	WRITE "b > a"
+	if (b == b)
+	{
+		WRITE "b == b"
+	}
+
+}
+
+-/ If con while /-
+WRITE "IF con while anidado"
+if (b > a) {
+	
+	WRITE "while a < b"
+	while (a < b)
+	{	
+		a := a + 10000
+		WRITE a
+	}
+}
+
+

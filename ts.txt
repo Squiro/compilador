@@ -5,13 +5,41 @@ c                             |INTEGER                       |-                 
 d                             |FLOAT                         |-                             |-                             
 e                             |FLOAT                         |-                             |-                             
 f                             |STRING                        |-                             |-                             
-_constString0                 |-                             |LA REPUTA MADRE               |15                            
+_constString0                 |-                             |Holaa :)                      |8                             
 _10                           |-                             |10                            |-                             
 _20                           |-                             |20                            |-                             
 _30                           |-                             |30                            |-                             
 _2                            |-                             |2                             |-                             
 _353                          |-                             |353                           |-                             
-_constString1                 |-                             |A ES MENOR QUE B              |16                            
-_constString2                 |-                             |A SIGUE SIENDO MENOR QUE B    |26                            
-_constString3                 |-                             |WHILE SUM 1000 A < B          |20                            
-_1000                         |-                             |1000                          |-                             
+_constString1                 |-                             |VALORES INICIALES:            |19                            
+_constString2                 |-                             |if sin else                   |11                            
+_constString3                 |-                             |a == a                        |6                             
+_constString4                 |-                             |TRUE                          |4                             
+_constString5                 |-                             |if a < b                      |8                             
+_constString6                 |-                             |TRUE                          |4                             
+_constString7                 |-                             |FALSE                         |5                             
+_constString8                 |-                             |if a > b                      |8                             
+_constString9                 |-                             |TRUE                          |4                             
+_constString10                |-                             |FALSE                         |5                             
+_constString11                |-                             |if a >= b                     |9                             
+_constString12                |-                             |TRUE                          |4                             
+_constString13                |-                             |FALSE                         |5                             
+_constString14                |-                             |if a <= b                     |9                             
+_constString15                |-                             |TRUE                          |4                             
+_constString16                |-                             |FALSE                         |5                             
+_constString17                |-                             |if a != b                     |9                             
+_constString18                |-                             |TRUE                          |4                             
+_constString19                |-                             |FALSE                         |5                             
+_constString20                |-                             |if !(a <= b)                  |12                            
+_constString21                |-                             |TRUE                          |4                             
+_constString22                |-                             |FALSE                         |5                             
+_constString23                |-                             |if (a == a && b == b)         |21                            
+_constString24                |-                             |Me parece que es true.        |22                            
+_constString25                |-                             |if (a > b || b > a)           |19                            
+_constString26                |-                             |TRUE                          |4                             
+_constString27                |-                             |if anidado                    |10                            
+_constString28                |-                             |b > a                         |5                             
+_constString29                |-                             |b == b                        |6                             
+_constString30                |-                             |IF con while anidado          |20                            
+_constString31                |-                             |while a < b                   |11                            
+_10000                        |-                             |10000                         |-                             
