@@ -1000,7 +1000,8 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         tercetoManager.createTerceto("CMP", inlistIdx, 1);
+                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", -1, null));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("comparacion",13, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -1106,7 +1107,7 @@ class CUP$AnalizadorSintactico$actions {
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
  
                          inlistID = ID;
-                         tercetoManager.createTerceto("INLIST");
+                         tercetoManager.createTerceto("INLIST", -1, -1);
                          // tercetoManager.createTerceto(":=", "@inListFoundFlag", 0);
                          RESULT = new Symbol(-1);
                     
@@ -1126,7 +1127,7 @@ class CUP$AnalizadorSintactico$actions {
 		
                          System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
                          int idx = tercetoManager.createTerceto("ET", "INLIST_LOAD");
-                         tercetoManager.createTerceto("LOAD", "@inListFoundFlag");
+                         // tercetoManager.createTerceto("LOAD", "@inListFoundFlag");
                          tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          inlistIdx = idx;
                     

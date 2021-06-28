@@ -43,3 +43,10 @@ _constString29                |-                             |b == b            
 _constString30                |-                             |IF con while anidado          |20                            
 _constString31                |-                             |while a < b                   |11                            
 _10000                        |-                             |10000                         |-                             
+_constString32                |-                             |2 DIV 2                       |7                             
+_constString33                |-                             |5 MOD 2                       |7                             
+_5                            |-                             |5                             |-                             
+_constString34                |-                             |INLIST (c; [0; 1; 2])         |21                            
+_0                            |-                             |0                             |-                             
+_1                            |-                             |1                             |-                             
+_constString35                |-                             |TRUE                          |4                             

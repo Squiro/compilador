@@ -50,13 +50,24 @@ include macros2.asm
 	_constString30	db	"IF con while anidado",'$',20 dup(?)
 	_constString31	db	"while a < b",'$',11 dup(?)
 	_10000	dd	10000.0
+	_constString32	db	"2 DIV 2",'$',7 dup(?)
+	_constString33	db	"5 MOD 2",'$',7 dup(?)
+	_5	dd	5.0
+	_constString34	db	"INLIST (c; [0; 1; 2])",'$',21 dup(?)
+	_0	dd	0.0
+	_1	dd	1.0
+	_constString35	db	"TRUE",'$',4 dup(?)
 	@terceto5	dd	?
 	@terceto6	dd	?
 	@terceto11	dd	?
 	@terceto12	dd	?
 	@terceto14	dd	?
 	@terceto154	dd	?
-	@terceto162	dd	?
+	@terceto163	dd	?
+	@terceto169	dd	?
+	@inlistFoundFlag	dd	0
+	@inlist0	dd	0
+	@inlist1	dd	1
 .CODE
 
 start:
@@ -315,15 +326,73 @@ THEN151:
 	JMP CMP_WHILE146
 END_WHILE158: 
 END_IF159: 
+	DisplayString _constString32
+	newline 1
 	FLD _2
 	FLD _2
 	FDIV
-	FISTP @terceto162
-	FILD @terceto162
+	FISTP @terceto163
+	FILD @terceto163
 	FISTP c
 	DisplayInteger c 
 	newline 1
-ET_END165: 
+	DisplayString _constString33
+	newline 1
+	FLD _5
+	FLD _2
+	 FXCH 
+	 FPREM 
+	FSTP @terceto169
+	FLD @terceto169
+	FISTP c
+	DisplayInteger c 
+	newline 1
+	DisplayString _constString34
+	newline 1
+	FLD @inlist0 
+	FSTP @inlistFoundFlag 
+	FILD c
+	FLD _0
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JE INLIST_CMP179
+	FILD @inlist1
+	FSTP @inListFoundFlag
+INLIST_CMP179: 
+	FILD c
+	FLD _1
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JE INLIST_CMP184
+	FILD @inlist1
+	FSTP @inListFoundFlag
+INLIST_CMP184: 
+	FILD c
+	FLD _2
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JE INLIST_LOAD188
+	FILD @inlist1
+	FSTP @inListFoundFlag
+INLIST_LOAD188: 
+	FILD @inlistFoundFlag
+	FLD _1
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JNE END_IF193
+THEN191: 
+	DisplayString _constString35
+	newline 1
+END_IF193: 
+ET_END194: 
 	MOV EAX, 4C00h
 	INT 21h
 

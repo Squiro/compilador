@@ -115,7 +115,7 @@ public class AsmGenerator {
 			break;
 		case "MOD":
 			// Verificar que el orden de los operadores esté bien cargado
-			code += handleArithmeticOperation(terceto, "FPREM", false);
+			code += handleMod(terceto);
 			break;
 		case ":=":
 			code += handleAssing(terceto);
@@ -141,9 +141,6 @@ public class AsmGenerator {
 		case "INLIST":
 			code += handleInlist();
 			break;
-		case "LOAD": 
-			code += handleLoad(terceto);
-			break;
 		case "ET": 
 			code += handleET(terceto); 
 			break;
@@ -163,6 +160,19 @@ public class AsmGenerator {
 		code += convertToInt ? "\tFISTP " + nombre + "\n" :  "\tFSTP " + nombre + "\n";
 		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
 		this.addVariableToData(nombre, convertToInt ? DataTypes.INTEGER :  DataTypes.FLOAT);
+		return code;
+	}
+	
+	private String handleMod(Terceto terceto)
+	{
+		String code = "";
+		String nombre = "@terceto" + terceto.getId();
+		code += this.loadOperators(terceto);
+		code += "\t FXCH \n";
+		code += "\t FPREM \n";
+		code +=  "\tFSTP " + nombre + "\n";
+		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
+		this.addVariableToData(nombre, DataTypes.FLOAT);
 		return code;
 	}
 		
@@ -268,16 +278,7 @@ public class AsmGenerator {
 		
 		return code;		
 	}
-	
-	// Esta función solo carga una variale. Actualmente la usamos por el Inlist nada más (porque no queríamos cambiar mucho la lógica). 
-	// No deberíamos usarla por otra razón.
-	private String handleLoad(Terceto terceto)
-	{
-		String code = "";		
-		code += "\tFLD " + this.getVariable(terceto.getSecondValue()) + "\n";		
-		return code;		
-	}
-	
+		
 	private String handleET(Terceto terceto) {
 		String code = "";
 		String et = terceto.getSecondValue().toString() + terceto.getId();
