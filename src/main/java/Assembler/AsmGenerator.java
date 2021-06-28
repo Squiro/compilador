@@ -162,15 +162,25 @@ public class AsmGenerator {
 		code += "\t" + operation  + "\n";
 		code += convertToInt ? "\tFISTP " + nombre + "\n" :  "\tFSTP " + nombre + "\n";
 		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
-		this.addVariableToData(nombre);
+		this.addVariableToData(nombre, convertToInt ? DataTypes.INTEGER :  DataTypes.FLOAT);
 		return code;
 	}
 		
 	private String handleAssing(Terceto terceto)
 	{
 		String code = "";
-		code += "\tFLD " + this.getVariable(terceto.getThirdValue())  + "\n";
-		code += "\tFSTP " + terceto.getSecondValue().toString() + "\n";
+		
+		code += getLoad(this.getVariable(terceto.getThirdValue()));
+		
+		String variable = terceto.getSecondValue().toString();
+		if (tablaSimbolos.getType(variable) == DataTypes.INTEGER)
+		{
+			code += "\tFISTP " + terceto.getSecondValue().toString() + "\n";
+		} else
+		{
+			code += "\tFSTP " + terceto.getSecondValue().toString() + "\n";
+		}		
+		
 		return code;
 	}
 	
@@ -228,6 +238,8 @@ public class AsmGenerator {
 		
 		if(tablaSimbolos.isString(variable)){
 			code = "\tDisplayString " + variable + "\n";
+        } else if (tablaSimbolos.getType(variable) == DataTypes.INTEGER) {
+        	code = "\tDisplayInteger " + variable + " \n";
         } else {
         	code = "\tDisplayFloat " + variable + " , 2 \n";
         }
@@ -245,9 +257,9 @@ public class AsmGenerator {
 		// Load "@inlist0" and "@inlist1" constants and @inlistFoundFlag only once
 		if (!this.inlist)
 		{
-			this.addVariableToData("@inlistFoundFlag", "0");
-			this.addVariableToData("@inlist0", "0");
-			this.addVariableToData("@inlist1", "1");
+			this.addVariableToData("@inlistFoundFlag", DataTypes.INTEGER, "0");
+			this.addVariableToData("@inlist0", DataTypes.INTEGER, "0");
+			this.addVariableToData("@inlist1", DataTypes.INTEGER, "1");
 			this.inlist = true;
 		}
 		
@@ -274,20 +286,24 @@ public class AsmGenerator {
 	}
 	
 	
-	private void addVariableToData(String nombre)
+	private void addVariableToData(String nombre, DataTypes type)
 	{
+		this.tablaSimbolos.add(nombre, type, null, null);
 		this.header += String.format("\t%s\tdd\t%s\n", nombre, "?");
 	}
 	
-	private void addVariableToData(String nombre, String value)
+	private void addVariableToData(String nombre, DataTypes type, String value)
 	{
+		this.tablaSimbolos.add(nombre, type, value, null);
 		this.header += String.format("\t%s\tdd\t%s\n", nombre, value);
 	}
 	
 	private String loadOperators(Terceto terceto) {
 		String code = "";
-		code += "\tFLD " +  this.getVariable(terceto.getSecondValue()) + "\n";
-		code += "\tFLD " +  this.getVariable(terceto.getThirdValue()) + "\n";
+		
+		code += getLoad(this.getVariable(terceto.getSecondValue()));
+		code += getLoad(this.getVariable(terceto.getThirdValue()));			
+	
 		return code;
 	}
 	
@@ -304,12 +320,30 @@ public class AsmGenerator {
 			int index = val.getVal();
 			Terceto ter =  this.tercetoList.get(index-1);
 			if (ter.getCount() > 1)
+			{
 				return "@terceto" + index;
+			}
 			else
 				return ter.getFirstValue().toString();
 		}
 		
 		return value.toString();
+	}
+	
+	// Checks datatype and returns FLD or FILD
+	private String getLoad(String variable)
+	{
+		String code = "";
+		
+		if (this.tablaSimbolos.getType(variable) == DataTypes.INTEGER)
+		{
+			code += "\tFILD " + variable + "\n";
+		} else 
+		{
+			code += "\tFLD " + variable  + "\n";
+		}	
+		
+		return code;
 	}
 	
 	private String generateFooters() {

@@ -84,6 +84,14 @@ public class SymbolTable {
     	return false;
     }
 
+    public DataTypes getType(String variable) {
+        for (Simbolo simbolo : symbolList) {
+			if (simbolo.getNombre().equals(variable))
+				return simbolo.getTipo();
+		}
+        return null;
+    }
+
     public void save() {
         try (BufferedWriter br = new BufferedWriter(new FileWriter("ts.txt"))) {
 

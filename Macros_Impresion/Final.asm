@@ -56,6 +56,7 @@ include macros2.asm
 	@terceto12	dd	?
 	@terceto14	dd	?
 	@terceto154	dd	?
+	@terceto162	dd	?
 .CODE
 
 start:
@@ -74,7 +75,7 @@ start:
 	FADD
 	FSTP @terceto6
 	FLD @terceto6
-	FSTP a
+	FISTP a
 	FLD _353
 	FLD _20
 	FMUL
@@ -88,19 +89,19 @@ start:
 	FSUB
 	FSTP @terceto14
 	FLD @terceto14
-	FSTP b
+	FISTP b
 	DisplayString _constString1
 	newline 1
-	DisplayFloat a , 2 
+	DisplayInteger a 
 	newline 1
-	DisplayFloat b , 2 
+	DisplayInteger b 
 	newline 1
 	DisplayString _constString2
 	newline 1
 	DisplayString _constString3
 	newline 1
-	FLD a
-	FLD a
+	FILD a
+	FILD a
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -112,8 +113,8 @@ THEN25:
 END_IF27: 
 	DisplayString _constString5
 	newline 1
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -129,8 +130,8 @@ IF_ELSE36:
 END_IF38: 
 	DisplayString _constString8
 	newline 1
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -146,8 +147,8 @@ IF_ELSE47:
 END_IF49: 
 	DisplayString _constString11
 	newline 1
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -163,8 +164,8 @@ IF_ELSE58:
 END_IF60: 
 	DisplayString _constString14
 	newline 1
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -180,8 +181,8 @@ IF_ELSE69:
 END_IF71: 
 	DisplayString _constString17
 	newline 1
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -197,8 +198,8 @@ IF_ELSE80:
 END_IF82: 
 	DisplayString _constString20
 	newline 1
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -214,15 +215,15 @@ IF_ELSE91:
 END_IF93: 
 	DisplayString _constString23
 	newline 1
-	FLD a
-	FLD a
+	FILD a
+	FILD a
 	FXCH
 	FCOMP
 	FSTSW AX
 	SAHF
 	JNE ET_LAZY_AND104
-	FLD b
-	FLD b
+	FILD b
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -237,15 +238,15 @@ THEN106:
 END_IF108: 
 	DisplayString _constString25
 	newline 1
-	FLD a
-	FLD a
+	FILD a
+	FILD a
 	FXCH
 	FCOMP
 	FSTSW AX
 	SAHF
 	JNE ET_LAZY_AND119
-	FLD b
-	FLD b
+	FILD b
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -260,8 +261,8 @@ THEN121:
 END_IF123: 
 	DisplayString _constString27
 	newline 1
-	FLD b
-	FLD a
+	FILD b
+	FILD a
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -270,8 +271,8 @@ END_IF123:
 THEN129: 
 	DisplayString _constString28
 	newline 1
-	FLD b
-	FLD b
+	FILD b
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -284,8 +285,8 @@ END_IF137:
 END_IF138: 
 	DisplayString _constString30
 	newline 1
-	FLD b
-	FLD a
+	FILD b
+	FILD a
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -295,26 +296,34 @@ THEN144:
 	DisplayString _constString31
 	newline 1
 CMP_WHILE146: 
-	FLD a
-	FLD b
+	FILD a
+	FILD b
 	FXCH
 	FCOMP
 	FSTSW AX
 	SAHF
 	JAE END_WHILE158
 THEN151: 
-	FLD a
+	FILD a
 	FLD _10000
 	FADD
 	FSTP @terceto154
 	FLD @terceto154
-	FSTP a
-	DisplayFloat a , 2 
+	FISTP a
+	DisplayInteger a 
 	newline 1
 	JMP CMP_WHILE146
 END_WHILE158: 
 END_IF159: 
-ET_END160: 
+	FLD _2
+	FLD _2
+	FDIV
+	FISTP @terceto162
+	FILD @terceto162
+	FISTP c
+	DisplayInteger c 
+	newline 1
+ET_END165: 
 	MOV EAX, 4C00h
 	INT 21h
 

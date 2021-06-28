@@ -123,4 +123,7 @@ if (b > a) {
 	}
 }
 
+-/ DIV /-
+c := 2 DIV 2
+WRITE c
 
