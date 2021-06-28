@@ -57,6 +57,11 @@ include macros2.asm
 	_0	dd	0.0
 	_1	dd	1.0
 	_constString35	db	"TRUE",'$',4 dup(?)
+	_constString36	db	"INLIST (c; [3; 4; 5])",'$',21 dup(?)
+	_3	dd	3.0
+	_4	dd	4.0
+	_constString37	db	"TRUE",'$',4 dup(?)
+	_constString38	db	"FALSE",'$',5 dup(?)
 	@terceto5	dd	?
 	@terceto6	dd	?
 	@terceto11	dd	?
@@ -65,7 +70,7 @@ include macros2.asm
 	@terceto154	dd	?
 	@terceto163	dd	?
 	@terceto169	dd	?
-	@inlistFoundFlag	dd	0
+	@inlistFoundFlag	dd	?
 	@inlist0	dd	0
 	@inlist1	dd	1
 .CODE
@@ -349,17 +354,17 @@ END_IF159:
 	newline 1
 	DisplayString _constString34
 	newline 1
-	FLD @inlist0 
-	FSTP @inlistFoundFlag 
+	FILD @inlist0 
+	FISTP @inlistFoundFlag 
 	FILD c
 	FLD _0
 	FXCH
 	FCOMP
 	FSTSW AX
 	SAHF
-	JE INLIST_CMP179
+	JNE INLIST_CMP179
 	FILD @inlist1
-	FSTP @inListFoundFlag
+	FISTP @inlistFoundFlag
 INLIST_CMP179: 
 	FILD c
 	FLD _1
@@ -367,9 +372,9 @@ INLIST_CMP179:
 	FCOMP
 	FSTSW AX
 	SAHF
-	JE INLIST_CMP184
+	JNE INLIST_CMP184
 	FILD @inlist1
-	FSTP @inListFoundFlag
+	FISTP @inlistFoundFlag
 INLIST_CMP184: 
 	FILD c
 	FLD _2
@@ -377,12 +382,12 @@ INLIST_CMP184:
 	FCOMP
 	FSTSW AX
 	SAHF
-	JE INLIST_LOAD188
+	JNE INLIST_LOAD188
 	FILD @inlist1
-	FSTP @inListFoundFlag
+	FISTP @inlistFoundFlag
 INLIST_LOAD188: 
 	FILD @inlistFoundFlag
-	FLD _1
+	FILD @inlist1
 	FXCH
 	FCOMP
 	FSTSW AX
@@ -392,7 +397,56 @@ THEN191:
 	DisplayString _constString35
 	newline 1
 END_IF193: 
-ET_END194: 
+	DisplayString _constString36
+	newline 1
+	FILD @inlist0 
+	FISTP @inlistFoundFlag 
+	FILD c
+	FLD _3
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JNE INLIST_CMP201
+	FILD @inlist1
+	FISTP @inlistFoundFlag
+INLIST_CMP201: 
+	FILD c
+	FLD _4
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JNE INLIST_CMP206
+	FILD @inlist1
+	FISTP @inlistFoundFlag
+INLIST_CMP206: 
+	FILD c
+	FLD _5
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JNE INLIST_LOAD210
+	FILD @inlist1
+	FISTP @inlistFoundFlag
+INLIST_LOAD210: 
+	FILD @inlistFoundFlag
+	FILD @inlist1
+	FXCH
+	FCOMP
+	FSTSW AX
+	SAHF
+	JNE IF_ELSE216
+THEN213: 
+	DisplayString _constString37
+	newline 1
+	JMP END_IF218
+IF_ELSE216: 
+	DisplayString _constString38
+	newline 1
+END_IF218: 
+ET_END219: 
 	MOV EAX, 4C00h
 	INT 21h
 

@@ -50,3 +50,8 @@ _constString34                |-                             |INLIST (c; [0; 1; 
 _0                            |-                             |0                             |-                             
 _1                            |-                             |1                             |-                             
 _constString35                |-                             |TRUE                          |4                             
+_constString36                |-                             |INLIST (c; [3; 4; 5])         |21                            
+_3                            |-                             |3                             |-                             
+_4                            |-                             |4                             |-                             
+_constString37                |-                             |TRUE                          |4                             
+_constString38                |-                             |FALSE                         |5                             

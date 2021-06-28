@@ -7,6 +7,7 @@ f : STRING
 ENDDEC
 
 
+
 -/ Write amistoso /-
 WRITE "Holaa :)"
 
@@ -140,4 +141,15 @@ if (INLIST (c; [0; 1; 2]))
 {
 	WRITE "TRUE"
 }
+
+-/ INLIST /-
+WRITE "INLIST (c; [3; 4; 5])"
+if (INLIST (c; [3; 4; 5])) 
+{
+	WRITE "TRUE"
+} else {
+	WRITE "FALSE"
+}
+
+
 

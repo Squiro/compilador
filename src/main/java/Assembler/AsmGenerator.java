@@ -183,12 +183,13 @@ public class AsmGenerator {
 		code += getLoad(this.getVariable(terceto.getThirdValue()));
 		
 		String variable = terceto.getSecondValue().toString();
+		Object type = tablaSimbolos.getType(variable);
 		if (tablaSimbolos.getType(variable) == DataTypes.INTEGER)
 		{
-			code += "\tFISTP " + terceto.getSecondValue().toString() + "\n";
+			code += "\tFISTP " + variable + "\n";
 		} else
 		{
-			code += "\tFSTP " + terceto.getSecondValue().toString() + "\n";
+			code += "\tFSTP " + variable + "\n";
 		}		
 		
 		return code;
@@ -267,14 +268,14 @@ public class AsmGenerator {
 		// Load "@inlist0" and "@inlist1" constants and @inlistFoundFlag only once
 		if (!this.inlist)
 		{
-			this.addVariableToData("@inlistFoundFlag", DataTypes.INTEGER, "0");
+			this.addVariableToData("@inlistFoundFlag", DataTypes.INTEGER);
 			this.addVariableToData("@inlist0", DataTypes.INTEGER, "0");
 			this.addVariableToData("@inlist1", DataTypes.INTEGER, "1");
 			this.inlist = true;
 		}
 		
-		code += "\tFLD @inlist0 \n";
-		code += "\tFSTP @inlistFoundFlag \n";
+		code += "\tFILD @inlist0 \n";
+		code += "\tFISTP @inlistFoundFlag \n";
 		
 		return code;		
 	}

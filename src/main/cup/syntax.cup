@@ -382,14 +382,12 @@ inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID
                     {: 
                          inlistID = ID;
                          tercetoManager.createTerceto("INLIST", -1, -1);
-                         // tercetoManager.createTerceto(":=", "@inListFoundFlag", 0);
                          RESULT = new Symbol(-1);
                     :} 
                     PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
                     {:
                          System.out.println("inlist -> INLIST PAREN_OPEN IDENTIFICADOR PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE");
                          int idx = tercetoManager.createTerceto("ET", "INLIST_LOAD");
-                         // tercetoManager.createTerceto("LOAD", "@inListFoundFlag");
                          tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          inlistIdx = idx;
                     :};
@@ -399,14 +397,14 @@ lista               ::= lista PUNTO_COMA expresion
                          int idx = tercetoManager.createTerceto("ET", "INLIST_CMP");
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()-1));
                          tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
-                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BEQ", null));
-                         tercetoManager.createTerceto(":=", "@inListFoundFlag", "@inlist1");
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
                     :} 
                     | expresion 
                     {:
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()));                         
-                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BEQ", null));
-                         tercetoManager.createTerceto(":=", "@inListFoundFlag", "@inlist1");
+                         tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
                     :};
 
 /*
