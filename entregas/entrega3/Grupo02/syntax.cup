@@ -23,7 +23,6 @@ action code
      // indices de no terminales para los tercetos
      public int factorIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
      public String inlistID;
-     public int lastInlistIdx;
 
 :}
 
@@ -335,7 +334,7 @@ comparacion         ::= expresion comparador expresion
                     :}
                     | inlist
                     {:
-                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
+                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag", "@inlist1");
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", -1, null));
                     :};
                    
@@ -382,7 +381,7 @@ while               ::= WHILE PAREN_OPEN {: whileStack.push(tercetoManager.creat
 inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID 
                     {: 
                          inlistID = ID;
-                         lastInlistIdx = tercetoManager.createTerceto("INLIST", -1, -1);
+                         tercetoManager.createTerceto("INLIST", -1, -1);
                          RESULT = new Symbol(-1);
                     :} 
                     PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
@@ -399,13 +398,13 @@ lista               ::= lista PUNTO_COMA expresion
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()-1));
                          tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
-                         tercetoManager.createTerceto(":=", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
                     :} 
                     | expresion 
                     {:
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()));                         
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
-                         tercetoManager.createTerceto(":=", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
                     :};
 
 /*

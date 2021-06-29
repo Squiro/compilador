@@ -357,6 +357,7 @@ class CUP$AnalizadorSintactico$actions {
      // indices de no terminales para los tercetos
      public int factorIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
      public String inlistID;
+     public int lastInlistIdx;
 
 
   private final AnalizadorSintactico parser;
@@ -1000,7 +1001,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
 		
-                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", -1, null));
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("comparacion",13, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1107,7 +1108,7 @@ class CUP$AnalizadorSintactico$actions {
 		String ID = (String)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
  
                          inlistID = ID;
-                         tercetoManager.createTerceto("INLIST", -1, -1);
+                         lastInlistIdx = tercetoManager.createTerceto("INLIST", -1, -1);
                          RESULT = new Symbol(-1);
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$3",26, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1142,7 +1143,7 @@ class CUP$AnalizadorSintactico$actions {
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()-1));
                          tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
-                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("lista",18, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -1155,7 +1156,7 @@ class CUP$AnalizadorSintactico$actions {
 		
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()));                         
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
-                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("lista",18, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }

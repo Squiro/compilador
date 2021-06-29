@@ -139,7 +139,7 @@ public class AsmGenerator {
 			code += handleRead(terceto);
 			break;
 		case "INLIST":
-			code += handleInlist();
+			code += handleInlist(terceto.getId());
 			break;
 		case "ET": 
 			code += handleET(terceto); 
@@ -262,20 +262,21 @@ public class AsmGenerator {
 		 return "\tGetFloat " + this.getVariable(terceto.getSecondValue().toString()) + "\n";
 	}
 	
-	private String handleInlist()
+	private String handleInlist(int inlistId)
 	{
 		String code = "";
 		// Load "@inlist0" and "@inlist1" constants and @inlistFoundFlag only once
 		if (!this.inlist)
 		{
-			this.addVariableToData("@inlistFoundFlag", DataTypes.INTEGER);
 			this.addVariableToData("@inlist0", DataTypes.INTEGER, "0");
 			this.addVariableToData("@inlist1", DataTypes.INTEGER, "1");
 			this.inlist = true;
 		}
 		
+		String flag = "@inlistFoundFlag" + inlistId;
+		this.addVariableToData(flag, DataTypes.INTEGER);
 		code += "\tFILD @inlist0 \n";
-		code += "\tFISTP @inlistFoundFlag \n";
+		code += "\tFISTP " + flag + "\n";
 		
 		return code;		
 	}

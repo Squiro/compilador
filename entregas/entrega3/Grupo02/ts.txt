@@ -1,0 +1,57 @@
+NOMBRE                        |TIPODATO                      |VALOR                         |LONGITUD                      
+a                             |INTEGER                       |-                             |-                             
+b                             |INTEGER                       |-                             |-                             
+c                             |INTEGER                       |-                             |-                             
+d                             |FLOAT                         |-                             |-                             
+e                             |FLOAT                         |-                             |-                             
+f                             |STRING                        |-                             |-                             
+_constString0                 |-                             |Holaa :)                      |8                             
+_10                           |-                             |10                            |-                             
+_20                           |-                             |20                            |-                             
+_30                           |-                             |30                            |-                             
+_2                            |-                             |2                             |-                             
+_353                          |-                             |353                           |-                             
+_constString1                 |-                             |VALORES INICIALES:            |19                            
+_constString2                 |-                             |if sin else                   |11                            
+_constString3                 |-                             |a == a                        |6                             
+_constString4                 |-                             |TRUE                          |4                             
+_constString5                 |-                             |if a < b                      |8                             
+_constString6                 |-                             |TRUE                          |4                             
+_constString7                 |-                             |FALSE                         |5                             
+_constString8                 |-                             |if a > b                      |8                             
+_constString9                 |-                             |TRUE                          |4                             
+_constString10                |-                             |FALSE                         |5                             
+_constString11                |-                             |if a >= b                     |9                             
+_constString12                |-                             |TRUE                          |4                             
+_constString13                |-                             |FALSE                         |5                             
+_constString14                |-                             |if a <= b                     |9                             
+_constString15                |-                             |TRUE                          |4                             
+_constString16                |-                             |FALSE                         |5                             
+_constString17                |-                             |if a != b                     |9                             
+_constString18                |-                             |TRUE                          |4                             
+_constString19                |-                             |FALSE                         |5                             
+_constString20                |-                             |if !(a <= b)                  |12                            
+_constString21                |-                             |TRUE                          |4                             
+_constString22                |-                             |FALSE                         |5                             
+_constString23                |-                             |if (a == a && b == b)         |21                            
+_constString24                |-                             |Me parece que es true.        |22                            
+_constString25                |-                             |if (a > b || b > a)           |19                            
+_constString26                |-                             |TRUE                          |4                             
+_constString27                |-                             |if anidado                    |10                            
+_constString28                |-                             |b > a                         |5                             
+_constString29                |-                             |b == b                        |6                             
+_constString30                |-                             |IF con while anidado          |20                            
+_constString31                |-                             |while a < b                   |11                            
+_10000                        |-                             |10000                         |-                             
+_constString32                |-                             |2 DIV 2                       |7                             
+_constString33                |-                             |5 MOD 2                       |7                             
+_5                            |-                             |5                             |-                             
+_constString34                |-                             |INLIST (c; [0; 1; 2])         |21                            
+_0                            |-                             |0                             |-                             
+_1                            |-                             |1                             |-                             
+_constString35                |-                             |TRUE                          |4                             
+_constString36                |-                             |INLIST (c; [3; 4; 5])         |21                            
+_3                            |-                             |3                             |-                             
+_4                            |-                             |4                             |-                             
+_constString37                |-                             |TRUE                          |4                             
+_constString38                |-                             |FALSE                         |5                             
