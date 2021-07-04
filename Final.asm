@@ -62,11 +62,11 @@ include macros2.asm
 	_4	dd	4.0
 	_constString37	db	"TRUE",'$',4 dup(?)
 	_constString38	db	"FALSE",'$',5 dup(?)
-	@terceto193	dd	?
+	@terceto163	dd	?
 	@inlist0	dd	0
 	@inlist1	dd	1
-	@inlistFoundFlag203	dd	?
-	@inlistFoundFlag225	dd	?
+	@inlistFoundFlag173	dd	?
+	@inlistFoundFlag195	dd	?
 .CODE
 
 start:
@@ -107,11 +107,11 @@ start:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE END_IF29
-THEN27: 
+	JNE END_IF27
+THEN25: 
 	DisplayString _constString4
 	newline 1
-END_IF29: 
+END_IF27: 
 	DisplayString _constString5
 	newline 1
 	FILD a
@@ -121,15 +121,15 @@ END_IF29:
 	FSTSW AX
 	SAHF
 	FFREE
-	JAE IF_ELSE40
-THEN37: 
+	JAE IF_ELSE36
+THEN33: 
 	DisplayString _constString6
 	newline 1
-	JMP END_IF42
-IF_ELSE40: 
+	JMP END_IF38
+IF_ELSE36: 
 	DisplayString _constString7
 	newline 1
-END_IF42: 
+END_IF38: 
 	DisplayString _constString8
 	newline 1
 	FILD a
@@ -139,15 +139,15 @@ END_IF42:
 	FSTSW AX
 	SAHF
 	FFREE
-	JBE IF_ELSE53
-THEN50: 
+	JBE IF_ELSE47
+THEN44: 
 	DisplayString _constString9
 	newline 1
-	JMP END_IF55
-IF_ELSE53: 
+	JMP END_IF49
+IF_ELSE47: 
 	DisplayString _constString10
 	newline 1
-END_IF55: 
+END_IF49: 
 	DisplayString _constString11
 	newline 1
 	FILD a
@@ -157,15 +157,15 @@ END_IF55:
 	FSTSW AX
 	SAHF
 	FFREE
-	JB IF_ELSE66
-THEN63: 
+	JB IF_ELSE58
+THEN55: 
 	DisplayString _constString12
 	newline 1
-	JMP END_IF68
-IF_ELSE66: 
+	JMP END_IF60
+IF_ELSE58: 
 	DisplayString _constString13
 	newline 1
-END_IF68: 
+END_IF60: 
 	DisplayString _constString14
 	newline 1
 	FILD a
@@ -175,15 +175,15 @@ END_IF68:
 	FSTSW AX
 	SAHF
 	FFREE
-	JB IF_ELSE79
-THEN76: 
+	JB IF_ELSE69
+THEN66: 
 	DisplayString _constString15
 	newline 1
-	JMP END_IF81
-IF_ELSE79: 
+	JMP END_IF71
+IF_ELSE69: 
 	DisplayString _constString16
 	newline 1
-END_IF81: 
+END_IF71: 
 	DisplayString _constString17
 	newline 1
 	FILD a
@@ -193,15 +193,15 @@ END_IF81:
 	FSTSW AX
 	SAHF
 	FFREE
-	JE IF_ELSE92
-THEN89: 
+	JE IF_ELSE80
+THEN77: 
 	DisplayString _constString18
 	newline 1
-	JMP END_IF94
-IF_ELSE92: 
+	JMP END_IF82
+IF_ELSE80: 
 	DisplayString _constString19
 	newline 1
-END_IF94: 
+END_IF82: 
 	DisplayString _constString20
 	newline 1
 	FILD a
@@ -211,15 +211,15 @@ END_IF94:
 	FSTSW AX
 	SAHF
 	FFREE
-	JBE IF_ELSE105
-THEN102: 
+	JBE IF_ELSE91
+THEN88: 
 	DisplayString _constString21
 	newline 1
-	JMP END_IF107
-IF_ELSE105: 
+	JMP END_IF93
+IF_ELSE91: 
 	DisplayString _constString22
 	newline 1
-END_IF107: 
+END_IF93: 
 	DisplayString _constString23
 	newline 1
 	FILD a
@@ -229,7 +229,7 @@ END_IF107:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE ET_LAZY_AND122
+	JNE ET_LAZY_AND104
 	FILD b
 	FILD b
 	FXCH
@@ -237,14 +237,14 @@ END_IF107:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE ET_LAZY_AND122
-	JMP THEN124
-ET_LAZY_AND122: 
-	JMP END_IF126
-THEN124: 
+	JNE ET_LAZY_AND104
+	JMP THEN106
+ET_LAZY_AND104: 
+	JMP END_IF108
+THEN106: 
 	DisplayString _constString24
 	newline 1
-END_IF126: 
+END_IF108: 
 	DisplayString _constString25
 	newline 1
 	FILD a
@@ -254,7 +254,7 @@ END_IF126:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE ET_LAZY_AND141
+	JNE ET_LAZY_AND119
 	FILD b
 	FILD b
 	FXCH
@@ -262,14 +262,14 @@ END_IF126:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE ET_LAZY_AND141
-	JMP THEN143
-ET_LAZY_AND141: 
-	JMP END_IF145
-THEN143: 
+	JNE ET_LAZY_AND119
+	JMP THEN121
+ET_LAZY_AND119: 
+	JMP END_IF123
+THEN121: 
 	DisplayString _constString26
 	newline 1
-END_IF145: 
+END_IF123: 
 	DisplayString _constString27
 	newline 1
 	FILD b
@@ -279,8 +279,8 @@ END_IF145:
 	FSTSW AX
 	SAHF
 	FFREE
-	JBE END_IF164
-THEN153: 
+	JBE END_IF138
+THEN129: 
 	DisplayString _constString28
 	newline 1
 	FILD b
@@ -290,12 +290,12 @@ THEN153:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE END_IF163
-THEN161: 
+	JNE END_IF137
+THEN135: 
 	DisplayString _constString29
 	newline 1
-END_IF163: 
-END_IF164: 
+END_IF137: 
+END_IF138: 
 	DisplayString _constString30
 	newline 1
 	FILD b
@@ -305,11 +305,11 @@ END_IF164:
 	FSTSW AX
 	SAHF
 	FFREE
-	JBE END_IF189
-THEN172: 
+	JBE END_IF159
+THEN144: 
 	DisplayString _constString31
 	newline 1
-CMP_WHILE174: 
+CMP_WHILE146: 
 	FILD a
 	FILD b
 	FXCH
@@ -317,24 +317,24 @@ CMP_WHILE174:
 	FSTSW AX
 	SAHF
 	FFREE
-	JAE END_WHILE188
-THEN181: 
+	JAE END_WHILE158
+THEN151: 
 	FILD a
 	FLD _10000
 	FADD
 	FISTP a
 	DisplayInteger a 
 	newline 1
-	JMP CMP_WHILE174
-END_WHILE188: 
-END_IF189: 
+	JMP CMP_WHILE146
+END_WHILE158: 
+END_IF159: 
 	DisplayString _constString32
 	newline 1
 	FLD _2
 	FLD _2
 	FDIV 
-	FISTP @terceto193
-	FILD @terceto193
+	FISTP @terceto163
+	FILD @terceto163
 	FISTP c
 	DisplayInteger c 
 	newline 1
@@ -350,7 +350,7 @@ END_IF189:
 	DisplayString _constString34
 	newline 1
 	FILD @inlist0 
-	FISTP @inlistFoundFlag203
+	FISTP @inlistFoundFlag173
 	FILD c
 	FLD _0
 	FXCH
@@ -358,10 +358,10 @@ END_IF189:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE INLIST_CMP209
+	JNE INLIST_CMP179
 	FILD @inlist1
-	FISTP @inlistFoundFlag203
-INLIST_CMP209: 
+	FISTP @inlistFoundFlag173
+INLIST_CMP179: 
 	FILD c
 	FLD _1
 	FXCH
@@ -369,10 +369,10 @@ INLIST_CMP209:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE INLIST_CMP214
+	JNE INLIST_CMP184
 	FILD @inlist1
-	FISTP @inlistFoundFlag203
-INLIST_CMP214: 
+	FISTP @inlistFoundFlag173
+INLIST_CMP184: 
 	FILD c
 	FLD _2
 	FXCH
@@ -380,26 +380,26 @@ INLIST_CMP214:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE INLIST_LOAD218
+	JNE INLIST_LOAD188
 	FILD @inlist1
-	FISTP @inlistFoundFlag203
-INLIST_LOAD218: 
-	FILD @inlistFoundFlag203
+	FISTP @inlistFoundFlag173
+INLIST_LOAD188: 
+	FILD @inlistFoundFlag173
 	FILD @inlist1
 	FXCH
 	FCOMP
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE END_IF223
-THEN221: 
+	JNE END_IF193
+THEN191: 
 	DisplayString _constString35
 	newline 1
-END_IF223: 
+END_IF193: 
 	DisplayString _constString36
 	newline 1
 	FILD @inlist0 
-	FISTP @inlistFoundFlag225
+	FISTP @inlistFoundFlag195
 	FILD c
 	FLD _3
 	FXCH
@@ -407,10 +407,10 @@ END_IF223:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE INLIST_CMP231
+	JNE INLIST_CMP201
 	FILD @inlist1
-	FISTP @inlistFoundFlag225
-INLIST_CMP231: 
+	FISTP @inlistFoundFlag195
+INLIST_CMP201: 
 	FILD c
 	FLD _4
 	FXCH
@@ -418,10 +418,10 @@ INLIST_CMP231:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE INLIST_CMP236
+	JNE INLIST_CMP206
 	FILD @inlist1
-	FISTP @inlistFoundFlag225
-INLIST_CMP236: 
+	FISTP @inlistFoundFlag195
+INLIST_CMP206: 
 	FILD c
 	FLD _5
 	FXCH
@@ -429,27 +429,27 @@ INLIST_CMP236:
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE INLIST_LOAD240
+	JNE INLIST_LOAD210
 	FILD @inlist1
-	FISTP @inlistFoundFlag225
-INLIST_LOAD240: 
-	FILD @inlistFoundFlag225
+	FISTP @inlistFoundFlag195
+INLIST_LOAD210: 
+	FILD @inlistFoundFlag195
 	FILD @inlist1
 	FXCH
 	FCOMP
 	FSTSW AX
 	SAHF
 	FFREE
-	JNE IF_ELSE246
-THEN243: 
+	JNE IF_ELSE216
+THEN213: 
 	DisplayString _constString37
 	newline 1
-	JMP END_IF248
-IF_ELSE246: 
+	JMP END_IF218
+IF_ELSE216: 
 	DisplayString _constString38
 	newline 1
-END_IF248: 
-ET_END249: 
+END_IF218: 
+ET_END219: 
 	MOV EAX, 4C00h
 	INT 21h
 

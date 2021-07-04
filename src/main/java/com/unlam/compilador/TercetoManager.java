@@ -27,6 +27,11 @@ public class TercetoManager {
 		this.tercetoList = new ArrayList<Terceto>();
 		this.tercetoBranchStack = new Stack<Terceto>();
 	}
+	
+	public Terceto getTerceto(int index)
+	{
+		return this.tercetoList.get(index-1);
+	}
 
 	public Terceto findTerceto(int index) {
 		for (Terceto terceto : tercetoList) {

@@ -326,11 +326,20 @@ condicion           ::= comparacion OP_AND comparacion
 
 comparacion         ::= expresion 
                     {: 
-                         tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         Terceto ter1 = this.tercetoManager.getTerceto(this.tercetoManager.getLastIdx());
+                         if (ter1.getCount() > 1)
+                         {
+                              tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         }
                          RESULT = new Symbol(-1); 
                     :} comparador expresion
                     {:
-                         tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+
+                         Terceto ter2 = this.tercetoManager.getTerceto(this.tercetoManager.getLastIdx());
+                         if (ter2.getCount() > 1)
+                         {
+                              tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         }
                          int expr2 = expresionStack.pop();
                          int expr1 = expresionStack.pop();
                          tercetoManager.createTerceto("CMP", new Index(expr1), new Index(expr2));

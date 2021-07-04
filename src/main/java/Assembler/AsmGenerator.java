@@ -156,7 +156,7 @@ public class AsmGenerator {
 	private String handleArithmeticOperation(Terceto terceto, String operation)
 	{
 		String code = "";
-		code += this.loadOperators(terceto);
+		code += this.loadOperands(terceto, false);
 		code += "\t" + operation  + "\n";
 		return code;
 	}
@@ -164,7 +164,7 @@ public class AsmGenerator {
 	private String handleMod(Terceto terceto)
 	{
 		String code = "";
-		code += this.loadOperators(terceto);
+		code += this.loadOperands(terceto, false);
 		code += "\tFXCH \n";
 		code += "\tFPREM \n";
 		return code;
@@ -174,7 +174,7 @@ public class AsmGenerator {
 	{
 		String code = "";
 		String nombre = "@terceto" + terceto.getId();
-		code += this.loadOperators(terceto);
+		code += this.loadOperands(terceto, false);
 		code += "\tFDIV \n";
 		code +=  "\tFISTP " + nombre + "\n";
 		code +=  "\tFILD " + nombre + "\n";
@@ -187,7 +187,7 @@ public class AsmGenerator {
 	{
 		String code = "";
 		
-		code += getLoad(this.getVariable(terceto.getThirdValue()));
+		code += getLoad(this.getVariable(terceto.getThirdValue(), false));
 		
 		String variable = terceto.getSecondValue().toString();
 		Object type = tablaSimbolos.getType(variable);
@@ -205,7 +205,7 @@ public class AsmGenerator {
 	private String handleCMP(Terceto terceto)
 	{
 		String code = "";
-		code += this.loadOperators(terceto);
+		code += this.loadOperands(terceto, true);
         code += "\tFXCH\n\tFCOMP\n\tFSTSW AX\n\tSAHF\n\tFFREE\n";
 		return code;
 	}
@@ -252,7 +252,7 @@ public class AsmGenerator {
 	
 	private String handleWrite(Terceto terceto) {
 		String code = "";
-		String variable = this.getVariable(terceto.getSecondValue());
+		String variable = this.getVariable(terceto.getSecondValue(), false);
 		
 		if(tablaSimbolos.isString(variable)){
 			code = "\tDisplayString " + variable + "\n";
@@ -266,7 +266,7 @@ public class AsmGenerator {
 	}
 	
 	private String handleRead(Terceto terceto) {
-		 return "\tGetFloat " + this.getVariable(terceto.getSecondValue().toString()) + "\n";
+		 return "\tGetFloat " + this.getVariable(terceto.getSecondValue().toString(), false) + "\n";
 	}
 	
 	private String handleInlist(int inlistId)
@@ -339,33 +339,39 @@ public class AsmGenerator {
 		this.header += String.format("\t%s\tdd\t%s\n", nombre, value);
 	}
 	
-	private String loadOperators(Terceto terceto) {
+	private String loadOperands(Terceto terceto, boolean isCMP) {
 		String code = "";
 		
-		code += getLoad(this.getVariable(terceto.getSecondValue()));
-		code += getLoad(this.getVariable(terceto.getThirdValue()));			
+		code += getLoad(this.getVariable(terceto.getSecondValue(), isCMP));
+		code += getLoad(this.getVariable(terceto.getThirdValue(), isCMP));			
 	
 		return code;
 	}
-	
+		
 	// Recibe un "second" o "third" value de un terceto. Si es un index,
 	// Busca el terceto asociado a ese index. Si el terceto es un terceto que contiene solo una constante
 	// devuelve esa constante como variable. 
 	// Caso contrario, estamos ante un terceto as� por ejemplo (*, 12, 43), lo que significa que debemos devolver la variable auxiliar
 	// donde guardamos el resultado de dicho terceto.
-	private String getVariable(Object value)
+	private String getVariable(Object value, boolean isCMP)
 	{
 		if (value.getClass() == Index.class)
 		{
 			Index val = (Index) value;
 			int index = val.getVal();
 			Terceto ter =  this.tercetoList.get(index-1);
+			
 			if (ter.getCount() > 1)
 			{
-				return "";
+				if (isCMP)
+				{
+					return "@terceto" + index;
+				}
+				else
+					return "";
 			}
 			else
-				return ter.getFirstValue().toString();
+				return ter.getFirstValue().toString();			
 		}
 		
 		return value.toString();

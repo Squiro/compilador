@@ -987,7 +987,11 @@ class CUP$AnalizadorSintactico$actions {
             {
               Symbol RESULT =null;
  
-                         tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         Terceto ter1 = this.tercetoManager.getTerceto(this.tercetoManager.getLastIdx());
+                         if (ter1.getCount() > 1)
+                         {
+                              tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         }
                          RESULT = new Symbol(-1); 
                     
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("NT$2",25, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -1001,7 +1005,12 @@ class CUP$AnalizadorSintactico$actions {
               // propagate RESULT from NT$2
                 RESULT = (Symbol) ((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
-                         tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+
+                         Terceto ter2 = this.tercetoManager.getTerceto(this.tercetoManager.getLastIdx());
+                         if (ter2.getCount() > 1)
+                         {
+                              tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         }
                          int expr2 = expresionStack.pop();
                          int expr1 = expresionStack.pop();
                          tercetoManager.createTerceto("CMP", new Index(expr1), new Index(expr2));
