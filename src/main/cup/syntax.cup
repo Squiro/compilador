@@ -324,8 +324,13 @@ condicion           ::= comparacion OP_AND comparacion
                          tercetoManager.createTerceto("ET", "THEN", null);
                     :};
 
-comparacion         ::= expresion comparador expresion
+comparacion         ::= expresion 
+                    {: 
+                         tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         RESULT = new Symbol(-1); 
+                    :} comparador expresion
                     {:
+                         tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
                          int expr2 = expresionStack.pop();
                          int expr1 = expresionStack.pop();
                          tercetoManager.createTerceto("CMP", new Index(expr1), new Index(expr2));

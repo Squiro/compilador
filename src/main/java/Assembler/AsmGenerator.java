@@ -99,22 +99,21 @@ public class AsmGenerator {
 		
 		switch (operation) {
 		case "+":
-			code += handleArithmeticOperation(terceto, "FADD", false);
+			code += handleArithmeticOperation(terceto, "FADD");
 			break;
 		case "-":
-			code += handleArithmeticOperation(terceto, "FSUB", false);
+			code += handleArithmeticOperation(terceto, "FSUB");
 			break;
 		case "*":
-			code += handleArithmeticOperation(terceto, "FMUL", false);
+			code += handleArithmeticOperation(terceto, "FMUL");
 			break;
 		case "/":
-			code += handleArithmeticOperation(terceto, "FDIV", false);
+			code += handleArithmeticOperation(terceto, "FDIV");
 			break;
 		case "DIV":
-			code += handleArithmeticOperation(terceto, "FDIV", true);
+			code += handleDiv(terceto);
 			break;
 		case "MOD":
-			// Verificar que el orden de los operadores esté bien cargado
 			code += handleMod(terceto);
 			break;
 		case ":=":
@@ -144,6 +143,9 @@ public class AsmGenerator {
 		case "ET": 
 			code += handleET(terceto); 
 			break;
+		case "STORE": 
+			code += handleStore(terceto); 
+			break;
 		default:
 			break;
 		}
@@ -151,28 +153,33 @@ public class AsmGenerator {
 		return code;
 	}
 	
-	private String handleArithmeticOperation(Terceto terceto, String operation, boolean convertToInt)
+	private String handleArithmeticOperation(Terceto terceto, String operation)
 	{
 		String code = "";
-		String nombre = "@terceto" + terceto.getId();
 		code += this.loadOperators(terceto);
 		code += "\t" + operation  + "\n";
-		code += convertToInt ? "\tFISTP " + nombre + "\n" :  "\tFSTP " + nombre + "\n";
-		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
-		this.addVariableToData(nombre, convertToInt ? DataTypes.INTEGER :  DataTypes.FLOAT);
 		return code;
 	}
 	
 	private String handleMod(Terceto terceto)
 	{
 		String code = "";
+		code += this.loadOperators(terceto);
+		code += "\tFXCH \n";
+		code += "\tFPREM \n";
+		return code;
+	}
+	
+	private String handleDiv(Terceto terceto)
+	{
+		String code = "";
 		String nombre = "@terceto" + terceto.getId();
 		code += this.loadOperators(terceto);
-		code += "\t FXCH \n";
-		code += "\t FPREM \n";
-		code +=  "\tFSTP " + nombre + "\n";
-		// Agregamos una var auxiliar donde guardamos el resultado de esta operación
-		this.addVariableToData(nombre, DataTypes.FLOAT);
+		code += "\tFDIV \n";
+		code +=  "\tFISTP " + nombre + "\n";
+		code +=  "\tFILD " + nombre + "\n";
+		// Agregamos una var auxiliar donde guardamos el resultado de esta operaciï¿½n
+		this.addVariableToData(nombre, DataTypes.INTEGER);
 		return code;
 	}
 		
@@ -199,7 +206,7 @@ public class AsmGenerator {
 	{
 		String code = "";
 		code += this.loadOperators(terceto);
-        code += "\tFXCH\n\tFCOMP\n\tFSTSW AX\n\tSAHF\n";
+        code += "\tFXCH\n\tFCOMP\n\tFSTSW AX\n\tSAHF\n\tFFREE\n";
 		return code;
 	}
 	
@@ -288,6 +295,37 @@ public class AsmGenerator {
 		return code;
 	}
 	
+	private String handleStore(Terceto terceto) {
+		String code = "";	
+		
+		Index ind =  (Index) terceto.getSecondValue();
+		
+		Terceto ter = this.tercetoList.get(ind.getVal()-1);
+		String nombre = "";
+		
+		if (ter.getCount() > 1)
+		{
+			nombre = "@terceto" + ind.getVal();	
+			
+			if (this.tablaSimbolos.isInTable(nombre))
+			{
+				return "";
+			}			
+		}
+		else
+		{
+			if (this.tablaSimbolos.isInTable(ter.getFirstValue().toString()))
+			{
+				return "";
+			}
+			nombre = ter.getFirstValue().toString();
+		}		
+
+		code += "\tFSTP " + nombre + "\n";
+		this.addVariableToData(nombre, DataTypes.FLOAT);	
+		return code;
+	}
+	
 	
 	private void addVariableToData(String nombre, DataTypes type)
 	{
@@ -313,7 +351,7 @@ public class AsmGenerator {
 	// Recibe un "second" o "third" value de un terceto. Si es un index,
 	// Busca el terceto asociado a ese index. Si el terceto es un terceto que contiene solo una constante
 	// devuelve esa constante como variable. 
-	// Caso contrario, estamos ante un terceto así por ejemplo (*, 12, 43), lo que significa que debemos devolver la variable auxiliar
+	// Caso contrario, estamos ante un terceto asï¿½ por ejemplo (*, 12, 43), lo que significa que debemos devolver la variable auxiliar
 	// donde guardamos el resultado de dicho terceto.
 	private String getVariable(Object value)
 	{
@@ -324,7 +362,7 @@ public class AsmGenerator {
 			Terceto ter =  this.tercetoList.get(index-1);
 			if (ter.getCount() > 1)
 			{
-				return "@terceto" + index;
+				return "";
 			}
 			else
 				return ter.getFirstValue().toString();
@@ -336,6 +374,9 @@ public class AsmGenerator {
 	// Checks datatype and returns FLD or FILD
 	private String getLoad(String variable)
 	{
+		if (variable == "")
+			return "";
+		
 		String code = "";
 		
 		if (this.tablaSimbolos.getType(variable) == DataTypes.INTEGER)
