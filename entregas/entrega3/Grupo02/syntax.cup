@@ -23,6 +23,7 @@ action code
      // indices de no terminales para los tercetos
      public int factorIdx, modIdx, divIdx, asignacionIdx, comparacionIdx, inlistIdx;
      public String inlistID;
+     public int lastInlistIdx;
 
 :}
 
@@ -323,8 +324,22 @@ condicion           ::= comparacion OP_AND comparacion
                          tercetoManager.createTerceto("ET", "THEN", null);
                     :};
 
-comparacion         ::= expresion comparador expresion
+comparacion         ::= expresion 
+                    {: 
+                         Terceto ter1 = this.tercetoManager.getTerceto(this.tercetoManager.getLastIdx());
+                         if (ter1.getCount() > 1)
+                         {
+                              tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         }
+                         RESULT = new Symbol(-1); 
+                    :} comparador expresion
                     {:
+
+                         Terceto ter2 = this.tercetoManager.getTerceto(this.tercetoManager.getLastIdx());
+                         if (ter2.getCount() > 1)
+                         {
+                              tercetoManager.createTerceto("STORE", new Index(this.tercetoManager.getLastIdx()));
+                         }
                          int expr2 = expresionStack.pop();
                          int expr1 = expresionStack.pop();
                          tercetoManager.createTerceto("CMP", new Index(expr1), new Index(expr2));
@@ -334,7 +349,7 @@ comparacion         ::= expresion comparador expresion
                     :}
                     | inlist
                     {:
-                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.createTerceto("CMP", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", -1, null));
                     :};
                    
@@ -381,7 +396,7 @@ while               ::= WHILE PAREN_OPEN {: whileStack.push(tercetoManager.creat
 inlist              ::= INLIST PAREN_OPEN IDENTIFICADOR:ID 
                     {: 
                          inlistID = ID;
-                         tercetoManager.createTerceto("INLIST", -1, -1);
+                         lastInlistIdx = tercetoManager.createTerceto("INLIST", -1, -1);
                          RESULT = new Symbol(-1);
                     :} 
                     PUNTO_COMA CORCHETE_OPEN lista CORCHETE_CLOSE PAREN_CLOSE
@@ -398,13 +413,13 @@ lista               ::= lista PUNTO_COMA expresion
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()-1));
                          tercetoManager.desapilarTercetoBranch().setSecondValue(new Index(idx));
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
-                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
                     :} 
                     | expresion 
                     {:
                          tercetoManager.createTerceto("CMP", inlistID, new Index(tercetoManager.getLastIdx()));                         
                          tercetoManager.apilarTercetoBranch(tercetoManager.createTerceto("BNE", null));
-                         tercetoManager.createTerceto(":=", "@inlistFoundFlag", "@inlist1");
+                         tercetoManager.createTerceto(":=", "@inlistFoundFlag"+lastInlistIdx, "@inlist1");
                     :};
 
 /*
